@@ -1,0 +1,5 @@
+C:\Documents and Settings\Admin\Мои документы\Visual Studio 2008\Projects\CouplingFEMBEM\CouplingFEMBEM\bin\Debug\CouplingFEMBEM.dll
+C:\Documents and Settings\Admin\Мои документы\Visual Studio 2008\Projects\CouplingFEMBEM\CouplingFEMBEM\bin\Debug\CouplingFEMBEM.pdb
+C:\Documents and Settings\Admin\Мои документы\Visual Studio 2008\Projects\CouplingFEMBEM\CouplingFEMBEM\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Admin\Мои документы\Visual Studio 2008\Projects\CouplingFEMBEM\CouplingFEMBEM\obj\Debug\CouplingFEMBEM.dll
+C:\Documents and Settings\Admin\Мои документы\Visual Studio 2008\Projects\CouplingFEMBEM\CouplingFEMBEM\obj\Debug\CouplingFEMBEM.pdb
