@@ -1,0 +1,999 @@
+<html><head>
+
+
+ <title>Решение систем линейных уравнений с разреженными матрицами коэффициентов с использованием методов хеширования</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+ <meta name="description" content="Решения в области информационных технологий и интеллектуальной автоматизации, программно-аппаратные модули для исследований, транспорта и промышленности.">
+ <meta name="keywords" content="Роботы, Интеллектуальное управление, микроконтроллеры, программное обеспечение, распознавание образов, разработка ПО,  Navis, Robocad, EasyCode, Nod32 Update, GPS Navigation">
+ <meta name="robots" content="all">
+ <meta name="organization" content="ROBOSOFT">
+ <meta name="address" content="ROBOSOFT -  49090, Украина, г. Днепропетровск, ул. Чичерина, 74">
+ <meta name="website" content="http://www.robosoft.info">
+ <meta name="ROBOTS" content="ALL">
+   <link href="detail.php_files/styles.css" type="text/css" rel="STYLESHEET"><script charset="utf-8" id="injection_graph_func" src="detail.php_files/injection_graph_func.js"></script></head><body leftmargin="0" topmargin="0" onload="writeMenus()" bgcolor="#ffffff" marginheight="0" marginwidth="0">
+
+
+<script language="JavaScript">
+
+ var isDOM = (document.getElementById ? true : false);
+ var isIE4 = ((document.all && !isDOM) ? true : false);
+ var isNS4 = (document.layers ? true : false);
+
+ function getRef(id) 
+ {
+  if (isDOM) return document.getElementById(id);
+  if (isIE4) return document.all[id];
+  if (isNS4) return document.layers[id];
+ }
+
+ function getSty(id) 
+ {
+  return (isNS4 ? getRef(id) : getRef(id).style);
+ }
+
+ var popTimer = 0;
+ var litNow = new Array();
+
+ function popOver(menuNum, itemNum) 
+ {
+  clearTimeout(popTimer);
+  hideAllBut(menuNum);
+  litNow = getTree(menuNum, itemNum);
+  changeCol(litNow, true);
+  targetNum = menu[menuNum][itemNum].target;
+  if (targetNum > 0) 
+  {
+   thisX = parseInt(menu[menuNum][0].ref.left) + parseInt(menu[menuNum][itemNum].ref.left);
+   thisY = parseInt(menu[menuNum][0].ref.top) + parseInt(menu[menuNum][itemNum].ref.top);
+   with (menu[targetNum][0].ref) 
+   {
+    left = parseInt(thisX + menu[targetNum][0].x);
+    top = parseInt(thisY + menu[targetNum][0].y);
+    visibility = 'visible';
+   }
+  }
+ }
+
+ function popOut(menuNum, itemNum) 
+ {
+  if ((menuNum == 0) && !menu[menuNum][itemNum].target)
+   hideAllBut(0)
+  else
+   popTimer = setTimeout('hideAllBut(0)', 500);
+ }
+
+ function getTree(menuNum, itemNum) 
+ {
+  itemArray = new Array(menu.length);
+  while(1) 
+  {
+   itemArray[menuNum] = itemNum;
+   if (menuNum == 0) return itemArray;
+   itemNum = menu[menuNum][0].parentItem;
+   menuNum = menu[menuNum][0].parentMenu;
+  }
+ }
+
+ function changeCol(changeArray, isOver) 
+ {
+  for (menuCount = 0; menuCount < changeArray.length; menuCount++) 
+  {
+   if (changeArray[menuCount]) 
+   {
+    newCol = isOver ? menu[menuCount][0].overCol : menu[menuCount][0].backCol;
+    with (menu[menuCount][changeArray[menuCount]].ref) 
+    {
+     if (isNS4) bgColor = newCol;
+     else backgroundColor = newCol;
+    }
+   }
+  }
+ }
+
+ function hideAllBut(menuNum) 
+ {
+  var keepMenus = getTree(menuNum, 1);
+  for (count = 0; count < menu.length; count++)
+   if (!keepMenus[count])
+    menu[count][0].ref.visibility = 'hidden';
+  changeCol(litNow, false);
+ }
+
+ function Menu(isVert, popInd, x, y, width, overCol, backCol, borderClass, textClass) 
+ {
+  this.isVert = isVert;
+  this.popInd = popInd
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.overCol = overCol;
+  this.backCol = backCol;
+  this.borderClass = borderClass;
+  this.textClass = textClass;
+  this.parentMenu = null;
+  this.parentItem = null;
+  this.ref = null;
+ }
+
+ function Item(text, href, frame, length, spacing, target) 
+ {
+  this.text = text;
+  this.href = href;
+  this.frame = frame;
+  this.length = length;
+  this.spacing = spacing;
+  this.target = target;
+  this.ref = null;
+ }
+
+
+ function writeMenus() 
+ {
+  if (!isDOM && !isIE4 && !isNS4) return;
+
+  for (currMenu = 0; currMenu < menu.length; currMenu++) with (menu[currMenu][0]) 
+  {
+    var str = '', itemX = 0, itemY = 0;
+    for (currItem = 1; currItem < menu[currMenu].length; currItem++) with (menu[currMenu][currItem]) 
+    {
+      var itemID = 'menu' + currMenu + 'item' + currItem;
+      var w = (isVert ? width : length);
+      var h = (isVert ? length : width);
+      if (isDOM || isIE4) 
+      {
+         str += '<div id="' + itemID + '" style="position: absolute; left: ' + itemX + '; top: ' + itemY + '; width: ' + w + '; height: ' + h + '; visibility: inherit; ';
+         if (backCol) str += 'background: ' + backCol + '; ';
+         str += '" ';
+      }
+      if (isNS4) 
+      {
+         str += '<layer id="' + itemID + '" left="' + itemX + '" top="' + itemY + '" width="' +  w + '" height="' + h + '" visibility="inherit" ';
+         if (backCol) str += 'bgcolor="' + backCol + '" ';
+      }
+      if (borderClass) str += 'class="' + borderClass + '" ';
+      str += 'onMouseOver="popOver(' + currMenu + ',' + currItem + ')" onMouseOut="popOut(' + currMenu + ',' + currItem + ')">';
+      str += '<table width="' + (w - 8) + '" border="0" cellspacing="0" cellpadding="' + (!isNS4 && borderClass ? 3 : 0) + '"><tr><td onclick="document.location=\'' + href + '\'" align="left" height="' + (h - 7) + '">' + '<a class="' + textClass + '" href="' + href + '"' + (frame ? ' target="' + frame + '">' : '>') + text + '</a></td>';
+      if (target > 0) 
+      {
+        menu[target][0].parentMenu = currMenu;
+        menu[target][0].parentItem = currItem;
+        if (popInd) str += '<td class="' + textClass + '" align="right">' + popInd + '</td>';
+      }
+str += '</tr></table>' + (isNS4 ? '</layer>' : '</div>');
+if (isVert) itemY += length + spacing;
+else itemX += length + spacing;
+}
+if (isDOM) {
+var newDiv = document.createElement('div');
+document.getElementsByTagName('body').item(0).appendChild(newDiv);
+newDiv.innerHTML = str;
+ref = newDiv.style;
+ref.position = 'absolute';
+ref.visibility = 'hidden';
+}
+if (isIE4) {
+document.body.insertAdjacentHTML('beforeEnd', '<div id="menu' + currMenu + 'div" ' + 'style="position: absolute; visibility: hidden">' + str + '</div>');
+ref = getSty('menu' + currMenu + 'div');
+}
+if (isNS4) {
+ref = new Layer(0);
+ref.document.write(str);
+ref.document.close();
+}
+
+for (currItem = 1; currItem < menu[currMenu].length; currItem++) {
+itemName = 'menu' + currMenu + 'item' + currItem;
+if (isDOM || isIE4) menu[currMenu][currItem].ref = getSty(itemName);
+if (isNS4) menu[currMenu][currItem].ref = ref.document[itemName];
+   }
+}
+with(menu[0][0]) {
+ref.left = x;
+ref.top = y;
+ref.visibility = 'visible';
+   }
+}
+
+var menu = new Array();
+var defOver = '#C2DDF5', defBack = '#A9CBE9';
+var defLength = 22;
+//Root.
+menu[0] = new Array();
+menu[0][0] = new Menu(false, '', 160, 91, 17, '#C2DDF5', '', '', 'itemText');
+menu[0][1] = new Item('Отрасли', '', '', 50, 10, 1);
+menu[0][2] = new Item('Проекты', '/projects/', '', 50, 10, 2);
+menu[0][3] = new Item('Исследования', '/research/index.php', '', 80, 20, 3);
+menu[0][4] = new Item('База знаний', '/knowledge/index.php', '', 80, 4, 4);
+menu[0][5] = new Item('О компании', '/about/index.php', '', 76, 0, 5);
+//Отрасли.
+menu[1] = new Array();
+menu[1][0] = new Menu(true, '>', 0, 22, 140, defOver, defBack, 'itemBorder', 'itemText');
+menu[1][1] = new Item('Сельское хозяйство', '/branch/section.php?SECTION_ID=154', '', defLength, 0, 0);
+menu[1][2] = new Item('Строительство', '/branch/section.php?SECTION_ID=155', '', defLength, 0, 0);
+menu[1][3] = new Item('Грузоперевозки', '/branch/section.php?SECTION_ID=153', '', defLength, 0, 0);
+menu[1][4] = new Item('Юриспруденция', '/branch/section.php?SECTION_ID=159', '', defLength, 0, 0);
+menu[1][5] = new Item('Финансовый сектор', '/branch/section.php?SECTION_ID=158', '', defLength, 0, 0);
+menu[1][6] = new Item('Развлечения', '/branch/section.php?SECTION_ID=157', '', defLength, 0, 0);
+menu[1][7] = new Item('Быт', '/branch/section.php?SECTION_ID=156', '', defLength, 0, 0);
+menu[1][8] = new Item('Безопасность', '/branch/section.php?SECTION_ID=190', '', defLength, 0, 0);
+
+//Проекты
+menu[2] = new Array();
+menu[2][0] = new Menu(true, '>', 0, 22, 140, defOver, defBack, 'itemBorder', 'itemText');
+menu[2][1] = new Item('Текущие проекты', '/projects/', '', defLength, 0, 6);
+menu[2][2] = new Item('Клиентам', '/projects/auth.php', '', defLength, 0, 0);
+
+//Исследования
+menu[3] = new Array();
+menu[3][0] = new Menu(true, '>', 0, 22, 180, defOver, defBack, 'itemBorder', 'itemText');
+menu[3][1] = new Item('ИИ', '/research/section.php?SECTION_ID=161', '', defLength, 0, 0);
+menu[3][2] = new Item('Групповой ИИ / Сообщества', '/research/section.php?SECTION_ID=162', '', defLength, 0, 0);
+menu[3][3] = new Item('Зрение', '/research/section.php?SECTION_ID=163', '', defLength, 0, 0);
+menu[3][4] = new Item('Слух / речь', '/research/section.php?SECTION_ID=167', '', defLength, 0, 0);
+menu[3][5] = new Item('Навигация', '/research/section.php?SECTION_ID=164', '', defLength, 0, 0);
+menu[3][6] = new Item('Конструкции / механика', '/research/section.php?SECTION_ID=165', '', defLength, 0, 0);
+menu[3][7] = new Item('Энергия', '/research/section.php?SECTION_ID=168', '', defLength, 0, 0);
+
+//База знаний.
+menu[4] = new Array();
+menu[4][0] = new Menu(true, '>', 0, 22, 80, defOver, defBack, 'itemBorder', 'itemText');
+menu[4][1] = new Item('Статьи', '/knowledge/articles/', '', defLength, 0, 0);
+menu[4][2] = new Item('FAQ', '/knowledge/faq/', '', defLength, 0, 0);
+menu[4][3] = new Item('Ссылки', '/knowledge/links.php', '', defLength, 0, 0);
+
+//О компании.
+menu[5] = new Array();
+menu[5][0] = new Menu(true, '>', 0, 22, 120, defOver, defBack, 'itemBorder', 'itemText');
+menu[5][1] = new Item('Цели', '/about/index.php', '', defLength, 0, 0);
+menu[5][2] = new Item('История', '/about/history.php', '', defLength, 0, 0);
+menu[5][3] = new Item('Команда', '/about/team.php', '', defLength, 0, 0);
+menu[5][4] = new Item('Как мы работаем', '/about/service.php', '', defLength, 0, 0);
+menu[5][5] = new Item('Партнёры', '/partners/', '', defLength, 0, 0);
+menu[5][6] = new Item('Контакты', '/about/contacts.php', '', defLength, 0, 0);
+
+//Текущие проекты
+menu[6] = new Array();
+menu[6][0] = new Menu(true, '>', 140, 0, 240, defOver, defBack, 'itemBorder', 'itemText');menu[6][1] = new Item('EasyCode', '/projects/detail.php?ID=883', '', defLength, 0, 0);menu[6][2] = new Item('Navis', '/projects/detail.php?ID=881', '', defLength, 0, 0);menu[6][3] = new Item('NOD32 Updater', '/projects/detail.php?ID=877', '', defLength, 0, 0);menu[6][4] = new Item('RoboCAD', '/projects/detail.php?ID=891', '', defLength, 0, 0);menu[6][5] = new Item('Urist', '/projects/detail.php?ID=876', '', defLength, 0, 0);var popOldWidth = window.innerWidth;
+nsResizeHandler = new Function('if (popOldWidth != window.innerWidth) location.reload()');
+if (isNS4) document.captureEvents(Event.CLICK);
+document.onclick = clickHandle;
+function clickHandle(evt)
+{
+ if (isNS4) document.routeEvent(evt);
+ hideAllBut(0);
+}
+function moveRoot()
+{
+ with(menu[0][0].ref) left = ((parseInt(left) < 100) ? 100 : 5);
+}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+   <tbody><tr>
+    <td rowspan="4" bgcolor="#3e7db8" height="183" width="153">
+     <a style="border: 0px none ; padding-bottom: 0px;" href="http://www.robosoft.info/"><img style="border: 0px none ; padding: 0px;" src="detail.php_files/logo.jpg" alt="Robosoft" border="0" height="183" width="153"></a></td>
+
+    <td colspan="2" background="detail.php_files/back_header.gif" height="85">
+      
+      <table border="0" cellpadding="0" cellspacing="0" height="85" width="100%">
+      <tbody><tr height="85">
+       <td align="left" background="detail.php_files/headbg.gif" height="85"><img src="detail.php_files/robotic.jpg" border="0"></td>
+       <td height="85">
+        <table style="background-position: right 100%; background-repeat: no-repeat;" align="right" background="detail.php_files/tools.gif" border="0" width="100%">
+         <tbody><tr>
+          <td align="right" height="16" valign="top"><a href="http://www.robosoft.info/en/"><img src="detail.php_files/en.gif" border="0"></a>&nbsp;<a href="http://www.robosoft.info/"><img src="detail.php_files/ru.gif" border="0"></a>&nbsp;&nbsp;&nbsp;</td>
+         </tr>
+         <tr>
+          <td height="55"> <font class="slogan"><div align="right"><nobr>Виртуальные&nbsp;инструменты&nbsp;—&nbsp;развитие&nbsp;реального&nbsp;бизнеса!</nobr></div></font></td>
+         </tr>
+        </tbody></table>
+       </td>
+     </tr>
+     </tbody></table>
+    </td>
+
+   </tr>
+
+   <tr>
+    <td colspan="2" align="left" background="detail.php_files/menubg.gif" bgcolor="#badbed" height="28" valign="middle">
+    <noscript>&nbsp;&nbsp;<a
+href="#" class="itemText">Отрасли</a>&nbsp;&nbsp;<a href="#"
+class="itemText">Решения</a>&nbsp;&nbsp;<a href="#"
+class="itemText">База знаний</a>&nbsp;&nbsp;<a href="#"
+class="itemText">Проекты</a>&nbsp;&nbsp;<a href="#" class="itemText">О
+компании</a></noscript>
+    </td>
+   </tr>
+
+   <tr>
+    <td background="detail.php_files/searchbg.gif" bgcolor="#bed9e8" height="36" width="80%">
+     
+<table border="0" cellpadding="0" cellspacing="0" width="450">
+  <form method="get" action="/search/index.php" id="search"></form>
+    <tbody><tr>
+      <td width="10"></td>
+      <td align="left" height="15" valign="middle" width="350">
+      <input name="q" value="" maxlength="50" size="40" style="border: 1px solid rgb(0, 0, 0); vertical-align: middle; height: 17px; font-family: Verdana,Arial,Helvetica; font-size: 11px; color: black;" type="text">
+      <input name="s" value="Поиск" style="border: 1px solid rgb(0, 0, 0); margin-left: 5px; vertical-align: middle; height: 17px; font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(0, 0, 0); background-color: rgb(221, 241, 255);" type="submit">
+      </td>
+    </tr>
+  
+</tbody></table>
+    </td>
+    <td align="right" background="detail.php_files/rightpanel1.jpg" bgcolor="#bed9e8" height="37" width="149">
+    <table id="rightpanel1" border="0" cellpadding="0" cellspacing="0" width="149">
+
+      <tbody><tr>
+       <td height="1" width="149"><img src="detail.php_files/spacer.gif" height="1" width="149"></td>
+      </tr>
+                                                <tr>
+                                                  <td height="36">
+                                                    <table border="0" cellpadding="0" cellspacing="0" width="149">
+                                                          <tbody><tr>
+                                                            <td colspan="5" height="12"></td>
+                                                          </tr>
+                                                          <tr>
+                                                            <td width="35"></td>
+                                                                <td align="left" width="22"><a href="http://www.robosoft.info/download/"><img src="detail.php_files/download.png" align="left" border="0" hspace="0" vspace="0"></a></td>
+                                                                <td width="16"></td>
+                                                                <td align="left" width="22"><a href="http://www.robosoft.info/support/forum/"><img src="detail.php_files/forum.png" align="left" border="0" hspace="0" vspace="0"></a></td>
+                                                                <td width="4"></td>
+                                                          </tr>
+                                                    </tbody></table>
+                                                  </td>
+                                                </tr>
+                                          </tbody></table>
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td class="chain" align="left" background="detail.php_files/navbarbg.gif" bgcolor="#fbfcf5" height="35" valign="middle"><a href="http://www.robosoft.info/" class="chain">Главная</a><font class="chain">&nbsp;/&nbsp;</font><a href="http://www.robosoft.info/knowledge/articles/" class="chain">Статьи</a><font class="chain">&nbsp;/&nbsp;</font><font class="chain">Решение систем линейных уравнений с разреженными матрицами коэффициентов с использованием методов хеширования</font></td>
+                                        <td background="detail.php_files/rightpanel2.gif" height="35" width="149">
+                                          <table valign="top" border="0" cellpadding="0" cellspacing="0" width="149">
+                                            <tbody><tr>
+                                                  <td height="17" width="40"></td>
+                                                  <td align="right" height="17" valign="top" width="47"><a href="http://www.robosoft.info/download/" style="font-family: 'Verdana',Helvetica,sans-serif; font-size: 11px; color: rgb(255, 255, 255); text-decoration: none;">Загрузка</a></td>
+                                                  <td width="15"></td>
+                                                  <td align="left" valign="top" width="47"><a href="http://www.robosoft.info/support/forum/" style="font-family: 'Verdana',Helvetica,sans-serif; font-size: 11px; color: rgb(255, 255, 255); text-decoration: none;">Форум</a></td>
+                                                </tr>
+                                                <tr>
+                                                  <td colspan="4" height="15"></td>
+                                                </tr>
+                                          </tbody></table>
+                                        </td>
+                                </tr>
+                                </tbody></table>
+
+<!--begin of Rambler's Top100 code -->
+<a href="http://top100.rambler.ru/top100/">
+<img src="detail.php_files/top100.gif" alt="" border="0" height="1" width="1"></a>
+<!--end of Top100 code-->					<table border="0" cellpadding="7" cellspacing="0" width="70%">
+						<tbody><tr>
+							<td nowrap="nowrap" valign="top" width="0%"></td>
+														<td valign="top" width="100%"></td>
+						</tr>
+					</tbody></table>
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody><tr>
+					  <td style="width: 160px;" align="center" valign="top">
+					</td>
+					  <td align="justify" width="*">
+					<p class="brighthead">Решение систем линейных уравнений с разреженными матрицами коэффициентов с использованием методов хеширования</p>
+										<font class="text"><p class="text" dir="ltr" style="margin-right: 0px;" align="right"><em>автор:</em> Бескровный&nbsp;Константин <br><em>информация:</em> <a href="http://www.robosoft.info/">www.robosoft.info</a><br><em>опубликовано:</em> 18.12.2006</p>
+<p class="darkhead">Введение</p>
+<p class="text">Во многих областях науки и техники, при решении
+различных задач, возникает необходимость расчета систем линейных
+уравнений, которые иногда являются сильно разреженными. Поскольку
+обычно такие системы уравнений имеют большой порядок, то найти их
+решение (в сколь-нибудь обозримые сроки) возможно только с применением
+вычислительной техники. Для решения подобных задач можно использовать
+прямые методы (Гаусса, Крамера), и приближенные (Зейделя, градиентного
+спуска и др.). Прямые методы дают точное решение (ошибка может быть
+только из-за выхода величин при преобразованиях за пределы точности
+типов для используемой платформы), но обычно требуют большее количество
+итераций. Приближенные методы обычно работают быстрее, но могут
+требовать особых начальных условий или какой-либо подготовки исходных
+данных, и решение не всегда сходится. В данной статье рассматривается
+реализация метода Гаусса, модифицированная для решения разреженных
+систем линейных уравнений. Данный метод не является «математическим», а
+скорее «алгоритмическим» и показывает, как путем простых приемов можно
+ускорить расчет в сотни раз.</p>
+<p class="darkhead">Условия применения</p>
+<p class="text">Рассматриваемый метод подходит для любых невырожденных
+(имеющих одно решение) систем линейных уравнений. В дальнейшем под
+словом матрица будет пониматься матрица коэффициентов линейных
+уравнений. Единственное условие - метод имеет смысл только для сильно
+разреженных матриц больших размерностей N&gt;1000, где не менее двух
+третей коэффициентов равны 0. Для обычных матриц метод не даст выигрыша
+ни в скорости, ни в экономии памяти.</p>
+<p class="darkhead">Описание метода</p>
+<p class="text">Метод Гаусса заключается в обнулении нижней (или
+верхней) полуматрицы a[i,k], где строка i=2..N, столбец k=1..i-1.
+Используя известное правило, что решение системы не изменится, если к
+одному из ее уравнений добавить другое, умноженное на произвольный
+коэффициент, строки матрицы поочередно, начиная с первой, домножаются
+на специальные коэффициенты и суммируются со всеми ниже лежащими
+строками. Коэффициенты подбираются таким образом, чтобы каждая строка
+обнуляла соответствующий ей (i=k) ниже лежащий столбец (только его
+поддиагональную часть). Так первая строка обнуляет первый столбец
+A[2..N,1], вторая – второй A[3..N,2] и т.д. до предпоследней строки.
+Коэффициенты рассчитываются так: например для того чтобы обнулить
+первый столбец нужно первую строку домножить на k=-A[2,1]/A[1,1] и
+прибавить ко второй, затем на k=-A[3,1]/A[1,1] и прибавить к третей и
+т.д. После операция повторяется со второй строкой (она домножается на
+соответствующие коэффициенты и складывается со всеми нижележащими
+строками) и т.д. до предпоследней. В результате получается матрица, под
+главной диагональю которой остаются одни нули. Теперь в последнем
+уравнении остался только один коэффициент – соответственно можно легко
+вычислить значение последней неизвестной: X[N]=B[N]/A[N,N], где B –
+вектор свободных членов уравнений, который кстати, также участвует в
+преобразованиях при обнулении матрицы A. В предпоследнем уравнении
+осталось два коэффициента, и последняя неизвестная уже известна, можно
+вычислить предпоследнюю: X[N-1]=(B[N-1]-A[N-1,N]*X[N])/A[N-1,N-1].
+Таким образом, используя обратный ход, можно вычислить все неизвестные.
+В процессе преобразования матрицы не должны обнуляться коэффициенты
+главной диагонали. Если такое происходит, то матрица не была
+факторизована или неправильно составлены уравнения. Или же данная
+система имеет не одно решение. Более подробно о методе Гаусса можно
+узнать <a href="http://pages.rshu.ru/mamop/node53.html">здесь</a>.</p>
+<p class="text">Приведенный выше алгоритм легко реализуем. Количество
+итераций известно заранее и зависит только от порядка матрицы. Если его
+запрограммировать в классическом стиле, то он легко будет справляться с
+небольшими матрицами N~1000. Однако матрицы иногда бывают порядка 100
+000 и более. На расчет такой матрицы классическим методом Гаусса уйдут
+годы, поскольку количество итераций будет огромным. Если данную матрицу
+хранить в обычном двумерном массиве, то при использовании типа double
+она будет занимать в памяти 100 000 х 100 000 х 8 = 800 000 000 байт =
+800 Мб что совсем не мало. А если учесть что размер матрицы возрастает
+пропорционально квадрату порядка матрицы, то для матрицы порядка 400
+000 это будет в 16 раз больше, т.е. 12.8 Гб!</p>
+<p class="text">На основании выше приведенных рассуждений можно выяснить два направления оптимизации расчета:</p>
+<ul>
+<li class="text">Более компактное хранение информации.</li>
+<li class="text">Уменьшение количества итераций.</li></ul>
+<p class="text">Для разреженных матриц возможно и то, и другое:</p>
+<p class="text">Более компактное хранение информации - разреженные
+матрицы имеет смысл хранить в памяти не в виде двумерного массива, а в
+виде некоторой структуры, в которой сохранены только ненулевые значения
+коэффициентов, а также их координаты в матрице. Уменьшение количества
+итераций - если выше упомянутую структуру организовать особым образом,
+чтобы из нее можно было быстро получить нужную информацию в нужном для
+метода Гаусса виде, то можно сократить кол-во итераций до минимального
+(ведь отпадает необходимость перебирать нулевые коэффициенты, которых в
+матрице может быть достаточно много).</p>
+<p class="text">Для метода Гаусса было бы удобно быстро получать строки
+правее главной диагонали (которые будут умножаться на коэффициенты и
+суммироваться с нижележащими строками для обнуления нижней
+полуматрицы), столбцы ниже главной диагонали (собственно то, что будет
+обнуляться) и элементы главной диагонали (значения с помощью которых
+будут обнуляться столбцы). Поэтому удобно разбить матрицу на верхнюю
+полуматрицу (все, что выше главной диагонали), нижнюю полуматрицу (все,
+что ниже) и элементы главной диагонали. При этом нужно преобразовать
+систему координат:</p>
+<ul>
+<li class="text">для главной диагонали это одна координата d, которая равна соответствующему индексу элемента главной диагонали</li>
+<li class="text">для верхней и нижней полуматрицы координаты d,j, где j – смещение от главной диагонали вправо или вниз (как показано на рисунке)</li></ul>
+<p align="center"><img src="detail.php_files/matrix_gauss.png" border="0"></p>
+<p class="darkhead">Диаграмма классов</p>
+<p align="center"></p>
+<p class="text" align="left">Как видно из диаграммы, связь основных
+компонентов осуществлена через интерфейсы, поэтому легко могут быть
+добавлены новые реализации классов,&nbsp;без изменения&nbsp;структуры
+предложенного метода.</p>
+<p class="text" align="center"><img src="detail.php_files/matrix_gauss_class_diagram.jpg" border="0" height="240" width="450"></p>
+<p class="darkhead">Реализация метода</p>
+<p class="text">Все исходные коды приведены на C#, и представляют
+полный набор классов, необходимых для функционирования метода. Код
+написан максимально просто для понимания принципа работы метода, и
+поэтому не претендует на максимальную производительность и не является
+оптимальным. О необходимых доработках сказано в заключении. Код снабжен
+комментариями и не нуждается в дополнительном разъяснении.</p>
+<p class="text">Реализация интерфейса строк и столбцов:</p>
+<p align="center">
+<table bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="3" width="95%">
+
+<tbody><tr>
+<td>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">public</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"> <span style="color: blue;">interface</span> IRow</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// записывает значение value в ячейку с индексом num</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">void</span> setValue(<span style="color: blue;">int</span> num, <span style="color: blue;">double</span> <span style="color: blue;">value</span>);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// добавляет value к существующему значению в ячейке num </span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">void</span> addValue(<span style="color: blue;">int</span> num, <span style="color: blue;">double</span> <span style="color: blue;">value</span>);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// возвращает значение ячейки num</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span> getValue(<span style="color: blue;">int</span> num);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// возвращает все ненулевые ячейки строки/столбца: </span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>// индексы ячеек - в indexes, значения в values</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">void</span> getValues(<span style="color: blue;">ref</span> <span style="color: blue;">int</span>[] indexes, <span style="color: blue;">ref</span> <span style="color: blue;">double</span>[] values);</span></p><span style="font-size: 10pt; font-family: 'Courier New';">}</span> </td></tr></tbody></table></p>
+<p class="text">Реализация интерфейса матрицы:</p>
+<p align="center">
+<table bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="3" width="95%">
+<tbody>
+<tr>
+<td><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB">
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">public</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font><span style="color: blue;">interface</span><font color="#000000"> IMatrix</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000">{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// устанавливает значение value в ячейку с координатами [row,col];</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// row - номер строки матрицы</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// col - номер столбца матрицы</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">void</span><font color="#000000"> setValue(</font><span style="color: blue;">int</span><font color="#000000"> row, </font><span style="color: blue;">int</span><font color="#000000"> col, </font><span style="color: blue;">double</span><font color="#000000"> </font><span style="color: blue;">value</span><font color="#000000">);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// добавляет значение value к ячейке [row,col]</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">void</span><font color="#000000"> addValue(</font><span style="color: blue;">int</span><font color="#000000"> row, </font><span style="color: blue;">int</span><font color="#000000"> col, </font><span style="color: blue;">double</span><font color="#000000"> </font><span style="color: blue;">value</span><font color="#000000">);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// возвращает значение ячейки [row,col]</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">double</span><font color="#000000"> getValue(</font><span style="color: blue;">int</span><font color="#000000"> row, </font><span style="color: blue;">int</span><font color="#000000"> col);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';">// </span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">возвращает порядок матрицы</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">int</span><font color="#000000"> getN();</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// возвращает ненулевые значения и индексы ячеек строки d,</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;</span><span>&nbsp;</span>// которые находятся правее главной диагонали</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">void</span></span><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"> </span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">getJRow</span><span style="font-size: 10pt; font-family: 'Courier New';">(</span></font><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">int</span><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"> </span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">d</span><span style="font-size: 10pt; font-family: 'Courier New';">, </span></font><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">ref</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">int</span><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';">[] </span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">indexes</span><span style="font-size: 10pt; font-family: 'Courier New';">, </span></font><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">ref</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">double</span><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';">[] </span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">values</span><span style="font-size: 10pt; font-family: 'Courier New';">);</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// возвращает ненулевые значения и индексы ячеек столбца d, </span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;</span>// которые находятся ниже главной диагонали</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">void</span></span><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"> </span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">getJCol</span><span style="font-size: 10pt; font-family: 'Courier New';">(</span></font><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">int</span><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"> </span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">d</span><span style="font-size: 10pt; font-family: 'Courier New';">, </span></font><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">ref</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">int</span><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';">[] </span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">indexes</span><span style="font-size: 10pt; font-family: 'Courier New';">, </span></font><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">ref</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">double</span><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';">[] </span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">values</span><span style="font-size: 10pt; font-family: 'Courier New';">);</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000">}</font></span></p></span></span></td></tr></tbody></table></p>
+<p class="text">Абстрактный класс матрицы, который содержит поля и методы, идентичные в различных реализациях классов матриц:</p>
+<p align="center">
+<table bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="3" width="95%">
+<tbody>
+<tr>
+<td><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB"><font color="#0000ff" size="2"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB">
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">public</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font><span style="color: blue;">abstract</span><font color="#000000"> </font><span style="color: blue;">class</span><font color="#000000"> Matrix : IMatrix</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000">{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// порядок матрицы</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">private</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000"> N;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> Matrix(</font><span style="color: blue;">int</span><font color="#000000"> N) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">{</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">this</span><font color="#000000">.N = N;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">возвращает порядок матрицы</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">public</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000"> getN() </font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000"> N;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">}<span>&nbsp;&nbsp;&nbsp;&nbsp; </span></span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">методы интерфеса IMatrix имплементируемые в реализациях</span><span style="font-size: 10pt; color: green; font-family: 'Courier New';"></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">public</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font><span style="color: blue;">abstract</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> setValue(</font><span style="color: blue;">int</span><font color="#000000"> row, </font><span style="color: blue;">int</span><font color="#000000"> col, </font><span style="color: blue;">double</span><font color="#000000"> </font><span style="color: blue;">value</span><font color="#000000">);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">abstract</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> addValue(</font><span style="color: blue;">int</span><font color="#000000"> row, </font><span style="color: blue;">int</span><font color="#000000"> col, </font><span style="color: blue;">double</span><font color="#000000"> </font><span style="color: blue;">value</span><font color="#000000">);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">abstract</span><font color="#000000"> </font><span style="color: blue;">double</span><font color="#000000"> getValue(</font><span style="color: blue;">int</span><font color="#000000"> row, </font><span style="color: blue;">int</span><font color="#000000"> col);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">abstract</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> getJRow(</font><span style="color: blue;">int</span><font color="#000000"> d, </font><span style="color: blue;">ref</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000">[] indexes, </font><span style="color: blue;">ref</span><font color="#000000"> </font><span style="color: blue;">double</span><font color="#000000">[] values);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">abstract</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> getJCol(</font><span style="color: blue;">int</span><font color="#000000"> d, </font><span style="color: blue;">ref</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000">[] indexes, </font><span style="color: blue;">ref</span><font color="#000000"> </font><span style="color: blue;">double</span><font color="#000000">[] values);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// сервисные методы для преобразования координат внутри матрицы</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// возвращает 0 при x&lt;=0, x при x&gt;0</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">protected</span><font color="#000000"> </font><span style="color: blue;">static</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000"> sigma(</font><span style="color: blue;">int</span><font color="#000000"> x) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">{</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000"> (x&gt;0)?x:0;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">}</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// преобразование row,col в координаты полуматриц (d,j)</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// для верхней полуматрицы: d=0..(n-1), j=-(n-d-1)..-1</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// для нижней полуматрицы:&nbsp; d=0..(n-1), j=1..(n-d-1)</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">protected</span><font color="#000000"> </font><span style="color: blue;">static</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000"> getD(</font><span style="color: blue;">int</span><font color="#000000"> row, </font><span style="color: blue;">int</span><font color="#000000"> col) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000"> row-sigma(row-col);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">protected</span><font color="#000000"> </font><span style="color: blue;">static</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000"> getJ(</font><span style="color: blue;">int</span><font color="#000000"> row, </font><span style="color: blue;">int</span><font color="#000000"> col) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000"> col-row;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// обратное преобразование координат полуматриц (d,j) в row,col</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">protected</span><font color="#000000"> </font><span style="color: blue;">static</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000"> getRow(</font><span style="color: blue;">int</span><font color="#000000"> d, </font><span style="color: blue;">int</span><font color="#000000"> j) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000"> d + sigma(-j);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">protected</span><font color="#000000"> </font><span style="color: blue;">static</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000"> getCol(</font><span style="color: blue;">int</span><font color="#000000"> d, </font><span style="color: blue;">int</span><font color="#000000"> j) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">{</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000"> d + sigma(j);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000">}</font></span></p></span></font><font size="2"></font></span></td></tr></tbody></table></p>
+<p class="text">На данном этапе нужно решить в каком формате хранить
+значения ячеек матрицы. Для очень сильно разреженных матриц, когда в
+каждой строке/столбце матрицы ненулевых значений совсем мало, данные
+лучше хранить в обычных массивах, так как поиск в небольшом массиве
+работает быстро. Если же матрица не сильно разрежена, то лучше
+использовать хэш-таблицу. Ниже приведены реализации интерфейса IRow для
+обоих случаев:</p>
+<p class="text">Реализация интерфейса строки c использованием массива для хранения значений</p>
+<p align="center">
+<table bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="3" width="95%">
+<tbody>
+<tr>
+<td><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB">
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">public</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> </font><span style="color: blue;">class</span><font color="#000000"> Array : IRow</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000">{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// массив индексов (номера ненулевых ячеек)</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">private</span><font color="#000000"> ArrayList indexes = </font><span style="color: blue;">new</span><font color="#000000"> ArrayList();</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// массив значений ячеек</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">private</span><font color="#000000"> ArrayList values = </font><span style="color: blue;">new</span><font color="#000000"> ArrayList();</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> setValue(</font><span style="color: blue;">int</span><font color="#000000"> num, </font><span style="color: blue;">double</span><font color="#000000"> </font><span style="color: blue;">value</span><font color="#000000">) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">{</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">int</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"> i = indexes.IndexOf(num);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: green;">// если записывается 0-вое значение, то удаляем данную ячейку</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (</font><span style="color: blue;">value</span><font color="#000000">==0)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (i!=-1) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>indexes.RemoveAt(i);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style="font-size: 10pt; font-family: 'Courier New';">values.RemoveAt(i);</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000">;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// если значение не 0-вое, то перезаписываем или добавляем ячейку</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (i!=-1)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>values[i] = </font><span style="color: blue;">value</span><font color="#000000">;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>} </font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">else</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>indexes.Add(num);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>values.Add(</font><span style="color: blue;">value</span><font color="#000000">);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> addValue(</font><span style="color: blue;">int</span><font color="#000000"> num, </font><span style="color: blue;">double</span><font color="#000000"> </font><span style="color: blue;">value</span><font color="#000000">) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span><span style="font-size: 10pt; font-family: 'Courier New';"></span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">int</span><font color="#000000"> i = indexes.IndexOf(num);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (i!=-1)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>values[i] = (</font><span style="color: blue;">double</span><font color="#000000">)values[i] + </font><span style="color: blue;">value</span><font color="#000000">;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>} </font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">else</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>indexes.Add(num);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>values.Add(</font><span style="color: blue;">value</span><font color="#000000">);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">}</span></font></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">}</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">double</span><font color="#000000"> getValue(</font><span style="color: blue;">int</span><font color="#000000"> num)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">int</span><font color="#000000"> i = indexes.IndexOf(num);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (i!=-1) </font><span style="color: blue;">return</span><font color="#000000"> (</font><span style="color: blue;">double</span><font color="#000000">)values[i];</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000"> 0;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> getValues(</font><span style="color: blue;">ref</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000">[] indexes, </font><span style="color: blue;">ref</span><font color="#000000"> </font><span style="color: blue;">double</span><font color="#000000">[] values)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span>indexes = (</font><span style="color: blue;">int</span><font color="#000000">[])</font><span style="color: blue;">this</span><font color="#000000">.indexes.ToArray(System.Type.GetType("System.Int32"));</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span>values = (</font><span style="color: blue;">double</span><font color="#000000">[])</font><span style="color: blue;">this</span><font color="#000000">.values.ToArray(System.Type.GetType("System.Double"));</font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">}</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000">}</font></span></p></span></td></tr></tbody></table></p>
+<p class="text">Реализация интерфейса строки c использованием хэш-таблицы для хранения значений:</p>
+<p align="center">
+<table bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="3" width="95%">
+<tbody>
+<tr>
+<td><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB"><font color="#0000ff" size="2"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-GB"><font color="#000000"></font></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB">
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">public</span><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"> </font><span style="color: blue;">class</span><font color="#000000"> Hash : IRow</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000">{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">//&nbsp;хэш-таблица в формате номер_ненулевой_ячейки = значение_ячейки</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">private</span><font color="#000000"> Hashtable hash = </font><span style="color: blue;">new</span><font color="#000000"> Hashtable();</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> setValue(</font><span style="color: blue;">int</span><font color="#000000"> num, </font><span style="color: blue;">double</span><font color="#000000"> </font><span style="color: blue;">value</span><font color="#000000">) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">{</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// если значение 0-вое, то удаляем данную ячейку</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (</font><span style="color: blue;">value</span><font color="#000000">==0)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (hash.ContainsKey(num)) hash.Remove(num);</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">return</span><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000">;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// если значение не 0-вое, то перезаписываем или добавляем ячейку</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>hash[num] = </font><span style="color: blue;">value</span><font color="#000000">;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> addValue(</font><span style="color: blue;">int</span><font color="#000000"> num, </font><span style="color: blue;">double</span><font color="#000000"> </font><span style="color: blue;">value</span><font color="#000000">) </font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (hash.ContainsKey(num)) hash[num] = (</font><span style="color: blue;">double</span><font color="#000000">)hash[num] + </font><span style="color: blue;">value</span><font color="#000000">;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp; </span></font><span style="color: blue;">else</span><font color="#000000"> hash[num] = </font><span style="color: blue;">value</span><font color="#000000">;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">double</span><font color="#000000"> getValue(</font><span style="color: blue;">int</span><font color="#000000"> num)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">if</span><font color="#000000"> (hash.ContainsKey(num)) </font><span style="color: blue;">return</span><font color="#000000"> (</font><span style="color: blue;">double</span><font color="#000000">)hash[num];</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">return</span><font color="#000000"> 0;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"></font></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">public</span><font color="#000000"> </font><span style="color: blue;">void</span><font color="#000000"> getValues(</font><span style="color: blue;">ref</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000">[] indexes, </font><span style="color: blue;">ref</span><font color="#000000"> </font><span style="color: blue;">double</span><font color="#000000">[] values)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>System.Collections.ICollection keys = hash.Keys;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">int</span><font color="#000000"> count = keys.Count;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>indexes = </font><span style="color: blue;">new</span><font color="#000000"> </font><span style="color: blue;">int</span><font color="#000000">[count];</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>values = </font><span style="color: blue;">new</span><font color="#000000"> </font><span style="color: blue;">double</span><font color="#000000">[count];</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">int</span><font color="#000000"> i=0;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span><font color="#000000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></span><span style="color: blue;">for</span><font color="#000000"> (IEnumerator it = keys.GetEnumerator(); it.MoveNext();)</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>indexes[i] = (</font><span style="color: blue;">int</span><font color="#000000">)it.Current;</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>values[i++] = (</font><span style="color: blue;">double</span><font color="#000000">)hash[it.Current];</font></span></p>
+<p style="margin: 0in 0in 0pt;"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">}</span></font></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</font></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><font color="#000000">}</font></span></p></span></font><font size="2"></font></span></td></tr></tbody></table></p>
+<p class="text">Полная реализация класса "матрица":</p>
+<p align="center">
+<table bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="3" width="95%">
+<tbody>
+<tr>
+<td><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB"><font color="#0000ff" size="2"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-GB"></span></font><font size="2"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><font color="#000000"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">public</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"> <span style="color: blue;">class</span> HashMatrix : Matrix</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// тип хранения данных: массив или хэш-таблица</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">const</span> <span style="color: blue;">byte</span> ARRAY_TYPE = 0;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">const</span> <span style="color: blue;">byte</span> HASH_TYPE = 1;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// jp - строки верхней полуматрицы</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// jm - столбцы нижней полуматрицы</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';">// dd - главная диагональ</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">private</span> IRow[] jp,jm;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">private</span> <span style="color: blue;">double</span>[] dd;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// конструктор матрицы</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// type - тип хранения данных ARRAY_TYPE/HASH_TYPE</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// N - порядок матрицы</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> HashMatrix(<span style="color: blue;">byte</span> type, <span style="color: blue;">int</span> N) : <span style="color: blue;">base</span>(N)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>dd = <span style="color: blue;">new</span> <span style="color: blue;">double</span>[N];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (type==HASH_TYPE)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>jp = <span style="color: blue;">new</span> Hash[N];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>jm = <span style="color: blue;">new</span> Hash[N];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> i=0; i&lt;N; i++)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>jp[i] = <span style="color: blue;">new</span> Hash();</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>jm[i] = <span style="color: blue;">new</span> Hash();</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>} </span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">else</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>jp = <span style="color: blue;">new</span> Array[N];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>jm = <span style="color: blue;">new</span> Array[N];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> i=0; i&lt;N; i++)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>jp[i] = <span style="color: blue;">new</span> Array();</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>jm[i] = <span style="color: blue;">new</span> Array();</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span><span style="font-size: 10pt; font-family: 'Courier New';"></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">override</span> <span style="color: blue;">void</span> setValue(<span style="color: blue;">int</span> row, <span style="color: blue;">int</span> col, <span style="color: blue;">double</span> <span style="color: blue;">value</span>) </span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (row==col)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>dd[row] = <span style="color: blue;">value</span>;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span>;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span><span style="font-size: 10pt; font-family: 'Courier New';"></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">int</span> d = getD(row,col);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">int</span> j = getJ(row,col);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (j&gt;0) jp[d].setValue(j,<span style="color: blue;">value</span>);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">else</span> jm[d].setValue(-j,<span style="color: blue;">value</span>);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">override</span> <span style="color: blue;">void</span> addValue(<span style="color: blue;">int</span> row, <span style="color: blue;">int</span> col, <span style="color: blue;">double</span> <span style="color: blue;">value</span>)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (<span style="color: blue;">value</span>==0) <span style="color: blue;">return</span>;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (row==col) </span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>dd[row] += <span style="color: blue;">value</span>;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span>;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">int</span> d = getD(row,col);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">int</span> j = getJ(row,col);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (j&gt;0) jp[d].addValue(j, <span style="color: blue;">value</span>);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">else</span> jm[d].addValue(-j,<span style="color: blue;">value</span>);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">override</span> <span style="color: blue;">double</span> getValue(<span style="color: blue;">int</span> row, <span style="color: blue;">int</span> col)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">if</span> (row==col) <span style="color: blue;">return</span> dd[row];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">int</span> d = getD(row,col);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">int</span> j = getJ(row,col);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span> (j&gt;0)?jp[d].getValue(j):jm[d].getValue(-j);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">override</span> <span style="color: blue;">void</span> getJRow(<span style="color: blue;">int</span> d, <span style="color: blue;">ref</span> <span style="color: blue;">int</span>[] indexes, <span style="color: blue;">ref</span> <span style="color: blue;">double</span>[] values)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>jp[d].getValues(<span style="color: blue;">ref</span> indexes, <span style="color: blue;">ref</span> values);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> i=0; i&lt;indexes.Length; i++) indexes[i] = getCol(d,indexes[i]);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">override</span> <span style="color: blue;">void</span> getJCol(<span style="color: blue;">int</span> d, <span style="color: blue;">ref</span> <span style="color: blue;">int</span>[] indexes, <span style="color: blue;">ref</span> <span style="color: blue;">double</span>[] values)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>jm[d].getValues(<span style="color: blue;">ref</span> indexes, <span style="color: blue;">ref</span> values);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> i=0; i&lt;indexes.Length; i++) indexes[i] = getRow(d,-indexes[i]);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';">}</span></p></span></font></span></font></span></td></tr></tbody></table></p>
+<p class="text">И, наконец, реализация метода Гаусса:</p>
+<p align="center">
+<table bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="3" width="95%">
+
+<tbody><tr>
+<td>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; color: blue; font-family: 'Courier New';" lang="EN-US">public</span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"> <span style="color: blue;">class</span> Gauss</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// матрица</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">private</span> IMatrix matrix;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// конструктор, принимает созданную матрицу коэффициентов</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: blue; font-family: 'Courier New';">public</span><span style="font-size: 10pt; font-family: 'Courier New';"> Gauss(IMatrix matrix)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">this</span>.matrix = matrix;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// главный метод, возвращающий решение, принимает вектор свободных членов</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">public</span> <span style="color: blue;">double</span>[] calculate(<span style="color: blue;">double</span>[] B)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// обнуляем нижнюю полуматрицу, перебирая сверху вниз все строки</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// и складывая каждую со всеми нижележащими</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> row=0; row&lt;(matrix.getN()-1); row++)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">// получаем все ненулевые значения обнуляемого столбца</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">int</span>[] colIndexes = <span style="color: blue;">new</span> <span style="color: blue;">int</span>[0];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span>[] colValues = <span style="color: blue;">new</span> <span style="color: blue;">double</span>[0];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>matrix.getJCol(row,<span style="color: blue;">ref</span> colIndexes,<span style="color: blue;">ref</span> colValues);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// получаем индексы и значения ячеек строки, правее главной диагонали</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// ячейки левее главной диагонали к этому моменту уже обнулены</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">int</span>[] rowIndexes = <span style="color: blue;">new</span> <span style="color: blue;">int</span>[0];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span>[] rowValues = <span style="color: blue;">new</span> <span style="color: blue;">double</span>[0];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>matrix.getJRow(row, <span style="color: blue;">ref</span> rowIndexes, <span style="color: blue;">ref</span> rowValues);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// получаем элемент главной диагонали, которым будем обнулять столбец</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span> dd = matrix.getValue(row,row);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> i=0; i&lt;colIndexes.Length; i++)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: green;">// высчитываем коэффициент </span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: blue;">double</span> k = colValues[i]/dd;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp; </span><span style="color: green;">// </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">k подобран таким образом чтобы обнулить ячейку столбца,</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp; </span>matrix.setValue(colIndexes[i],row,0);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: green;">// складываем строки</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> ii=0; ii&lt;rowIndexes.Length; ii++)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span>{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>matrix.addValue(colIndexes[i],rowIndexes[ii],-rowValues[ii]*k);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: green;">// </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">складываем соответствующие свободные члены</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp; </span>B[colIndexes[i]] -= B[row]*k;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: green;">// создаем вектор неизвестных</span></span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">double</span>[] x = <span style="color: blue;">new</span> <span style="color: blue;">double</span>[matrix.getN()];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; color: green; font-family: 'Courier New';">// </span><span style="font-size: 10pt; color: green; font-family: 'Courier New';" lang="EN-US">используя обратный ход находим неизвестные</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> row = (matrix.getN()-1); row&gt;=0; row--)</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US">{</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: blue;">double</span> e = 0;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: blue;">int</span>[] indexes = <span style="color: blue;">new</span> <span style="color: blue;">int</span>[0];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: blue;">double</span>[] values = <span style="color: blue;">new</span> <span style="color: blue;">double</span>[0];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span>matrix.getJRow(row,<span style="color: blue;">ref</span> indexes,<span style="color: blue;">ref</span> values);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span><span style="color: blue;">for</span> (<span style="color: blue;">int</span> i=0; i&lt;indexes.Length; i++) e += x[indexes[i]]*values[i];</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp; </span>x[row] = (B[row]-e)/matrix.getValue(row,row);</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 10pt; font-family: 'Courier New';">}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"></span>&nbsp;</p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="color: blue;">return</span> x;</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>}</span></p>
+<p style="margin: 0in 0in 0pt;"><span style="font-size: 10pt; font-family: 'Courier New';">}</span> </p></td></tr></tbody></table></p>
+<p class="darkhead">Заключение</p>
+<p class="text">В статье рассмотрен метод решения систем линейных
+уравнений по алгоритму Гаусса, и приведен код реализующий этот алгоритм
+для C#. Хотя данный код и является полным, для использования в
+пользовательских приложениях он нуждается в следующей доработке:</p>
+<ul class="text">
+<li>Как минимум нужно сделать обработку исключительных ситуаций,
+например таких как деление на ноль или выход индекса за пределы массива</li>
+<li>Реализовать расчетный алгоритм в отдельном потоке команд. Если
+вызывать метод calculate из основного UI потока, это остановит прием
+сообщений окружения («повесит программу») до момента завершения расчета</li>
+<li>Если необходимо рассчитать несколько систем линейных уравнений,
+которые отличаются только правой частью (свободными членами), то
+естественно нет необходимости каждый раз обнулять нижнюю полуматрицу.
+Для этого нужно доработать класс Gauss таким образом, чтобы он, обнуляя
+матрицу, сохранял историю изменений. После этого для расчета
+неизвестных нужно будет преобразовать только вектор свободных членов,
+передаваемых в метод calculate в соответствии с историей. Историю можно
+хранить в отдельной матрице, или в нижней полуматрице основной матрицы,
+которая все равно не используется при обратном ходе</li>
+<li>Если данный алгоритм планируется реализовать на платформе, где
+возможна прямая работа с указателями (Delphi, C++), то лучше по
+возможности использовать их, это позволит в некоторых местах выполнять
+меньшее количество преобразований</li>
+<li>Для некоторых матриц необходима доработка алгоритма факторизации, для исключения попадания нулей на главную диагональ</li>
+<li>В реализациях интерфейса IRow, при создании экземпляров массивов и
+хэш-таблиц, в явном виде не задавалось свойство capacity. На практике,
+чтобы оптимально использовать быстродействие и экономить память, нужно
+подобрать компромисное значение capacity. Так с увеличением capacity
+увеличивается быстродействие и расход памяти, с уменьшением – наоборот.
+Оптимальное значение capacity зависит от структуры матрицы и не
+превышает максимального количества ненулевых элементов в строке или
+столбце матрицы</li></ul>
+<p class="text">Данный алгоритм (учитывающий указанные замечания), использовался в проекте <a href="http://www.robosoft.info/projects/detail.php?ID=891">RoboCAD</a>
+для расчета систем линейных уравнений метода конечных элементов в
+статических расчетах конструкций, а также в динамических расчетах при
+интегрировании систем дифференциальных уравнений колебаний, которое
+сводилось к многократному решению систем линейных уравнений.</p>
+<p class="darkhead">Литература</p>
+<ol>
+<li>Эндрю Троелсен. С# и платформа .NET. Библиотека программиста. - СПб. Питер, 2004.</li>
+<li>Техническая документация MSDN.</li></ol>
+<p></p><br>
+<p class="text" size="-1">Напоминаем, что статью можно обсудить на <a href="http://www.robosoft.info/support/forum/">форуме</a></p></font>
+
+					<br><font class="smalllink"><a class="smalllink" href="http://www.robosoft.info/projects/">Back</a></font>
+					</td>
+					<td style="width: 160px;" align="center" valign="top">
+                                        </td>
+					</tr></tbody></table>
+				<br> 
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+  <td bgcolor="#3d89ba" height="1"></td>
+</tr>
+<tr>
+  <td background="detail.php_files/footerbg1.gif" height="8" width="100%"></td>
+</tr>
+<tr>
+  <td bgcolor="#3d89ba" height="1"></td>
+</tr>
+
+
+<tr>
+<td align="center" background="detail.php_files/footerbg2.gif" height="53" valign="middle" width="100%">
+<a href="http://www.robosoft.info/about/news/index.php" class="foot">Новости</a><font class="fbl"> | </font>
+<a href="http://www.robosoft.info/about/index.php" class="foot">Цели</a><font class="fbl"> | </font>
+<a href="http://www.robosoft.info/about/history.php" class="foot">История</a><font class="fbl"> | </font>
+<a href="http://www.robosoft.info/about/team.php" class="foot">Команда</a><font class="fbl"> | </font>
+<a href="http://www.robosoft.info/about/service.php" class="foot">Принципы</a><font class="fbl"> | </font>
+<a href="http://www.robosoft.info/partners/" class="foot">Партнеры</a><font class="fbl"> | </font>
+<a href="http://www.robosoft.info/about/contacts.php" class="foot">Контакты</a><br>
+<a href="http://www.robosoft.info/projects/detail.php?ID=881" class="foot">Navis</a><font class="fbl"> | </font>
+<a href="http://www.robosoft.info/projects/detail.php?ID=891" class="foot">Robocad</a><font class="fbl"> | </font>
+<a href="http://www.robosoft.info/projects/detail.php?ID=883" class="foot">EasyCode</a>
+<br>
+<font class="fbl">Copyright © 2004-2008 RoboSoft. All rights reserved.</font>
+</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+  <td bgcolor="#3d89ba" height="1"></td>
+</tr>
+
+<tr>
+  <td align="center" background="detail.php_files/footerbg1.gif" height="8" width="100%"> <font class="adv"></font></td>
+</tr>
+<tr>
+  <td bgcolor="#3d89ba" height="1"></td>
+</tr>
+
+</tbody></table>
+<script src="detail.php_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2790310-2";
+urchinTracker();
+</script>
+
+
+
+<div style="position: absolute; visibility: visible; left: 160px; top: 91px;"><div id="menu0item1" style="position: absolute; left: 0pt; top: 0pt; width: 50px; height: 17px; visibility: inherit;" onmouseover="popOver(0,1)" onmouseout="popOut(0,1)"><table border="0" cellpadding="0" cellspacing="0" width="42"><tbody><tr><td onclick="document.location=''" align="left" height="10"><a class="itemText" href="">Отрасли</a></td></tr></tbody></table></div><div id="menu0item2" style="position: absolute; left: 60px; top: 0pt; width: 50px; height: 17px; visibility: inherit;" onmouseover="popOver(0,2)" onmouseout="popOut(0,2)"><table border="0" cellpadding="0" cellspacing="0" width="42"><tbody><tr><td onclick="document.location='/projects/'" align="left" height="10"><a class="itemText" href="http://www.robosoft.info/projects/">Проекты</a></td></tr></tbody></table></div><div id="menu0item3" style="position: absolute; left: 120px; top: 0pt; width: 80px; height: 17px; visibility: inherit;" onmouseover="popOver(0,3)" onmouseout="popOut(0,3)"><table border="0" cellpadding="0" cellspacing="0" width="72"><tbody><tr><td onclick="document.location='/research/index.php'" align="left" height="10"><a class="itemText" href="http://www.robosoft.info/research/index.php">Исследования</a></td></tr></tbody></table></div><div id="menu0item4" style="position: absolute; left: 220px; top: 0pt; width: 80px; height: 17px; visibility: inherit;" onmouseover="popOver(0,4)" onmouseout="popOut(0,4)"><table border="0" cellpadding="0" cellspacing="0" width="72"><tbody><tr><td onclick="document.location='/knowledge/index.php'" align="left" height="10"><a class="itemText" href="http://www.robosoft.info/knowledge/index.php">База знаний</a></td></tr></tbody></table></div><div id="menu0item5" style="position: absolute; left: 304px; top: 0pt; width: 76px; height: 17px; visibility: inherit;" onmouseover="popOver(0,5)" onmouseout="popOut(0,5)"><table border="0" cellpadding="0" cellspacing="0" width="68"><tbody><tr><td onclick="document.location='/about/index.php'" align="left" height="10"><a class="itemText" href="http://www.robosoft.info/about/index.php">О компании</a></td></tr></tbody></table></div></div><div style="position: absolute; visibility: hidden;"><div id="menu1item1" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 0pt; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(1,1)" onmouseout="popOut(1,1)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/branch/section.php?SECTION_ID=154'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/branch/section.php?SECTION_ID=154">Сельское хозяйство</a></td></tr></tbody></table></div><div id="menu1item2" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 22px; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(1,2)" onmouseout="popOut(1,2)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/branch/section.php?SECTION_ID=155'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/branch/section.php?SECTION_ID=155">Строительство</a></td></tr></tbody></table></div><div id="menu1item3" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 44px; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(1,3)" onmouseout="popOut(1,3)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/branch/section.php?SECTION_ID=153'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/branch/section.php?SECTION_ID=153">Грузоперевозки</a></td></tr></tbody></table></div><div id="menu1item4" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 66px; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(1,4)" onmouseout="popOut(1,4)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/branch/section.php?SECTION_ID=159'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/branch/section.php?SECTION_ID=159">Юриспруденция</a></td></tr></tbody></table></div><div id="menu1item5" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 88px; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(1,5)" onmouseout="popOut(1,5)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/branch/section.php?SECTION_ID=158'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/branch/section.php?SECTION_ID=158">Финансовый сектор</a></td></tr></tbody></table></div><div id="menu1item6" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 110px; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(1,6)" onmouseout="popOut(1,6)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/branch/section.php?SECTION_ID=157'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/branch/section.php?SECTION_ID=157">Развлечения</a></td></tr></tbody></table></div><div id="menu1item7" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 132px; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(1,7)" onmouseout="popOut(1,7)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/branch/section.php?SECTION_ID=156'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/branch/section.php?SECTION_ID=156">Быт</a></td></tr></tbody></table></div><div id="menu1item8" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 154px; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(1,8)" onmouseout="popOut(1,8)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/branch/section.php?SECTION_ID=190'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/branch/section.php?SECTION_ID=190">Безопасность</a></td></tr></tbody></table></div></div><div style="position: absolute; visibility: hidden;"><div id="menu2item1" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 0pt; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(2,1)" onmouseout="popOut(2,1)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/projects/'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/projects/">Текущие проекты</a></td><td class="itemText" align="right">&gt;</td></tr></tbody></table></div><div id="menu2item2" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 22px; width: 140px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(2,2)" onmouseout="popOut(2,2)"><table border="0" cellpadding="3" cellspacing="0" width="132"><tbody><tr><td onclick="document.location='/projects/auth.php'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/projects/auth.php">Клиентам</a></td></tr></tbody></table></div></div><div style="position: absolute; visibility: hidden;"><div id="menu3item1" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 0pt; width: 180px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(3,1)" onmouseout="popOut(3,1)"><table border="0" cellpadding="3" cellspacing="0" width="172"><tbody><tr><td onclick="document.location='/research/section.php?SECTION_ID=161'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/research/section.php?SECTION_ID=161">ИИ</a></td></tr></tbody></table></div><div id="menu3item2" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 22px; width: 180px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(3,2)" onmouseout="popOut(3,2)"><table border="0" cellpadding="3" cellspacing="0" width="172"><tbody><tr><td onclick="document.location='/research/section.php?SECTION_ID=162'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/research/section.php?SECTION_ID=162">Групповой ИИ / Сообщества</a></td></tr></tbody></table></div><div id="menu3item3" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 44px; width: 180px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(3,3)" onmouseout="popOut(3,3)"><table border="0" cellpadding="3" cellspacing="0" width="172"><tbody><tr><td onclick="document.location='/research/section.php?SECTION_ID=163'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/research/section.php?SECTION_ID=163">Зрение</a></td></tr></tbody></table></div><div id="menu3item4" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 66px; width: 180px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(3,4)" onmouseout="popOut(3,4)"><table border="0" cellpadding="3" cellspacing="0" width="172"><tbody><tr><td onclick="document.location='/research/section.php?SECTION_ID=167'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/research/section.php?SECTION_ID=167">Слух / речь</a></td></tr></tbody></table></div><div id="menu3item5" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 88px; width: 180px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(3,5)" onmouseout="popOut(3,5)"><table border="0" cellpadding="3" cellspacing="0" width="172"><tbody><tr><td onclick="document.location='/research/section.php?SECTION_ID=164'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/research/section.php?SECTION_ID=164">Навигация</a></td></tr></tbody></table></div><div id="menu3item6" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 110px; width: 180px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(3,6)" onmouseout="popOut(3,6)"><table border="0" cellpadding="3" cellspacing="0" width="172"><tbody><tr><td onclick="document.location='/research/section.php?SECTION_ID=165'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/research/section.php?SECTION_ID=165">Конструкции / механика</a></td></tr></tbody></table></div><div id="menu3item7" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 132px; width: 180px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(3,7)" onmouseout="popOut(3,7)"><table border="0" cellpadding="3" cellspacing="0" width="172"><tbody><tr><td onclick="document.location='/research/section.php?SECTION_ID=168'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/research/section.php?SECTION_ID=168">Энергия</a></td></tr></tbody></table></div></div><div style="position: absolute; visibility: hidden; left: 380px; top: 113px;"><div id="menu4item1" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 0pt; width: 80px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(4,1)" onmouseout="popOut(4,1)"><table border="0" cellpadding="3" cellspacing="0" width="72"><tbody><tr><td onclick="document.location='/knowledge/articles/'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/knowledge/articles/">Статьи</a></td></tr></tbody></table></div><div id="menu4item2" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 22px; width: 80px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(4,2)" onmouseout="popOut(4,2)"><table border="0" cellpadding="3" cellspacing="0" width="72"><tbody><tr><td onclick="document.location='/knowledge/faq/'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/knowledge/faq/">FAQ</a></td></tr></tbody></table></div><div id="menu4item3" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 44px; width: 80px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(4,3)" onmouseout="popOut(4,3)"><table border="0" cellpadding="3" cellspacing="0" width="72"><tbody><tr><td onclick="document.location='/knowledge/links.php'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/knowledge/links.php">Ссылки</a></td></tr></tbody></table></div></div><div style="position: absolute; visibility: hidden;"><div id="menu5item1" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 0pt; width: 120px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(5,1)" onmouseout="popOut(5,1)"><table border="0" cellpadding="3" cellspacing="0" width="112"><tbody><tr><td onclick="document.location='/about/index.php'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/about/index.php">Цели</a></td></tr></tbody></table></div><div id="menu5item2" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 22px; width: 120px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(5,2)" onmouseout="popOut(5,2)"><table border="0" cellpadding="3" cellspacing="0" width="112"><tbody><tr><td onclick="document.location='/about/history.php'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/about/history.php">История</a></td></tr></tbody></table></div><div id="menu5item3" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 44px; width: 120px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(5,3)" onmouseout="popOut(5,3)"><table border="0" cellpadding="3" cellspacing="0" width="112"><tbody><tr><td onclick="document.location='/about/team.php'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/about/team.php">Команда</a></td></tr></tbody></table></div><div id="menu5item4" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 66px; width: 120px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(5,4)" onmouseout="popOut(5,4)"><table border="0" cellpadding="3" cellspacing="0" width="112"><tbody><tr><td onclick="document.location='/about/service.php'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/about/service.php">Как мы работаем</a></td></tr></tbody></table></div><div id="menu5item5" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 88px; width: 120px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(5,5)" onmouseout="popOut(5,5)"><table border="0" cellpadding="3" cellspacing="0" width="112"><tbody><tr><td onclick="document.location='/partners/'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/partners/">Партнёры</a></td></tr></tbody></table></div><div id="menu5item6" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 110px; width: 120px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(5,6)" onmouseout="popOut(5,6)"><table border="0" cellpadding="3" cellspacing="0" width="112"><tbody><tr><td onclick="document.location='/about/contacts.php'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/about/contacts.php">Контакты</a></td></tr></tbody></table></div></div><div style="position: absolute; visibility: hidden;"><div id="menu6item1" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 0pt; width: 240px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(6,1)" onmouseout="popOut(6,1)"><table border="0" cellpadding="3" cellspacing="0" width="232"><tbody><tr><td onclick="document.location='/projects/detail.php?ID=883'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/projects/detail.php?ID=883">EasyCode</a></td></tr></tbody></table></div><div id="menu6item2" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 22px; width: 240px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(6,2)" onmouseout="popOut(6,2)"><table border="0" cellpadding="3" cellspacing="0" width="232"><tbody><tr><td onclick="document.location='/projects/detail.php?ID=881'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/projects/detail.php?ID=881">Navis</a></td></tr></tbody></table></div><div id="menu6item3" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 44px; width: 240px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(6,3)" onmouseout="popOut(6,3)"><table border="0" cellpadding="3" cellspacing="0" width="232"><tbody><tr><td onclick="document.location='/projects/detail.php?ID=877'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/projects/detail.php?ID=877">NOD32 Updater</a></td></tr></tbody></table></div><div id="menu6item4" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 66px; width: 240px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(6,4)" onmouseout="popOut(6,4)"><table border="0" cellpadding="3" cellspacing="0" width="232"><tbody><tr><td onclick="document.location='/projects/detail.php?ID=891'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/projects/detail.php?ID=891">RoboCAD</a></td></tr></tbody></table></div><div id="menu6item5" style="background: rgb(169, 203, 233) none repeat scroll 0% 0%; position: absolute; left: 0pt; top: 88px; width: 240px; height: 22px; visibility: inherit; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" class="itemBorder" onmouseover="popOver(6,5)" onmouseout="popOut(6,5)"><table border="0" cellpadding="3" cellspacing="0" width="232"><tbody><tr><td onclick="document.location='/projects/detail.php?ID=876'" align="left" height="15"><a class="itemText" href="http://www.robosoft.info/projects/detail.php?ID=876">Urist</a></td></tr></tbody></table></div></div></body><div FirebugVersion="1.3.3" style="display: none;" id="_firebugConsole"></div></html>
