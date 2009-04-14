@@ -48,4 +48,24 @@ namespace SbB.Diploma
         }
         #endregion
     }
+
+    public class MortarBoundary: BoundaryClass
+    {
+        #region Methods
+        public override BoundaryType type()
+        {
+            return BoundaryType.MORTAR;
+        }
+        #endregion
+    }
+
+    public class NonMortarBoundary: BoundaryClass
+    {
+        #region Methods
+        public override BoundaryType type()
+        {
+            return BoundaryType.NONMORTAR;
+        }
+        #endregion
+    }
 }

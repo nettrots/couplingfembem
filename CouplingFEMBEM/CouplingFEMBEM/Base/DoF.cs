@@ -9,11 +9,12 @@ namespace SbB.Diploma
     {
         private int[] globalDofsNumbers;
         private int[] localDofsNumbers;
-        private Vertex v;
 
-        public DoF(Vertex v)
+        private int number;
+
+        public DoF(int number)
         {
-            this.v = v;
+            this.number = number;
         }
 
         public int[] GlobalDofsNumbers
