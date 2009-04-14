@@ -11,7 +11,8 @@ namespace SbB.Diploma
         //Змінні класу
         private double x, y;
         private int number;
-        private DoF dof;
+        private DoF[] dofu = new DoF[0];
+        private DoF[] doft = new DoF[0];
         //конструктори
         /// <summary>
         /// Констуктор по замовчуванню
@@ -65,10 +66,16 @@ namespace SbB.Diploma
             get { return Math.Sqrt(x * x + y * y); }
         }
 
-        public DoF Dof
+        public DoF[] Dofu
         {
-            get { return dof; }
-            set { dof = value; }
+            get { return dofu; }
+            set { dofu = value; }
+        }
+
+        public DoF[] Doft
+        {
+            get { return doft; }
+            set { doft = value; }
         }
 
 

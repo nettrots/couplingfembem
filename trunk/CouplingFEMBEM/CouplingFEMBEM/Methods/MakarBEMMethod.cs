@@ -16,6 +16,7 @@ namespace SbB.Diploma.Methods
         private List<Vertex> vertexes;
         //private List<FEMElement> elements;
         private List<BoundEdge>[] boundaries;
+        private BoundaryClass[] boundaryClasses;
         private int elementsPerSegment = 8;
 
         private Matrix A;
@@ -29,17 +30,37 @@ namespace SbB.Diploma.Methods
         }
         #endregion
 
+        #region Properties
+        public List<Vertex> Vertexes
+        {
+            get { return vertexes; }
+        }
+        public BoundaryClass[] BoundaryClasses
+        {
+            get { return boundaryClasses; }
+            set { boundaryClasses = value; }
+        }
+
+        public List<BoundEdge>[] Boundaries
+        {
+            get { return boundaries; }
+        }
+
+        #endregion
+
         #region Methods
         #region Private
         private void createVertexes()
         {
             vertexes = new List<Vertex>();
             for (int i = 0; i < polygon.Count; i++)
+            {
                 for (int j = 0; j < elementsPerSegment; j++)
                 {
-                    Vertex v = ((double) j/elementsPerSegment)*(polygon[i+1] - polygon[i]);
+                    Vertex v = ((double) j/elementsPerSegment)*(polygon[i + 1] - polygon[i]);
                     vertexes.Add(polygon[i] + v);
                 }
+            }
         }
         private void writeFiles()
         {
@@ -113,7 +134,7 @@ namespace SbB.Diploma.Methods
         private void readH()
         {
             StreamReader sr = new StreamReader("H.txt");
-            H = new Matrix(2*vertexes.Count, 2*vertexes.Count);
+            H = new Matrix(2*Vertexes.Count, 2*Vertexes.Count);
             for (int i = 0; i < H.Size.m; i++)
             {
                 string line = sr.ReadLine();
@@ -128,7 +149,7 @@ namespace SbB.Diploma.Methods
         private void readG()
         {
             StreamReader sr = new StreamReader("G.txt");
-            G = new Matrix(2*vertexes.Count, 2*vertexes.Count);
+            G = new Matrix(2*Vertexes.Count, 2*Vertexes.Count);
             for (int i = 0; i < G.Size.m; i++)
             {
                 string line = sr.ReadLine();

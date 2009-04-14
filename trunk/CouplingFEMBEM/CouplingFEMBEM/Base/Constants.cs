@@ -20,7 +20,9 @@ namespace SbB.Diploma
     public enum BoundaryType
     {
         KINEMATIC,
-        STATIC
+        STATIC,
+        MORTAR,
+        NONMORTAR
     }
 
     public enum Norma
