@@ -6,6 +6,7 @@ namespace SbB.Diploma
     public class FEMMethod:MethodBase
     {
         #region Fields
+
         private Matrix d = new Matrix(3,3);
         private List<Vertex> vertexes;
         private List<FEMElement> elements;
@@ -16,6 +17,12 @@ namespace SbB.Diploma
         private Matrix Af;
         private Matrix A;
         private Vector b;
+
+        private Triangulation triangulation;
+        //private Polygon polygon;
+        private double angle;
+        private double area;
+
         #endregion
 
         #region Constructors
@@ -51,9 +58,11 @@ namespace SbB.Diploma
         {
             get
             {
-                if (vertexes == null) throw new Exception("Triangulation did not complete");
-                return vertexes;
+                if (Vertexes == null) throw new Exception("Triangulation did not complete");
+                return Vertexes;
             }
+            set { vertexes = value; }
+
         }
         public List<FEMElement> Elements
         {
@@ -62,6 +71,7 @@ namespace SbB.Diploma
                 if (elements == null) throw new Exception("Triangulation did not complete");
                 return elements;
             }
+            set { elements = value; }
 
         }
         public List<FEMEdge>[] Boundaries
@@ -71,6 +81,8 @@ namespace SbB.Diploma
                 if (boundaries == null) throw new Exception("Triangulation did not complete");
                 return boundaries;
             }
+            set { boundaries = value; }
+
         }
         public Matrix D
         {
@@ -87,6 +99,24 @@ namespace SbB.Diploma
         {
             get { return boundaryClasses; }
             set { boundaryClasses = value; }
+        }
+
+        public Triangulation Triangulation
+        {
+            get { return triangulation; }
+            set { triangulation = value; }
+        }
+
+        public double Angle
+        {
+            get { return angle; }
+            set { angle = value; }
+        }
+
+        public double Area
+        {
+            get { return area; }
+            set { area = value; }
         }
 
         #endregion
@@ -109,13 +139,18 @@ namespace SbB.Diploma
 
         public override void Initialize()
         {
-            throw new NotImplementedException();
+            //triangulate
+            triangulation.triangulate(Angle, Area);
+            vertexes = Triangulation.Vertexes;
+            elements = Triangulation.Elements;
+            boundaries = Triangulation.Boundaries;
+            
         }
 
         public override void Run()
         {
 
-            A = new Matrix(2 * vertexes.Count, 2 * vertexes.Count);
+            A = new Matrix(2 * Vertexes.Count, 2 * Vertexes.Count);
 
             foreach (FEMElement element in elements)
                 element.FEM(A, D);
@@ -131,7 +166,7 @@ namespace SbB.Diploma
                         }
                 }
             //
-            b = new Vector(2 * vertexes.Count);
+            b = new Vector(2 * Vertexes.Count);
             for (int i = 0; i < BoundaryClasses.Length; i++)
                 if (BoundaryClasses[i].type() == BoundaryType.STATIC)
                 {
