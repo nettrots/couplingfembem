@@ -46,6 +46,12 @@ namespace SbB.Diploma.Methods
             get { return boundaries; }
         }
 
+        public int ElementsPerSegment
+        {
+            get { return elementsPerSegment; }
+            set { elementsPerSegment = value; }
+        }
+
         #endregion
 
         #region Methods
@@ -55,9 +61,9 @@ namespace SbB.Diploma.Methods
             vertexes = new List<Vertex>();
             for (int i = 0; i < polygon.Count; i++)
             {
-                for (int j = 0; j < elementsPerSegment; j++)
+                for (int j = 0; j < ElementsPerSegment; j++)
                 {
-                    Vertex v = ((double) j/elementsPerSegment)*(polygon[i + 1] - polygon[i]);
+                    Vertex v = ((double) j/ElementsPerSegment)*(polygon[i + 1] - polygon[i]);
                     vertexes.Add(polygon[i] + v);
                 }
             }
@@ -115,7 +121,7 @@ namespace SbB.Diploma.Methods
             for(int i=0; i<polygon.Count; i++)
             {
                 // номери сегментів BEM, кількість елементів
-                sw.WriteLine("{0} {1}", i+1, elementsPerSegment);
+                sw.WriteLine("{0} {1}", i+1, ElementsPerSegment);
             }
 
             // кількість спільних сегментів
