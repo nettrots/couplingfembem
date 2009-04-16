@@ -47,7 +47,7 @@ namespace SbB.Diploma
 
             foreach (Vertex vertex in FEM.Vertexes)
             {
-                vertex.Dofu = new DoF[] {new DoF(counter++), new DoF(counter++)};
+                vertex.Dofu = new int[] {counter++, counter++};
             }
 
             for (int i = 0; i < FEM.BoundaryClasses.Length; i++)
@@ -61,7 +61,7 @@ namespace SbB.Diploma
                     boundarylist.Sort();
                     for (int j = 1; j < boundarylist.Count-1; j++)
                     {
-                        boundarylist[i].Doft = new DoF[] { new DoF(counter++), new DoF(counter++) };
+                        boundarylist[i].Doft = new int[] { counter++, counter++ };
                     }
                 }
             }
@@ -81,12 +81,12 @@ namespace SbB.Diploma
                     for (int j = 1; j < boundarylist.Count - 1; j++)
                     {
                         if (boundarylist[i].Doft.Length != 0)
-                            boundarylist[i].Doft = new DoF[] {new DoF(counter++), new DoF(counter++)};
+                            boundarylist[i].Doft = new int[] {counter++,counter++};
                     }
                     for (int j = 1; j < boundarylist.Count - 1; j++)
                     {
                         if (boundarylist[i].Dofu.Length != 0)
-                            boundarylist[i].Dofu = new DoF[] { new DoF(counter++), new DoF(counter++) };
+                            boundarylist[i].Dofu = new int[] { counter++,counter++ };
                     }
                 }
             }
@@ -106,7 +106,7 @@ namespace SbB.Diploma
                     for (int j = 0; j < boundarylist.Count; j++)
                     {
                         if (boundarylist[i].Dofu.Length != 0)
-                            boundarylist[i].Dofu = new DoF[] { new DoF(counter++), new DoF(counter++) };
+                            boundarylist[i].Dofu = new int[] { counter++, counter++ };
                     }
                 }
 
@@ -123,7 +123,7 @@ namespace SbB.Diploma
                     for (int j = 0; j < boundarylist.Count; j++)
                     {
                         if (boundarylist[i].Doft.Length != 0)
-                            boundarylist[i].Doft = new DoF[] { new DoF(counter++), new DoF(counter++) };
+                            boundarylist[i].Doft = new int[] { counter++,counter++ };
                     }
                 }
             }
