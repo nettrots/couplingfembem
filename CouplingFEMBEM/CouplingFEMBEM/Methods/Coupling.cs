@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace SbB.Diploma
         private MethodBase[] methods;
         private FEMMethod FEM;
         private MakarBEMMethod BEM;
+        private MortarMethod Mortar;
         private List<Vertex> vertexes;
 
         private Matrix GlobalMatrix;
@@ -20,12 +22,64 @@ namespace SbB.Diploma
         public CouplingMethod(string filename)
         {
             //Create methods and fill with data
+
+            //load yaml file
+            //traverse tree to arraylist
+            ArrayList data;
+
+            //TODO: Create FEM
+            Polygon FEMPolygon=new Polygon(new Vertex[]{new Vertex(1,2), });
+            double Angle=1;
+            double Area=1;
+            double YoungModulus=1;
+            double PoissonRatio=1;
+
+
+            FEM = new FEMMethod(new object());
+
+            FEM.BoundaryClasses = new BoundaryClass[0];
+            FEM.PoissonRatio = PoissonRatio;
+            FEM.YoungModulus = YoungModulus;
+
+            LinialTriangleTriangulation ltt=new LinialTriangleTriangulation(FEMPolygon);
+            FEM.Triangulation = ltt;
+            FEM.Angle = Angle;
+            FEM.Area = Area;
+            
+            //TODO: Create BEM
+            Polygon BEMPolygon=new Polygon(new Vertex[0]);
+            int ElementsPerSegment = 1;
+            YoungModulus = 1;
+            PoissonRatio = 1;
+
+            BEM=new MakarBEMMethod(BEMPolygon);
+
+            BEM.PoissonRatio = PoissonRatio;
+            BEM.YoungModulus = YoungModulus;
+            BEM.ElementsPerSegment = ElementsPerSegment;
+            BEM.BoundaryClasses = new BoundaryClass[0];
+
+            //TODO: Create mortar
+
+            Mortar=new MortarMethod();
+            MortarSide ms=new MortarSide(FEM,BEM,typeof(LinearMortar) );
+            Mortar.MortarSides.Add(ms);
+
+
         }
 
         public void assamble()
         {
             FEM.Initialize();
             BEM.Initialize();
+            Mortar.Initialize();
+
+
+
+
+
+
+
 
             //Assamble vertexes (dofs) in all methods
             vertexes = new List<Vertex>();

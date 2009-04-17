@@ -7,23 +7,14 @@ namespace SbB.Diploma
 {
     public class MortarMethod:MethodBase
     {
-        protected List<MortarSide> mortarSides;
-        public MortarMethod()
+        private List<MortarSide> mortarSides;
+
+        public List<MortarSide> MortarSides
         {
-            //List<MortarSide> mortarSides;
-            //MortarSide ms=new MortarSide();
+            get { return mortarSides; }
+            set { mortarSides = value; }
         }
 
-
-        public override void FillGlobalmatrix(Matrix global)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void FillGlobalvector(Vector global)
-        {
-            throw new NotImplementedException();
-        }
 
         public override void Run()
         {
@@ -57,6 +48,25 @@ namespace SbB.Diploma
         }
 
         public override void Initialize()
+        {
+            foreach (MortarSide side in mortarSides)
+            {
+                side.createMortarNodes();
+                side.createMortar(side.Vertexes.Count);
+            }
+            throw new NotImplementedException();
+        }
+
+        public override void FillGlobalmatrix(Matrix global)
+        {
+            foreach (MortarSide side in mortarSides)
+            {
+                //side.Mortar.
+            }
+            throw new NotImplementedException();
+        }
+
+        public override void FillGlobalvector(Vector global)
         {
             throw new NotImplementedException();
         }

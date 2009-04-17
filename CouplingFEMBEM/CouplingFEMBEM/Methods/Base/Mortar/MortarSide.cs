@@ -8,38 +8,45 @@ namespace SbB.Diploma
     {
         #region Fields
         private Vertex[] nodes;
-        private MethodBase[] mortars;
-        private MethodBase[] nonmortars;
+        private MethodBase mortar;
+        private MethodBase nonmortar;
         private List<Vertex> vertexes;
-        private Type mortarType;
+        //private Mortar mortar;
+        private readonly Type mortarType;
         #endregion
 
         #region Constructors
-        public MortarSide(Vertex[] nodes, MethodBase[] mortars, MethodBase[] nonmortars,Type mortarType)
+        public MortarSide(MethodBase mortar, MethodBase nonmortar,Type mortarType)
         {
-            this.nodes = nodes;
-            this.mortars = mortars;
-            this.nonmortars = nonmortars;
+            this.mortar = mortar;
+            this.nonmortar = nonmortar;
             this.mortarType = mortarType;
         }
         #endregion
 
         #region Properties
-        public MethodBase[] Mortars
+        public MethodBase Mortar
         {
-            get { return mortars; }
-            set { mortars = value; }
+            get { return mortar; }
+            set { mortar = value; }
 
         }
-        public MethodBase[] Nonmortars
+        public MethodBase Nonmortar
         {
-            get { return nonmortars; }
-            set { nonmortars = value; }
+            get { return nonmortar; }
+            set { nonmortar = value; }
         }
         public int NodesCount
         {
             get { return nodes.Length; }
         }
+
+        public List<Vertex> Vertexes
+        {
+            get { return vertexes; }
+            set { vertexes = value; }
+        }
+
         #endregion
 
         #region Methods
@@ -71,7 +78,7 @@ namespace SbB.Diploma
         }
         public Mortar createMortar(int femnodescount)
         {
-           return (Mortar)(mortarType.GetConstructor(new Type[] { typeof(int), typeof(List<Vertex>) })).Invoke(new object[] { femnodescount, vertexes });
+           return (Mortar)(mortarType.GetConstructor(new Type[] { typeof(int), typeof(List<Vertex>) })).Invoke(new object[] { femnodescount, Vertexes });
         }
         #endregion
     }
