@@ -17,8 +17,7 @@ namespace SbB.Diploma
         #region Constructors
         public LinearMortarMethod(object data)
         {
-           mortarSides=new MortarSide[1];
-            mortarSides[1]=new MortarSide(null,null,null,typeof(LinearMortar));
+          
         }
         #endregion
 
