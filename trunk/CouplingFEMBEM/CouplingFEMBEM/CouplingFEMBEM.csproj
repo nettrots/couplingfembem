@@ -81,6 +81,9 @@
     <Compile Include="Methods\Base\FEM\FEMElement.cs" />
     <Compile Include="Methods\Base\FEM\FEMEdge.cs" />
     <Compile Include="Methods\Base\LinearTriangleFEM\LinearTriangle.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\LinialTriangleTriangulation.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\TriangleExe.Designer.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\Triangulation.cs" />
     <Compile Include="Methods\Base\Mortar\LinearMortar.cs" />
     <Compile Include="Methods\Base\Mortar\MortarMethod.cs" />
     <Compile Include="Methods\MakarBEMMethod.cs" />
@@ -91,9 +94,59 @@
     <Compile Include="Methods\Base\Mortar\MortarSide.cs" />
     <Compile Include="Methods\FEMMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Yaml\CodeLib\Pair.cs" />
+    <Compile Include="Yaml\CodeLib\StringHelper.cs" />
+    <Compile Include="Yaml\Custom\BlockScalarModifier.cs" />
+    <Compile Include="Yaml\Custom\ChompingMethod.cs" />
+    <Compile Include="Yaml\Custom\HashValue.cs" />
+    <Compile Include="Yaml\Custom\MappingEntry.cs" />
+    <Compile Include="Yaml\Custom\Scalar.cs" />
+    <Compile Include="Yaml\Custom\YamlDocument.cs" />
+    <Compile Include="Yaml\Custom\YamlEmittor.cs" />
+    <Compile Include="Yaml\ParserCommon.cs" />
+    <Compile Include="Yaml\ParserCustom.cs" />
+    <Compile Include="Yaml\ParserInput.cs" />
+    <Compile Include="Yaml\Syntax\BlockScalarModifier.cs" />
+    <Compile Include="Yaml\Syntax\DataItem.cs" />
+    <Compile Include="Yaml\Syntax\Directive.cs" />
+    <Compile Include="Yaml\Syntax\GlobalTagPrefix.cs" />
+    <Compile Include="Yaml\Syntax\LocalTagPrefix.cs" />
+    <Compile Include="Yaml\Syntax\Mapping.cs" />
+    <Compile Include="Yaml\Syntax\MappingEntry.cs" />
+    <Compile Include="Yaml\Syntax\NamedTagHandle.cs" />
+    <Compile Include="Yaml\Syntax\NodeProperty.cs" />
+    <Compile Include="Yaml\Syntax\NonSpecificTag.cs" />
+    <Compile Include="Yaml\Syntax\PrimaryTagHandle.cs" />
+    <Compile Include="Yaml\Syntax\ReservedDirective.cs" />
+    <Compile Include="Yaml\Syntax\Scalar.cs" />
+    <Compile Include="Yaml\Syntax\SecondaryTagHandle.cs" />
+    <Compile Include="Yaml\Syntax\Sequence.cs" />
+    <Compile Include="Yaml\Syntax\ShorthandTag.cs" />
+    <Compile Include="Yaml\Syntax\Tag.cs" />
+    <Compile Include="Yaml\Syntax\TagDirective.cs" />
+    <Compile Include="Yaml\Syntax\TagHandle.cs" />
+    <Compile Include="Yaml\Syntax\TagPrefix.cs" />
+    <Compile Include="Yaml\Syntax\VerbatimTag.cs" />
+    <Compile Include="Yaml\Syntax\YamlDirective.cs" />
+    <Compile Include="Yaml\Syntax\YamlDocument.cs" />
+    <Compile Include="Yaml\Syntax\YamlStream.cs" />
+    <Compile Include="Yaml\Syntax\YamlVersion.cs" />
+    <Compile Include="Yaml\TextInput.cs" />
+    <Compile Include="Yaml\YamlParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Base\Solvers\FastSolver\detail.php.htm" />
+    <Content Include="Yaml\YAML.PEG.txt" />
+    <Content Include="Yaml\YAML.txt" />
+    <Content Include="Yaml\YAML_Sample.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Methods\Base\LinearTriangleFEM\TriangleExe.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

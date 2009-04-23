@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using QiHe.Yaml.Grammar;
+using QiHe.Yaml.YamlUtility.UI;
 using SbB.Diploma.Methods;
+using SbB.Diploma.Yaml.Custom;
 
 namespace SbB.Diploma
 {
-    class CouplingMethod
+
+    using MyHash=Dictionary<string, object> ; 
+    public class CouplingMethod
     {
         private MethodBase[] methods;
         private FEMMethod FEM;
@@ -25,14 +31,48 @@ namespace SbB.Diploma
 
             //load yaml file
             //traverse tree to arraylist
-            ArrayList data;
+            //ArrayList data=new ArrayList();
+            Dictionary<string, HashValue> data = new Dictionary<string, HashValue>();
+            if (!File.Exists(filename))
+            {
+               // MessageBox.Show(filename + " does not exist.");
+                return;
+            }
+            YamlParser parser = new YamlParser();
+            TextInput input = new TextInput(File.ReadAllText(filename));
+            bool success;
+            YamlStream yamlStream = parser.ParseYamlStream(input, out success);
+            if (success)
+            {
+                data.Clear();
+                foreach (YamlDocument doc in yamlStream.Documents)
+                {
+                    Dictionary<string, HashValue> a1 = YamlEmittor.CreateNode(doc.Root).eHash;
+                    foreach (KeyValuePair<string, HashValue> pair in a1)
+                    {
+                        data.Add(pair.Key, pair.Value);
+                    }
+                }
+            }
+            else
+            {
+             //   MessageBox.Show(parser.GetEorrorMessages());
+            }
+            
 
             //TODO: Create FEM
+//            foreach (KeyValuePair<string, object> pair in data)
+//            {
+//                foreach (KeyValuePair<string, object> o in (MyHash)pair.Value)
+//                {
+//                    
+//                }
+//            }
             Polygon FEMPolygon=new Polygon(new Vertex[]{new Vertex(1,2), });
-            double Angle=1;
-            double Area=1;
-            double YoungModulus=1;
-            double PoissonRatio=1;
+            double Angle = double.Parse(data["FEM"].eHash["Mesh"].eHash["angle"].eString);//(string)((MyHash)(((MyHash)data["FEM"])["Mesh"])["Angle"])
+            double Area = double.Parse(data["FEM"].eHash["Mesh"].eHash["area"].eString);
+            double YoungModulus = double.Parse(data["FEM"].eHash["youngModulus"].eString);
+            double PoissonRatio = double.Parse(data["FEM"].eHash["poissonRatio"].eString);
 
 
             FEM = new FEMMethod(new object());
