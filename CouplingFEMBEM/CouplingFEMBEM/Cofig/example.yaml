@@ -1,0 +1,30 @@
+FEM:
+ youngModulus: 21000
+ poissonRatio: 0.3
+ Vetex:
+  - [ 0, 0]
+  - [ 1, 0]
+  - [ 1, 1]
+  - [ 0, 1]
+ BoundaryType:
+  - STATIC
+  - MORTAR
+  - STATIC, [0 -1]
+  - KINEMATIC
+ Mesh:
+  area: 0.001
+  angle: 20
+BEM:
+ youngModulus: 21000
+ poissonRatio: 0.3
+ elementsPerSegment: 8
+ Vetex:
+  -[ 1, 0]
+  -[ 2, 0]
+  -[ 2, 1]
+  -[ 1, 1]
+ BoundaryType:
+  STATIC
+  STATIC
+  NONMORTAR
+  STATIC, [0 -1]
