@@ -20,8 +20,8 @@ namespace SbB.Diploma
         {
             for (int i = 0; i < 2; i++)
             {
-                V[2*this[i].Number] += p.X*Length/2;
-                V[2*this[i].Number + 1] += p.Y*Length/2;
+                for (int j = 0; j < this[i].Dofu.Length; j++)
+                    V[2 * this[i].Dofu[j]] += p.X * Length / 2;    
             }
         }
         public override double phi(int i, double x, double y)
@@ -32,5 +32,19 @@ namespace SbB.Diploma
             return (v - this[(i + 1) % 2]).Length / Length;
         }
         #endregion
+
+        public override void FEM(Matrix Af, int offset)
+        {
+            Matrix local = new Matrix(4,4);
+            local[0][0] = local[1][1] = local[2][2] = local[3][3] = 2;
+            local[2][0] = local[0][2] = local[3][1] = local[1][3] = 1;
+            local *= this.Length/6;
+
+            for (int i = 0; i < 2; i++)
+                for (int j = 0; j < 2; j++)
+                    for (int k = 0; k < this[i].Doft.Length; k++)
+                        for (int l = 0; l < this[j].Doft.Length; l++)
+                            Af[this[i].Doft[k] - offset][this[j].Doft[l] - offset] += local[2*i + k][2*j + l];
+        }
     }
 }

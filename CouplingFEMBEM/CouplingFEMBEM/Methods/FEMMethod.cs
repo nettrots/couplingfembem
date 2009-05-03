@@ -149,8 +149,7 @@ namespace SbB.Diploma
 
         public override void Run()
         {
-
-            A = new Matrix(2 * Vertexes.Count, 2 * Vertexes.Count);
+            A = new Matrix(2*Vertexes.Count, 2*Vertexes.Count);
 
             foreach (FEMElement element in elements)
                 element.FEM(A, D);
@@ -161,16 +160,16 @@ namespace SbB.Diploma
                     foreach (FEMEdge edge in boundaries[i])
                         for (int j = 0; j < edge.NodesCount; j++)
                         {
-                            A[2 * edge[j].Number][2 * edge[j].Number] = 1.0 / Constants.EPS;
-                            A[2 * edge[j].Number + 1][2 * edge[j].Number + 1] = 1.0 / Constants.EPS;
+                            for (int k = 0; k < edge[j].Dofu.Length; k++)
+                                A[edge[j].Dofu[k]][edge[j].Dofu[k]] = 1.0/Constants.EPS;
                         }
                 }
             //
-            b = new Vector(2 * Vertexes.Count);
+            b = new Vector(2*Vertexes.Count);
             for (int i = 0; i < BoundaryClasses.Length; i++)
                 if (BoundaryClasses[i].type() == BoundaryType.STATIC)
                 {
-                    Vertex p = ((StaticBoundary)BoundaryClasses[i]).P;
+                    Vertex p = ((StaticBoundary) BoundaryClasses[i]).P;
                     foreach (FEMEdge edge in boundaries[i])
                         edge.FEM(b, p);
                 }
@@ -179,12 +178,34 @@ namespace SbB.Diploma
                     foreach (FEMEdge edge in boundaries[i])
                         for (int j = 0; j < edge.NodesCount; j++)
                         {
-                            b[2 * edge[j].Number] = 0.0;
-                            b[2 * edge[j].Number + 1] = 0.0;
+                            for (int k = 0; k < edge[j].Dofu.Length; k++)
+                                b[edge[j].Dofu[k]] = 0.0;
                         }
             //Somehow create AF
-            Af = new Matrix();
-            throw new NotImplementedException();
+            int dim = 0;
+            foreach (Vertex vertex in vertexes)
+            {
+                dim += vertex.Doft.Length;
+            }
+            Af = new Matrix(dim, dim);
+
+            for (int i = 0; i < BoundaryClasses.Length; i++)
+                if (BoundaryClasses[i].type() == BoundaryType.MORTAR)
+                {
+                    int min = int.MaxValue;
+                    foreach (FEMEdge edge in boundaries[i])
+                    {
+                        for (int j = 0; j < edge.NodesCount; j++)
+                        {
+                            for (int k = 0; k < edge[j].Doft.Length; k++)
+                            {
+                                if (min > edge[j].Doft[k]) min = edge[j].Doft[k];
+                            }
+                        }
+                    }
+                    foreach (FEMEdge edge in boundaries[i])
+                        edge.FEM(Af, min);
+                }
         }
 
         public override void FillGlobalmatrix(Matrix global)

@@ -9,7 +9,7 @@ FEM:
  BoundaryType:
   - STATIC
   - MORTAR
-  - STATIC, [0 -1]
+  - STATIC@[0,-1]
   - KINEMATIC
  Mesh:
   area: 0.001

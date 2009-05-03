@@ -95,7 +95,7 @@ namespace SbB.Diploma
                 line = line.Replace(".", ",");
                 number = line.Split(new char[] {' '});
                 Vertex vertex =
-                    new Vertex(double.Parse(number[1]), double.Parse(number[2]), int.Parse(number[0]) - 1);
+                    new Vertex(double.Parse(number[1]), double.Parse(number[2]));
                 vertexes.Add(vertex);
                 int boundNum = int.Parse(number[3]);
                 if (boundNum != 0)

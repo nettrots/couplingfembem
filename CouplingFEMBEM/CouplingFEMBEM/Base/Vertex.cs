@@ -10,9 +10,9 @@ namespace SbB.Diploma
     {
         //Змінні класу
         private double x, y;
-        private int number;
         private int[] dofu = new int[0];
         private int[] doft = new int[0];
+        private int[] dofm = new int[0];
         //конструктори
         /// <summary>
         /// Констуктор по замовчуванню
@@ -28,18 +28,7 @@ namespace SbB.Diploma
             this.x = x;
             this.y = y;
         }
-        /// <summary>
-        /// Конструктор з заданням точки та номером вузла
-        /// </summary>
-        /// <param name="x">координата по x</param>
-        /// <param name="y">координата по y</param>
-        /// <param name="number">номер вузла</param>
-        public Vertex(double x, double y, int number)
-        {
-            this.x = x;
-            this.y = y;
-            this.number = number;
-        }
+
 
 
         // Властивості (Properties)
@@ -52,11 +41,6 @@ namespace SbB.Diploma
         {
             get { return y; }
             set { y = value; }
-        }
-        public int Number
-        {
-            get { return number; }
-            set { number = value; }
         }
         /// <summary>
         /// Довжина радіус-вектора
@@ -76,6 +60,12 @@ namespace SbB.Diploma
         {
             get { return doft; }
             set { doft = value; }
+        }
+
+        public int[] Dofm
+        {
+            get { return dofm; }
+            set { dofm = value; }
         }
 
 
@@ -178,7 +168,7 @@ namespace SbB.Diploma
         // ICloneable
         public object Clone()
         {
-            return new Vertex(x, y, number);
+            return new Vertex(x, y);
         }
         // IComparable
         public int CompareTo(object o)
