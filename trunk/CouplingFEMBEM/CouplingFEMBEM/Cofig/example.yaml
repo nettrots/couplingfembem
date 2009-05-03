@@ -1,7 +1,7 @@
 FEM:
  youngModulus: 21000
  poissonRatio: 0.3
- Vetex:
+ Vertex:
   - [ 0, 0]
   - [ 1, 0]
   - [ 1, 1]
@@ -18,11 +18,11 @@ BEM:
  youngModulus: 21000
  poissonRatio: 0.3
  elementsPerSegment: 8
- Vetex:
-  -[ 1, 0]
-  -[ 2, 0]
-  -[ 2, 1]
-  -[ 1, 1]
+ Vertex:
+  - [ 1, 0]
+  - [ 2, 0]
+  - [ 2, 1]
+  - [ 1, 1]
  BoundaryType:
   STATIC
   STATIC
