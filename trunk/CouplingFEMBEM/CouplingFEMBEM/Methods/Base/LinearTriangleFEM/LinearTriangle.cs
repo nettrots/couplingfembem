@@ -36,7 +36,7 @@ namespace SbB.Diploma
                 for (int l = 0; l < 2; l++)
                     for (int i = 0; i < 3; i++)
                         for (int j = 0; j < 3; j++)
-                            K[2*this[i].Number + k][2*this[j].Number + l] += local[3*k + i][3*l + j];
+                            K[this[i].Dofu[k]][this[j].Dofu[l]] += local[3*k + i][3*l + j];
         }
         public override double phi(int i, Vertex v)
         {

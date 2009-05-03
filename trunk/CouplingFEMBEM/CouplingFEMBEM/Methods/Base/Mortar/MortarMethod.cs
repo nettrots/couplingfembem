@@ -52,9 +52,7 @@ namespace SbB.Diploma
             foreach (MortarSide side in mortarSides)
             {
                 side.createMortarNodes();
-                side.createMortar(side.Vertexes.Count);
             }
-            throw new NotImplementedException();
         }
 
         public override void FillGlobalmatrix(Matrix global)

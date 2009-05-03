@@ -15,7 +15,6 @@ namespace SbB.Diploma
     using MyHash=Dictionary<string, object> ; 
     public class CouplingMethod
     {
-        private MethodBase[] methods;
         private FEMMethod FEM;
         private MakarBEMMethod BEM;
         private MortarMethod Mortar;
@@ -87,6 +86,36 @@ namespace SbB.Diploma
             FEM.Triangulation = ltt;
             FEM.Angle = Angle;
             FEM.Area = Area;
+
+            BoundaryClass[] boundaryClasses = new BoundaryClass[data["FEM"].eHash["BoundaryType"].eHash.Count];
+            for (int i = 0; i < boundaryClasses.Length; i++)
+            {
+                string[] ss = data["FEM"].eHash["BoundaryType"].eHash[i.ToString()].eString.Split('@');
+                switch (ss[0])
+                {
+                    case "STATIC":
+                        if (ss.Length > 1)
+                        {
+                            ss[1] = ss[1].Substring(1, ss[1].Length - 2);
+                            ss = ss[1].Split(',');
+                            boundaryClasses[i] = new StaticBoundary(double.Parse(ss[0]), double.Parse(ss[1]));
+                        }
+                        else boundaryClasses[i] = new StaticBoundary(0, 0);
+                        break;
+                    case "KINEMATIC":
+                        boundaryClasses[i] = new KinematicBoundary();
+                        break;
+                    case "MORTAR":
+                        boundaryClasses[i] = new MortarBoundary();
+                        break;
+                    case "NONMORTAR":
+                        boundaryClasses[i] = new NonMortarBoundary();
+                        break;
+                    default:
+                        throw new Exception("A-ya-yaj!!!");
+                }
+            }
+            FEM.BoundaryClasses = boundaryClasses;
             
             //DONE: Create BEM
             Vertex[] bemPolygon = new Vertex[data["BEM"].eHash["Vertex"].eHash.Count];
@@ -105,7 +134,35 @@ namespace SbB.Diploma
             BEM.PoissonRatio = PoissonRatio;
             BEM.YoungModulus = YoungModulus;
             BEM.ElementsPerSegment = ElementsPerSegment;
-            BEM.BoundaryClasses = new BoundaryClass[0];
+            boundaryClasses = new BoundaryClass[data["BEM"].eHash["BoundaryType"].eHash.Count];
+            for (int i = 0; i < boundaryClasses.Length; i++)
+            {
+                string[] ss = data["BEM"].eHash["BoundaryType"].eHash[i.ToString()].eString.Split('@');
+                switch (ss[0])
+                {
+                    case "STATIC":
+                        if (ss.Length > 1)
+                        {
+                            ss[1] = ss[1].Substring(1, ss[1].Length - 2);
+                            ss = ss[1].Split(',');
+                            boundaryClasses[i] = new StaticBoundary(double.Parse(ss[0]), double.Parse(ss[1]));
+                        }
+                        else boundaryClasses[i] = new StaticBoundary(0, 0);
+                        break;
+                    case "KINEMATIC":
+                        boundaryClasses[i] = new KinematicBoundary();
+                        break;
+                    case "MORTAR":
+                        boundaryClasses[i] = new MortarBoundary();
+                        break;
+                    case "NONMORTAR":
+                        boundaryClasses[i] = new NonMortarBoundary();
+                        break;
+                    default:
+                        throw new Exception("A-ya-yaj!!!");
+                }
+            }
+            BEM.BoundaryClasses = boundaryClasses;
 
             //TODO: Create mortar
 
@@ -115,18 +172,11 @@ namespace SbB.Diploma
             Mortar.MortarSides.Add(ms);
         }
 
-        public void assamble()
+        public void assemble()
         {
             FEM.Initialize();
             BEM.Initialize();
             Mortar.Initialize();
-
-
-
-
-
-
-
 
             //Assamble vertexes (dofs) in all methods
             vertexes = new List<Vertex>();
@@ -228,12 +278,41 @@ namespace SbB.Diploma
                     }
                 }
             }
+
+            foreach (MortarSide side in Mortar.MortarSides)
+            {
+                for (int i = 1; i < side.Vertexes.Count-1; i++)
+                    side.Vertexes[i].Dofm = new int[] { counter++, counter++ };
+            }
+        }
+
+        public void run()
+        {
+            FEM.Run();
+            BEM.Run();
+            Mortar.Run();
         }
 
         public void fillSystem()
         {
             //Create system from all methods
             //FEM+BEM+Mortar
+            int dim = 0;
+            foreach (Vertex vertex in vertexes)
+            {
+                dim += vertex.Doft.Length;
+                dim += vertex.Dofu.Length;
+                dim += vertex.Dofm.Length;
+            }
+            GlobalMatrix = new Matrix(dim, dim);
+            GlobalVector = new Vector(dim);
+
+            FEM.FillGlobalmatrix(GlobalMatrix);
+            FEM.FillGlobalvector(GlobalVector);
+            BEM.FillGlobalmatrix(GlobalMatrix);
+            BEM.FillGlobalvector(GlobalVector);
+            Mortar.FillGlobalmatrix(GlobalMatrix);
+            Mortar.FillGlobalvector(GlobalVector);
         }
 
         public void solveSystem()
