@@ -60,19 +60,21 @@ namespace SbB.Diploma
             }
             
 
-            //TODO: Create FEM
-//            foreach (KeyValuePair<string, object> pair in data)
-//            {
-//                foreach (KeyValuePair<string, object> o in (MyHash)pair.Value)
-//                {
-//                    
-//                }
-//            }
-            Polygon FEMPolygon=new Polygon(new Vertex[]{new Vertex(1,2), });
-            double Angle = double.Parse(data["FEM"].eHash["Mesh"].eHash["angle"].eString);//(string)((MyHash)(((MyHash)data["FEM"])["Mesh"])["Angle"])
-            double Area = double.Parse(data["FEM"].eHash["Mesh"].eHash["area"].eString);
-            double YoungModulus = double.Parse(data["FEM"].eHash["youngModulus"].eString);
-            double PoissonRatio = double.Parse(data["FEM"].eHash["poissonRatio"].eString);
+            //DONE: Create FEM
+
+            Vertex[] femPolygon = new Vertex[data["FEM"].eHash["Vertex"].eHash.Count];
+            
+            for (int i=0; i<femPolygon.Length; i++)
+            {
+                double x = data["FEM"].eHash["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
+                double y = data["FEM"].eHash["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
+                femPolygon[i] = new Vertex(x,y);
+            }
+
+            double Angle = data["FEM"].eHash["Mesh"].eHash["angle"].eDouble;//(string)((MyHash)(((MyHash)data["FEM"])["Mesh"])["Angle"])
+            double Area = data["FEM"].eHash["Mesh"].eHash["area"].eDouble;
+            double YoungModulus = data["FEM"].eHash["youngModulus"].eDouble;
+            double PoissonRatio = data["FEM"].eHash["poissonRatio"].eDouble;
 
 
             FEM = new FEMMethod(new object());
@@ -81,19 +83,25 @@ namespace SbB.Diploma
             FEM.PoissonRatio = PoissonRatio;
             FEM.YoungModulus = YoungModulus;
 
-            LinialTriangleTriangulation ltt=new LinialTriangleTriangulation(FEMPolygon);
+            LinialTriangleTriangulation ltt=new LinialTriangleTriangulation(new Polygon(femPolygon));
             FEM.Triangulation = ltt;
             FEM.Angle = Angle;
             FEM.Area = Area;
             
-            //TODO: Create BEM
-            Polygon BEMPolygon=new Polygon(new Vertex[0]);
-            int ElementsPerSegment = 1;
-            YoungModulus = 1;
-            PoissonRatio = 1;
+            //DONE: Create BEM
+            Vertex[] bemPolygon = new Vertex[data["BEM"].eHash["Vertex"].eHash.Count];
 
-            BEM=new MakarBEMMethod(BEMPolygon);
-
+            for (int i = 0; i < femPolygon.Length; i++)
+            {
+                double x = data["BEM"].eHash["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
+                double y = data["BEM"].eHash["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
+                bemPolygon[i] = new Vertex(x, y);
+            }
+            int ElementsPerSegment = data["BEM"].eHash["elementsPerSegment"].eInt;
+            YoungModulus = data["BEM"].eHash["youngModulus"].eDouble;
+            PoissonRatio = data["BEM"].eHash["poissonRatio"].eDouble;
+            BEM = new MakarBEMMethod(new Polygon(bemPolygon));
+            
             BEM.PoissonRatio = PoissonRatio;
             BEM.YoungModulus = YoungModulus;
             BEM.ElementsPerSegment = ElementsPerSegment;
@@ -103,9 +111,8 @@ namespace SbB.Diploma
 
             Mortar=new MortarMethod();
             MortarSide ms=new MortarSide(FEM,BEM,typeof(LinearMortar) );
+            Mortar.MortarSides = new List<MortarSide>();
             Mortar.MortarSides.Add(ms);
-
-
         }
 
         public void assamble()

@@ -14,8 +14,10 @@ namespace QiHe.Yaml.YamlUtility.UI
             HashValue t=new HashValue();
             if (item is Scalar)
             {
-                //arr.Add(new DictionaryEntry(,CreateNodeForScalar(item as Scalar)));
-                t.eString = CreateNodeForScalar(item as Scalar);
+                object obj = CreateNodeForScalar(item as Scalar);
+                if (obj is int) t.eInt = (int) obj;
+                if (obj is double) t.eDouble = (double)obj;
+                if (obj is string) t.eString = (string)obj;
                 return  t;
             }
             else if (item is Sequence)
@@ -34,8 +36,12 @@ namespace QiHe.Yaml.YamlUtility.UI
             }
         }
 
-        private static string CreateNodeForScalar(Scalar scalar)
+        private static object CreateNodeForScalar(Scalar scalar)
         {
+            int rezint = 0;
+            if (int.TryParse(scalar.Text, out rezint)) return rezint;
+            double rezdouble = 0.0;
+            if (double.TryParse(scalar.Text, out rezdouble)) return rezdouble;
             return scalar.Text;
         }
         static int counter=1;
