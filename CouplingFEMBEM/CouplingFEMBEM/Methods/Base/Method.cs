@@ -11,8 +11,7 @@ namespace SbB.Diploma
         protected Polygon polygon;
         protected double youngModulus = 21000;
         protected double poissonRatio = 0.3;
-
-
+        protected Vector results;
         #endregion
 
         #region Properties
@@ -30,6 +29,10 @@ namespace SbB.Diploma
         {
             get { return polygon; }
         }
+        public Vector Results
+        {
+            get { return results; }
+        }
         #endregion
 
         #region Methods
@@ -37,6 +40,7 @@ namespace SbB.Diploma
         public abstract void Run();
         public abstract void FillGlobalmatrix(Matrix global);
         public abstract void FillGlobalvector(Vector global);
+        public abstract void GetResultsFrom(Vector vector);
         #endregion
     }
 }
