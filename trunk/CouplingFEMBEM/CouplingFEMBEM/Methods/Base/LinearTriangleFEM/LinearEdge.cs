@@ -18,10 +18,11 @@ namespace SbB.Diploma
         #region Methods
         public override void FEM(Vector V, Vertex p)
         {
+            Vector vp = new Vector(new double[]{p.X, p.Y});
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < this[i].Dofu.Length; j++)
-                    V[2 * this[i].Dofu[j]] += p.X * Length / 2;    
+                    V[this[i].Dofu[j]] += vp[j]*Length/2;    
             }
         }
         public override double phi(int i, double x, double y)

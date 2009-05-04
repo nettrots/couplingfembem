@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using System.Threading;
 using QiHe.Yaml.Grammar;
 using SbB.Diploma.Yaml.Custom;
 
@@ -15,7 +17,7 @@ namespace QiHe.Yaml.YamlUtility.UI
             if (item is Scalar)
             {
                 object obj = CreateNodeForScalar(item as Scalar);
-                if (obj is int) t.eInt = (int) obj;
+                if (obj is int) { t.eInt = (int)obj; t.eDouble = t.eInt; }
                 if (obj is double) t.eDouble = (double)obj;
                 if (obj is string) t.eString = (string)obj;
                 return  t;
@@ -38,11 +40,14 @@ namespace QiHe.Yaml.YamlUtility.UI
 
         private static object CreateNodeForScalar(Scalar scalar)
         {
+            string currentCulture = CultureInfo.CurrentCulture.Name;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             int rezint = 0;
             if (int.TryParse(scalar.Text, out rezint)) return rezint;
             double rezdouble = 0.0;
             if (double.TryParse(scalar.Text, out rezdouble)) return rezdouble;
             return scalar.Text;
+           
         }
         static int counter=1;
         private static Dictionary<string, HashValue> CreateNodeForSequence(Sequence sequence)

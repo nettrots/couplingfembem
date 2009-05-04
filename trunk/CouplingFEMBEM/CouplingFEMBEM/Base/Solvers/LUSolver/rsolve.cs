@@ -129,7 +129,7 @@ public class LUSolve
     *************************************************************************/
     public static bool Solve(Matrix a,
         Vector b,
-        Vector x)
+        out Vector x)
     {
         int n = a.Size.n;
         bool result = new bool();

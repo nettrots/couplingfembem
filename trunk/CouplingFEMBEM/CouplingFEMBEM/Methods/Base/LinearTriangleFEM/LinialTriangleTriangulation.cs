@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using SbB.Diploma.Methods.Base;
+using SbB.Diploma.Methods.Base.LinearTriangleFEM;
 
 
 namespace SbB.Diploma
@@ -92,7 +94,7 @@ namespace SbB.Diploma
                 line = reader.ReadLine();
                 while (line.Contains("  ")) line = line.Replace("  ", " ");
                 if (line[0] == ' ') line = line.Remove(0, 1);
-                line = line.Replace(".", ",");
+                //line = line.Replace(".", ",");
                 number = line.Split(new char[] {' '});
                 Vertex vertex =
                     new Vertex(double.Parse(number[1]), double.Parse(number[2]));

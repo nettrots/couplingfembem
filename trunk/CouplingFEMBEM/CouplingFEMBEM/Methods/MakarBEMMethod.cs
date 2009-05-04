@@ -66,6 +66,21 @@ namespace SbB.Diploma.Methods
                     vertexes.Add(polygon[i] + v);
                 }
             }
+            
+            boundaries = new List<BoundEdge>[polygon.Count];
+            for (int i = 0; i < polygon.Count; i++)
+            {
+                boundaries[i] = new List<BoundEdge>();
+                for (int j = 0; j < elementsPerSegment; j++)
+                {
+                    int ai = elementsPerSegment*i + j;
+                    int bi = (i == polygon.Count - 1) && (j == elementsPerSegment - 1)
+                                 ? 0
+                                 : elementsPerSegment*i + j + 1;
+                    BoundEdge edge = new LinearBEMEdge(vertexes[ai], vertexes[bi]);
+                    boundaries[i].Add(edge);
+                }
+            }
         }
         private void writeFiles()
         {
@@ -237,8 +252,8 @@ namespace SbB.Diploma.Methods
 
                 if (vertexes[i].Doft.Length==0)
                 {
-                    b += ((StaticBoundary) boundaryClasses[i]).P.X*G[2*i];
-                    b += ((StaticBoundary) boundaryClasses[i]).P.Y*G[2*i + 1];
+                    b += ((StaticBoundary) boundaryClasses[k]).P.X*G[2*i];
+                    b += ((StaticBoundary) boundaryClasses[k]).P.Y*G[2*i + 1];
                 }
                 else
                 {
