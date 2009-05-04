@@ -14,7 +14,6 @@ namespace SbB.Diploma.Methods
         #region Fields
         private Matrix H, G;
         private List<Vertex> vertexes;
-        //private List<FEMElement> elements;
         private List<BoundEdge>[] boundaries;
         private BoundaryClass[] boundaryClasses;
         private int elementsPerSegment = 8;
@@ -203,7 +202,54 @@ namespace SbB.Diploma.Methods
         public override void Run()
         {
             //Create A an b from G and H
-            throw new NotImplementedException();
+            int mDim = 2*vertexes.Count;
+            int nDim = 0;
+            foreach (Vertex vertex in vertexes)
+            {
+                nDim += vertex.Dofu.Length;
+                nDim += vertex.Doft.Length;
+            }
+            b = new Vector(mDim);
+            A = new Matrix(mDim, nDim);
+
+            int counter = 0;
+            for (int i = 0; i < vertexes.Count; i++)
+            {
+                int k = 0;
+                for (int j = 0; j < polygon.Count; j++)
+                    if (polygon.edge(j).hasVertex(vertexes[i]))
+                    {
+                        k = j;
+                        break;
+                    }
+
+                if (vertexes[i].Dofu.Length == 0)
+                { /* Kinenatic boundary type. U=0 */ }
+                else
+                {
+                    for (int j = 0; j < A.Size.m; j++)
+                    {
+                        A[j][counter] = H[j][2*i];
+                        A[j][counter + 1] = H[j][2*i + 1];
+                    }
+                    counter += 2;
+                }
+
+                if (vertexes[i].Doft.Length==0)
+                {
+                    b += ((StaticBoundary) boundaryClasses[i]).P.X*G[2*i];
+                    b += ((StaticBoundary) boundaryClasses[i]).P.Y*G[2*i + 1];
+                }
+                else
+                {
+                    for (int j = 0; j < A.Size.m; j++)
+                    {
+                        A[j][counter] = G[j][2 * i];
+                        A[j][counter + 1] = G[j][2*i + 1];
+                    }
+                    counter += 2;
+                }
+            }
         }
         public override void FillGlobalmatrix(Matrix global)
         {
