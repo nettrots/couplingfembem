@@ -253,11 +253,40 @@ namespace SbB.Diploma.Methods
         }
         public override void FillGlobalmatrix(Matrix global)
         {
-            throw new NotImplementedException();
+            int[] indexes = new int[A.Size.m];
+            int counter = 0;
+            foreach (Vertex vertex in vertexes)
+                for (int i = 0; i < vertex.Dofu.Length; i++)
+                    indexes[counter++] = vertex.Dofu[i];
+
+            counter = 0;
+            for (int i = 0; i < vertexes.Count; i++)
+            {
+                for (int j = 0; j < vertexes[i].Dofu.Length; j++)
+                {
+                    for (int k = 0; k < indexes.Length; k++)
+                        global[indexes[k]][vertexes[i].Dofu[j]] += A[k][counter + j];
+                }
+                counter += vertexes[i].Dofu.Length;
+
+                for (int j = 0; j < vertexes[i].Doft.Length; j++)
+                {
+                    for (int k = 0; k < indexes.Length; k++)
+                        global[indexes[k]][vertexes[i].Doft[j]] += A[k][counter + j];
+                }
+                counter += vertexes[i].Doft.Length;
+            }
         }
         public override void FillGlobalvector(Vector global)
         {
-            throw new NotImplementedException();
+            int[] indexes = new int[b.Length];
+            int counter = 0;
+            foreach (Vertex vertex in vertexes)
+                for (int i = 0; i < vertex.Dofu.Length; i++)
+                    indexes[counter++] = vertex.Dofu[i];
+
+            for (int i = 0; i < indexes.Length; i++)
+                global[indexes[i]] += b[i];
         } 
         #endregion
         #endregion
