@@ -211,12 +211,21 @@ namespace SbB.Diploma
         public override void FillGlobalmatrix(Matrix global)
         {
             //every vertex has few rows in matrix. iterating all of them and we fill GM
-            throw new NotImplementedException();
+            // fill matrix A
+            for (int i = 0; i < A.Size.m; i++)
+                for (int j = 0; j < A.Size.n; j++)
+                    global[i][j] = A[i][j];
+
+            // fill matrix Af
+            for (int i = 0; i < Af.Size.m; i++)
+                for (int j = 0; j < A.Size.n; j++)
+                    global[i + A.Size.m][j + A.Size.n] = Af[i][j];
         }
 
         public override void FillGlobalvector(Vector global)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < b.Length; i++)
+                global[i] = b[i];
         }
         #endregion
         #endregion
