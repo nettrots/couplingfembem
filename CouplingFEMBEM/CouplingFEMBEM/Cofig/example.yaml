@@ -12,19 +12,19 @@ FEM:
   - STATIC@[0,-1]
   - KINEMATIC
  Mesh:
-  area: 0.001
+  area: 0.2
   angle: 20
 BEM:
  youngModulus: 21000
  poissonRatio: 0.3
- elementsPerSegment: 8
+ elementsPerSegment: 2
  Vertex:
   - [ 1, 0]
   - [ 2, 0]
   - [ 2, 1]
   - [ 1, 1]
  BoundaryType:
-  STATIC
-  STATIC
-  NONMORTAR
-  STATIC, [0 -1]
+  - STATIC
+  - STATIC
+  - STATIC@[0,-1]
+  - NONMORTAR

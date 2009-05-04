@@ -58,8 +58,8 @@ namespace SbB.Diploma
         {
             get
             {
-                if (Vertexes == null) throw new Exception("Triangulation did not complete");
-                return Vertexes;
+                if (vertexes == null) throw new Exception("Triangulation did not complete");
+                return vertexes;
             }
             set { vertexes = value; }
 
@@ -218,7 +218,7 @@ namespace SbB.Diploma
 
             // fill matrix Af
             for (int i = 0; i < Af.Size.m; i++)
-                for (int j = 0; j < A.Size.n; j++)
+                for (int j = 0; j < Af.Size.n; j++)
                     global[i + A.Size.m][j + A.Size.n] = Af[i][j];
         }
 

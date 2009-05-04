@@ -79,7 +79,7 @@ namespace TestingLib
             Vector x = new Vector(new double[]{1,1,1}); // TODO: Initialize to an appropriate value
             bool expected = true; // TODO: Initialize to an appropriate value
             bool actual;
-            actual = LUSolve.Solve(a, b,  x);
+            actual = LUSolve.Solve(a, b,out x);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }

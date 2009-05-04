@@ -82,10 +82,15 @@
     <Compile Include="Methods\Base\FEM\FEMEdge.cs" />
     <Compile Include="Methods\Base\LinearTriangleFEM\LinearTriangle.cs" />
     <Compile Include="Methods\Base\LinearTriangleFEM\LinialTriangleTriangulation.cs" />
-    <Compile Include="Methods\Base\LinearTriangleFEM\TriangleExe.Designer.cs" />
     <Compile Include="Methods\Base\LinearTriangleFEM\Triangulation.cs" />
     <Compile Include="Methods\Base\Mortar\LinearMortar.cs" />
     <Compile Include="Methods\Base\Mortar\MortarMethod.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\TriangleExe.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TriangleExe.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Methods\LinearBEMEdge.cs" />
     <Compile Include="Methods\MakarBEMMethod.cs" />
     <Compile Include="Methods\Coupling.cs" />
     <Compile Include="Methods\LinearMortarMethod.cs" />
@@ -136,17 +141,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Base\Solvers\FastSolver\detail.php.htm" />
+    <None Include="Resources\triangle.exe" />
     <Content Include="Yaml\YAML.PEG.txt" />
     <Content Include="Yaml\YAML.txt" />
     <Content Include="Yaml\YAML_Sample.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Methods\Base\LinearTriangleFEM\TriangleExe.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <EmbeddedResource Include="Methods\Base\LinearTriangleFEM\TriangleExe.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TriangleExe.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -176,7 +176,7 @@ namespace SbB.Diploma
         {
             FEM.Initialize();
             BEM.Initialize();
-            Mortar.Initialize();
+            //Mortar.Initialize();
 
             //Assamble vertexes (dofs) in all methods
             vertexes = new List<Vertex>();
@@ -231,13 +231,13 @@ namespace SbB.Diploma
                     boundarylist.Sort();
                     for (int j = 1; j < boundarylist.Count - 1; j++)
                     {
-                        if (boundarylist[i].Doft.Length != 0)
-                            boundarylist[i].Doft = new int[] {counter++,counter++};
+                        if (boundarylist[j].Doft.Length == 0)
+                            boundarylist[j].Doft = new int[] {counter++,counter++};
                     }
                     for (int j = 1; j < boundarylist.Count - 1; j++)
                     {
-                        if (boundarylist[i].Dofu.Length != 0)
-                            boundarylist[i].Dofu = new int[] { counter++,counter++ };
+                        if (boundarylist[j].Dofu.Length == 0)
+                            boundarylist[j].Dofu = new int[] { counter++,counter++ };
                     }
                 }
             }
@@ -256,8 +256,8 @@ namespace SbB.Diploma
                     boundarylist.Sort();
                     for (int j = 0; j < boundarylist.Count; j++)
                     {
-                        if (boundarylist[i].Dofu.Length != 0)
-                            boundarylist[i].Dofu = new int[] { counter++, counter++ };
+                        if (boundarylist[j].Dofu.Length == 0)
+                            boundarylist[j].Dofu = new int[] { counter++, counter++ };
                     }
                 }
 
@@ -273,24 +273,24 @@ namespace SbB.Diploma
                     boundarylist.Sort();
                     for (int j = 0; j < boundarylist.Count; j++)
                     {
-                        if (boundarylist[i].Doft.Length != 0)
-                            boundarylist[i].Doft = new int[] { counter++,counter++ };
+                        if (boundarylist[j].Doft.Length == 0)
+                            boundarylist[j].Doft = new int[] { counter++,counter++ };
                     }
                 }
             }
 
-            foreach (MortarSide side in Mortar.MortarSides)
+            /*foreach (MortarSide side in Mortar.MortarSides)
             {
                 for (int i = 1; i < side.Vertexes.Count-1; i++)
                     side.Vertexes[i].Dofm = new int[] { counter++, counter++ };
-            }
+            }*/
         }
 
         public void run()
         {
             FEM.Run();
             BEM.Run();
-            Mortar.Run();
+            //Mortar.Run();
         }
 
         public void fillSystem()
@@ -311,13 +311,13 @@ namespace SbB.Diploma
             FEM.FillGlobalvector(GlobalVector);
             BEM.FillGlobalmatrix(GlobalMatrix);
             BEM.FillGlobalvector(GlobalVector);
-            Mortar.FillGlobalmatrix(GlobalMatrix);
-            Mortar.FillGlobalvector(GlobalVector);
+            //Mortar.FillGlobalmatrix(GlobalMatrix);
+            //Mortar.FillGlobalvector(GlobalVector);
         }
 
         public void solveSystem()
         {
-            LUSolve.Solve(GlobalMatrix, GlobalVector, Result);
+            LUSolve.Solve(GlobalMatrix, GlobalVector,out Result);
             FEM.GetResultsFrom(Result);
             BEM.GetResultsFrom(Result);
         }
