@@ -318,6 +318,8 @@ namespace SbB.Diploma
         public void solveSystem()
         {
             LUSolve.Solve(GlobalMatrix, GlobalVector, Result);
+            FEM.GetResultsFrom(Result);
+            BEM.GetResultsFrom(Result);
         }
     }
 }

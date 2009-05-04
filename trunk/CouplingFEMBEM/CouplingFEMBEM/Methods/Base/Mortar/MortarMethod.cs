@@ -68,5 +68,10 @@ namespace SbB.Diploma
         {
             throw new NotImplementedException();
         }
+
+        public override void GetResultsFrom(Vector results)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

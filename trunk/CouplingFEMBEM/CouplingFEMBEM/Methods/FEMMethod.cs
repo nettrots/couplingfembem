@@ -227,7 +227,18 @@ namespace SbB.Diploma
             for (int i = 0; i < b.Length; i++)
                 global[i] = b[i];
         }
+
+        public override void GetResultsFrom(Vector vector)
+        {
+            results = new Vector(2*vertexes.Count);
+            int counter = 0;
+            for (int i = 0; i < vertexes.Count; i++)
+                for (int j = 0; j < vertexes[i].Dofu.Length; j++)
+                    results[counter++] = vector[vertexes[i].Dofu[j]]; 
+        }
         #endregion
         #endregion
+
+        
     }
 }

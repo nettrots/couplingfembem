@@ -287,8 +287,22 @@ namespace SbB.Diploma.Methods
 
             for (int i = 0; i < indexes.Length; i++)
                 global[indexes[i]] += b[i];
-        } 
+        }
+        public override void GetResultsFrom(Vector vector)
+        {
+            results = new Vector(A.Size.n);
+            int counter = 0;
+            for (int i = 0; i < vertexes.Count; i++)
+            {
+                for (int j = 0; j < vertexes[i].Dofu.Length; j++)
+                    results[counter++] = vector[vertexes[i].Dofu[j]];
+                for (int j = 0; j < vertexes[i].Doft.Length; j++)
+                    results[counter++] = vector[vertexes[i].Doft[j]];
+            }
+        }
         #endregion
         #endregion
+
+        
     }
 }
