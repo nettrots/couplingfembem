@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using QiHe.Yaml.Grammar;
 using QiHe.Yaml.YamlUtility.UI;
 using SbB.Diploma.Methods;
@@ -15,10 +16,14 @@ namespace SbB.Diploma
     using MyHash=Dictionary<string, object> ; 
     public class CouplingMethod
     {
-        private FEMMethod FEM;
-        private MakarBEMMethod BEM;
+        public Polygon Polygon { get; set; }
+        public FEMMethod FEM;
+        public Polygon FemPolygon { get; set; }
+        public MakarBEMMethod BEM;
+        public Polygon BemPolygon { get; set; }
         private MortarMethod Mortar;
         private List<Vertex> vertexes;
+        public List<Func<double,double, double>> FuncList { get; set; }
 
         private Matrix GlobalMatrix;
         private Vector GlobalVector;
@@ -34,7 +39,7 @@ namespace SbB.Diploma
             Dictionary<string, HashValue> data = new Dictionary<string, HashValue>();
             if (!File.Exists(filename))
             {
-               // MessageBox.Show(filename + " does not exist.");
+                MessageBox.Show(filename + " does not exist.");
                 return;
             }
             YamlParser parser = new YamlParser();
@@ -57,119 +62,148 @@ namespace SbB.Diploma
             {
              //   MessageBox.Show(parser.GetEorrorMessages());
             }
-            
+
+            if (data.ContainsKey("Polygon"))
+            {
+                Vertex[] poly = new Vertex[data["Polygon"].eHash["Vertex"].eHash.Count];
+
+                for (int i = 0; i < poly.Length; i++)
+                {
+                    double x = data["Polygon"].eHash["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
+                    double y = data["Polygon"].eHash["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
+                    poly[i] = new Vertex(x, y);
+                }
+                Polygon = new Polygon(poly);
+            }
+            double poissonRatio;
+            double youngModulus;
+            BoundaryClass[] boundaryClasses;
 
             //DONE: Create FEM
+        
 
-            Vertex[] femPolygon = new Vertex[data["FEM"].eHash["Vertex"].eHash.Count];
-            
-            for (int i=0; i<femPolygon.Length; i++)
+            if (data.ContainsKey("FEM"))
             {
-                double x = data["FEM"].eHash["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
-                double y = data["FEM"].eHash["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
-                femPolygon[i] = new Vertex(x,y);
-            }
+                Vertex[] femPolygon = new Vertex[data["FEM"].eHash["Vertex"].eHash.Count];
 
-            double Angle = data["FEM"].eHash["Mesh"].eHash["angle"].eDouble;//(string)((MyHash)(((MyHash)data["FEM"])["Mesh"])["Angle"])
-            double Area = data["FEM"].eHash["Mesh"].eHash["area"].eDouble;
-            double YoungModulus = data["FEM"].eHash["youngModulus"].eDouble;
-            double PoissonRatio = data["FEM"].eHash["poissonRatio"].eDouble;
-
-
-            FEM = new FEMMethod(new object());
-
-            FEM.BoundaryClasses = new BoundaryClass[0];
-            FEM.PoissonRatio = PoissonRatio;
-            FEM.YoungModulus = YoungModulus;
-
-            LinialTriangleTriangulation ltt=new LinialTriangleTriangulation(new Polygon(femPolygon));
-            FEM.Triangulation = ltt;
-            FEM.Angle = Angle;
-            FEM.Area = Area;
-
-            BoundaryClass[] boundaryClasses = new BoundaryClass[data["FEM"].eHash["BoundaryType"].eHash.Count];
-            for (int i = 0; i < boundaryClasses.Length; i++)
-            {
-                string[] ss = data["FEM"].eHash["BoundaryType"].eHash[i.ToString()].eString.Split('@');
-                switch (ss[0])
+                for (int i = 0; i < femPolygon.Length; i++)
                 {
-                    case "STATIC":
-                        if (ss.Length > 1)
-                        {
-                            ss[1] = ss[1].Substring(1, ss[1].Length - 2);
-                            ss = ss[1].Split(',');
-                            boundaryClasses[i] = new StaticBoundary(double.Parse(ss[0]), double.Parse(ss[1]));
-                        }
-                        else boundaryClasses[i] = new StaticBoundary(0, 0);
-                        break;
-                    case "KINEMATIC":
-                        boundaryClasses[i] = new KinematicBoundary();
-                        break;
-                    case "MORTAR":
-                        boundaryClasses[i] = new MortarBoundary();
-                        break;
-                    case "NONMORTAR":
-                        boundaryClasses[i] = new NonMortarBoundary();
-                        break;
-                    default:
-                        throw new Exception("A-ya-yaj!!!");
+                    double x = data["FEM"].eHash["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
+                    double y = data["FEM"].eHash["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
+                    femPolygon[i] = new Vertex(x, y);
                 }
+                
+                FemPolygon=new Polygon(femPolygon);
+                
+                double Angle = data["FEM"].eHash["Mesh"].eHash["angle"].eDouble;
+                    //(string)((MyHash)(((MyHash)data["FEM"])["Mesh"])["Angle"])
+                double Area = data["FEM"].eHash["Mesh"].eHash["area"].eDouble;
+                youngModulus = data["FEM"].eHash["youngModulus"].eDouble;
+                poissonRatio = data["FEM"].eHash["poissonRatio"].eDouble;
+
+
+                FEM = new FEMMethod();
+
+                FEM.BoundaryClasses = new BoundaryClass[0];
+                FEM.PoissonRatio = poissonRatio;
+                FEM.YoungModulus = youngModulus;
+
+                LinialTriangleTriangulation ltt = new LinialTriangleTriangulation(new Polygon(femPolygon));
+                FEM.Triangulation = ltt;
+                FEM.Angle = Angle;
+                FEM.Area = Area;
+
+                boundaryClasses = new BoundaryClass[data["FEM"].eHash["BoundaryType"].eHash.Count];
+                for (int i = 0; i < boundaryClasses.Length; i++)
+                {
+                    string[] ss = data["FEM"].eHash["BoundaryType"].eHash[i.ToString()].eString.Split('@');
+                    switch (ss[0])
+                    {
+                        case "STATIC":
+                            if (ss.Length > 1)
+                            {
+                                ss[1] = ss[1].Substring(1, ss[1].Length - 2);
+                                ss = ss[1].Split(',');
+                                boundaryClasses[i] = new StaticBoundary(double.Parse(ss[0]), double.Parse(ss[1]));
+                            }
+                            else boundaryClasses[i] = new StaticBoundary(0, 0);
+                            break;
+                        case "KINEMATIC":
+                            boundaryClasses[i] = new KinematicBoundary();
+                            break;
+                        case "MORTAR":
+                            boundaryClasses[i] = new MortarBoundary();
+                            break;
+                        case "NONMORTAR":
+                            boundaryClasses[i] = new NonMortarBoundary();
+                            break;
+                        default:
+                            throw new Exception("A-ya-yaj!!!");
+                    }
+                }
+                FEM.BoundaryClasses = boundaryClasses;
             }
-            FEM.BoundaryClasses = boundaryClasses;
-            
             //DONE: Create BEM
-            Vertex[] bemPolygon = new Vertex[data["BEM"].eHash["Vertex"].eHash.Count];
+            if (data.ContainsKey("BEM"))
+            {
+                Vertex[] bemPolygon = new Vertex[data["BEM"].eHash["Vertex"].eHash.Count];
 
-            for (int i = 0; i < femPolygon.Length; i++)
-            {
-                double x = data["BEM"].eHash["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
-                double y = data["BEM"].eHash["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
-                bemPolygon[i] = new Vertex(x, y);
-            }
-            int ElementsPerSegment = data["BEM"].eHash["elementsPerSegment"].eInt;
-            YoungModulus = data["BEM"].eHash["youngModulus"].eDouble;
-            PoissonRatio = data["BEM"].eHash["poissonRatio"].eDouble;
-            BEM = new MakarBEMMethod(new Polygon(bemPolygon));
-            
-            BEM.PoissonRatio = PoissonRatio;
-            BEM.YoungModulus = YoungModulus;
-            BEM.ElementsPerSegment = ElementsPerSegment;
-            boundaryClasses = new BoundaryClass[data["BEM"].eHash["BoundaryType"].eHash.Count];
-            for (int i = 0; i < boundaryClasses.Length; i++)
-            {
-                string[] ss = data["BEM"].eHash["BoundaryType"].eHash[i.ToString()].eString.Split('@');
-                switch (ss[0])
+                for (int i = 0; i < bemPolygon.Length; i++)
                 {
-                    case "STATIC":
-                        if (ss.Length > 1)
-                        {
-                            ss[1] = ss[1].Substring(1, ss[1].Length - 2);
-                            ss = ss[1].Split(',');
-                            boundaryClasses[i] = new StaticBoundary(double.Parse(ss[0]), double.Parse(ss[1]));
-                        }
-                        else boundaryClasses[i] = new StaticBoundary(0, 0);
-                        break;
-                    case "KINEMATIC":
-                        boundaryClasses[i] = new KinematicBoundary();
-                        break;
-                    case "MORTAR":
-                        boundaryClasses[i] = new MortarBoundary();
-                        break;
-                    case "NONMORTAR":
-                        boundaryClasses[i] = new NonMortarBoundary();
-                        break;
-                    default:
-                        throw new Exception("A-ya-yaj!!!");
+                    double x = data["BEM"].eHash["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
+                    double y = data["BEM"].eHash["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
+                    bemPolygon[i] = new Vertex(x, y);
                 }
-            }
-            BEM.BoundaryClasses = boundaryClasses;
+                BemPolygon = new Polygon(bemPolygon);
+                int ElementsPerSegment = data["BEM"].eHash["elementsPerSegment"].eInt;
+                youngModulus = data["BEM"].eHash["youngModulus"].eDouble;
+                poissonRatio = data["BEM"].eHash["poissonRatio"].eDouble;
+                BEM = new MakarBEMMethod(new Polygon(bemPolygon));
 
+                BEM.PoissonRatio = poissonRatio;
+                BEM.YoungModulus = youngModulus;
+                BEM.ElementsPerSegment = ElementsPerSegment;
+                boundaryClasses = new BoundaryClass[data["BEM"].eHash["BoundaryType"].eHash.Count];
+                for (int i = 0; i < boundaryClasses.Length; i++)
+                {
+                    string[] ss = data["BEM"].eHash["BoundaryType"].eHash[i.ToString()].eString.Split('@');
+                    switch (ss[0])
+                    {
+                        case "STATIC":
+                            if (ss.Length > 1)
+                            {
+                                ss[1] = ss[1].Substring(1, ss[1].Length - 2);
+                                ss = ss[1].Split(',');
+                                boundaryClasses[i] = new StaticBoundary(double.Parse(ss[0]), double.Parse(ss[1]));
+                            }
+                            else boundaryClasses[i] = new StaticBoundary(0, 0);
+                            break;
+                        case "KINEMATIC":
+                            boundaryClasses[i] = new KinematicBoundary();
+                            break;
+                        case "MORTAR":
+                            boundaryClasses[i] = new MortarBoundary();
+                            break;
+                        case "NONMORTAR":
+                            boundaryClasses[i] = new NonMortarBoundary();
+                            break;
+                        default:
+                            throw new Exception("A-ya-yaj!!!");
+                    }
+                }
+                BEM.BoundaryClasses = boundaryClasses;
+            }
             //TODO: Create mortar
 
             Mortar=new MortarMethod();
             MortarSide ms=new MortarSide(FEM,BEM,typeof(LinearMortar) );
             Mortar.MortarSides = new List<MortarSide>();
             Mortar.MortarSides.Add(ms);
+        }
+
+        public string Name
+        {
+            get; set;
         }
 
         public void assemble()
@@ -320,6 +354,10 @@ namespace SbB.Diploma
             LUSolve.Solve(GlobalMatrix, GlobalVector,out Result);
             FEM.GetResultsFrom(Result);
             BEM.GetResultsFrom(Result);
+        }
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

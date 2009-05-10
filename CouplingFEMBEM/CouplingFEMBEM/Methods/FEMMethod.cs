@@ -12,6 +12,7 @@ namespace SbB.Diploma
         private List<FEMElement> elements;
         private List<FEMEdge>[] boundaries;
         private BoundaryClass[] boundaryClasses;
+        public List<Func<double, double, double>> FuncList { get; set; }
         private int n;
 
         private Matrix Af;
@@ -26,7 +27,7 @@ namespace SbB.Diploma
         #endregion
 
         #region Constructors
-        public FEMMethod(object data)
+        public FEMMethod()
         {
             //create read data
             refreshD();

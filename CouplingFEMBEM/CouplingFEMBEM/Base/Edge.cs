@@ -55,20 +55,6 @@ namespace SbB.Diploma
         }
         public static Edge operator &(Edge eLeft, Edge eRight)
         {
-//            if (eLeft.classify(eRight.a) == VertexPos.LEFT ||
-//                eLeft.classify(eRight.a) == VertexPos.RIGHT ||
-//                eLeft.classify(eRight.b) == VertexPos.BEHIND ||
-//                eLeft.classify(eRight.b) == VertexPos.BEYOND)
-//                return null;
-//            if (eRight.classify(eLeft.a) == VertexPos.LEFT ||
-//               eRight.classify(eLeft.a) == VertexPos.RIGHT ||
-//               eRight.classify(eLeft.b) == VertexPos.BEHIND ||
-//               eRight.classify(eLeft.b) == VertexPos.BEYOND)
-//                return null;
-//            Vertex[] varray = new Vertex[] { eRight.a, eRight.b, eLeft.a, eLeft.b };
-//            Array.Sort(varray);
-//            if (varray[1] == varray[2]) return null;
-//            return new Edge(varray[1], varray[2]);
             if (eLeft == eRight) return eLeft;
 
             if (eLeft.classify(eRight.A) == VertexPos.BETWEEN && eLeft.classify(eRight.B) == VertexPos.BETWEEN)
