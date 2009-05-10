@@ -38,6 +38,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -142,6 +143,7 @@
   <ItemGroup>
     <Content Include="Base\Solvers\FastSolver\detail.php.htm" />
     <None Include="Resources\triangle.exe" />
+    <Content Include="Resources\example.yaml" />
     <Content Include="Yaml\YAML.PEG.txt" />
     <Content Include="Yaml\YAML.txt" />
     <Content Include="Yaml\YAML_Sample.txt" />

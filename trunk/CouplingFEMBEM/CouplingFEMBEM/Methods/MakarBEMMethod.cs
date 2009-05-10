@@ -16,6 +16,8 @@ namespace SbB.Diploma.Methods
         private List<Vertex> vertexes;
         private List<BoundEdge>[] boundaries;
         private BoundaryClass[] boundaryClasses;
+        public List<Func<double, double, double>> FuncList { get; set; }
+
         private int elementsPerSegment = 8;
 
         private Matrix A;
