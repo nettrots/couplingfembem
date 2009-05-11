@@ -61,7 +61,7 @@ namespace GUIforCoupling
         {
             return Name;
         }
-        public void draw(WinChartViewer viewer )
+        public void draw(XYChart chart)
         {
             double[] x=new double[n+1], y=new double[n+1];
             for (int i = 0; i < n+1; i++)
@@ -106,13 +106,7 @@ namespace GUIforCoupling
             layer.addDataSet(data1, 0x008800, "Server #2");
         
 
-            // Output the chart
-            viewer.Image = c.makeImage();
-
-            //include tool tip for the chart
-            viewer.ImageMap = c.getHTMLImageMap("clickable", "",
-                "title='[{dataSetName}] Hour {xLabel}: {value} MBytes'");
-
+            
         }
     }
 
