@@ -12,11 +12,18 @@ namespace GUIforCoupling
 {
     public partial class Form1 : Form
     {
+        private XYChart chart;
         public Form1()
         {
             InitializeComponent();
-            surface s=new surface();
-            s.createChart(this.Canvas,"asd");
+            initChart();
+            //surface s=new surface();
+            //s.createChart(this.Canvas,"asd");
+        }
+        private void initChart()
+        {
+            chart = new XYChart(Canvas.Width,Canvas.Height);
+            //chart.setPlotArea()
         }
     }
 
