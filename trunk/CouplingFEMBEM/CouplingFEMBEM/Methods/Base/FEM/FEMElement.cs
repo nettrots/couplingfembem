@@ -91,6 +91,11 @@ namespace SbB.Diploma
             }
             return v1.CompareTo(v2);
         }
+        public static implicit operator Polygon(FEMElement element)
+        {
+            return new Polygon(element.nodes);
+        }
+
         #endregion
     }
 }

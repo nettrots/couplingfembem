@@ -53,6 +53,12 @@ namespace GUIforCoupling
             get; set;
         }
 
+        public int N
+        {
+            get { return n; }
+            set { n = value; }
+        }
+
         public double F(double t)
         {
             return options.CheckPoint(options.getX(t), options.getY(t)) ? f(options.getX(t), options.getY(t)) : double.NaN;
@@ -61,49 +67,34 @@ namespace GUIforCoupling
         {
             return Name;
         }
-        public void draw(XYChart chart)
+      
+        public void drawLine(XYChart chart)
         {
-            double[] x=new double[n+1], y=new double[n+1];
-            for (int i = 0; i < n+1; i++)
+            double[] x=new double[N+1],y=new double[N+1], z=new double[N+1];
+            string[] s=new string[N+1];
+            for (int i = 0; i < N+1; i++)
             {
-                x[i] = this.Options.getX((float)i/n);
-                y[i] = F((float) i/n);
+                x[i] = Options.getX((float)i/N);
+                y[i] = Options.getY((float)i / N);
+                s[i] = "(" +x[i]+ ";"+y[i]+")";
+                z[i] = F((float) i/N);
             }
-            // Create a SurfaceChart object of size 720 x 600 pixels
-
-            XYChart c = new XYChart(600, 300);
-            c.setRoundedFrame();
-
-            // Set the plotarea at (55, 58) and of size 520 x 195 pixels, with white
-            // background. Turn on both horizontal and vertical grid lines with light
-            // grey color (0xcccccc)
-            c.setPlotArea(55, 58, 520, 195, 0xffffff, -1, -1, 0xcccccc, 0xcccccc);
-
-            // Add a legend box at (50, 30) (top of the chart) with horizontal
-            // layout. Use 9 pts Arial Bold font. Set the background and border color
-            // to Transparent.
-            c.addLegend(50, 30, false, "Arial Bold", 9).setBackground(
-                Chart.Transparent);
-
-            // Add a title box to the chart using 15 pts Times Bold Italic font, on a
-            // light blue (CCCCFF) background with glass effect. white (0xffffff) on
-            // a dark red (0x800000) background, with a 1 pixel 3D border.
-           
 
             // Add a title to the y axis
-            c.yAxis().setTitle("MBytes per hour");
-);
+           //chart.yAxis().setTitle("MBytes per hour");
 
             // Add a line layer to the chart
-            LineLayer layer = c.addLineLayer2();
+            LineLayer layer = chart.addLineLayer2();
 
-            // Set the default line width to 2 pixels
             layer.setLineWidth(2);
+           
+          //  X
+           
+            chart.xAxis().setLabels(s);
+            chart.xAxis().setLabelStep(10);
 
-            // Add the three data sets to the line layer. For demo purpose, we use a
-            // dash line color for the last line
-            layer.addDataSet(data0, 0xff0000, "Server #1");
-            layer.addDataSet(data1, 0x008800, "Server #2");
+          //  Y
+           layer.addDataSet(z, -1, Name);
         
 
             
@@ -113,21 +104,28 @@ namespace GUIforCoupling
 
     public enum FunctionType
     {
-        ConstX,ConstY
+        ConstX,ConstY,Canonical,InSegments
     }
     public class GraphicOptions
     {
         private FunctionType type;
         private Box box;
+        
+        //diferent types of equation have diferent constants
         private double constValue;
+        private double a;
+        private double b;
+        private Vertex x1;
+        private Vertex x2;
+
         private Polygon polygon;
 
         public GraphicOptions(FunctionType type,Polygon poly)
         {
 
-            this.Polygon = poly;
-            this.FunctionType = type;
-            this.calcBox();
+            Polygon = poly;
+            FunctionType = type;
+            calcBox();
 
             switch (type)
             {
@@ -138,6 +136,14 @@ namespace GUIforCoupling
                 case FunctionType.ConstY:
                     getX = t => (box.MaxX - box.MinX)*t + box.MinX;
                     getY = t => ConstValue;
+                    break;
+                case FunctionType.Canonical:
+                    getX = t => (box.MaxX - box.MinX) * t + box.MinX;
+                    getY = t => A*getX(t)+B;
+                    break;
+                case FunctionType.InSegments:
+                    getX = t => (X2.X-X1.X) * t + X1.X;
+                    getY = t => (X2.Y-X1.Y) * t + X1.Y;
                     break;
                 default:
                     throw new Exception("Error in function type");
@@ -190,6 +196,46 @@ namespace GUIforCoupling
         {
             get { return polygon; }
             set { polygon = value; }
+        }
+
+        public double A
+        {
+            get { return a; }
+            set { if (FunctionType == FunctionType.Canonical || FunctionType.ConstY == FunctionType) a = value; }
+        }
+
+        public double B
+        {
+            get { return b; }
+            set { if (FunctionType == FunctionType.Canonical || FunctionType.ConstY == FunctionType) b = value; }
+        }
+
+        public Vertex X1
+        {
+            get { return x1; }
+            set
+            {
+                if (FunctionType == FunctionType.InSegments || FunctionType.ConstY == FunctionType) x1 = value;
+                if (x1 != null && x2 != null) swithPoints();
+            }
+        }
+
+        public Vertex X2
+        {
+            get { return x2; }
+            set
+            {
+                if (FunctionType == FunctionType.InSegments || FunctionType.ConstY == FunctionType) x2 = value;
+                if (x1 != null && x2 != null) swithPoints();
+            }
+        }
+        private void swithPoints()
+        {
+                if(x1>x2){
+                        Vertex t = x1;
+                        x1 = x2;
+                        x2 = t;
+                    }
         }
 
 

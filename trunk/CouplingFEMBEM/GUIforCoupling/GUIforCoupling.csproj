@@ -51,12 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Domain\Domain.cs" />
+    <Compile Include="Coupling.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Coupling.Designer.cs">
+      <DependentUpon>Coupling.cs</DependentUpon>
     </Compile>
+    <Compile Include="Graphic\Countur.cs" />
     <Compile Include="Graphic\GraphicDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,8 +68,8 @@
     <Compile Include="Graphic\Graphic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Coupling.resx">
+      <DependentUpon>Coupling.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Graphic\GraphicDialog.resx">
