@@ -69,6 +69,8 @@
     <Compile Include="Base\AP.cs" />
     <Compile Include="Base\Matrix.cs" />
     <Compile Include="Base\Polygon.cs" />
+    <Compile Include="Base\Solvers\LUSolver\inv.cs" />
+    <Compile Include="Base\Solvers\LUSolver\trinverse.cs" />
     <Compile Include="Base\Solvers\Solver.cs" />
     <Compile Include="Base\Solvers\LDLTSolver\ssolve.cs" />
     <Compile Include="Base\Solvers\LUSolver\lu.cs" />

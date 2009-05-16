@@ -126,7 +126,7 @@ namespace GUIforCoupling
         #endregion
 
         #region Work with Problems
-        Dictionary<string, HashValue> readYaml(string filename)
+        Dictionary<string, HashValue> ReadYaml(string filename)
         {
             //Create methods and fill with data
 
@@ -161,15 +161,16 @@ namespace GUIforCoupling
             }
             return data;
         }
-        void LoadProblem()
+        void LoadProblem(string filename)
         {
-            string filename;
             
+            Dictionary<string, HashValue> data=ReadYaml(filename);
             string mType = "fem";
             switch (mType)
             {
                 case "fem":
-
+                    FEMMethod meth = new FEMMethod(data);
+                    listStarage.Problems.Add(meth.ToString(), meth);
                     break;
             }
             //BPMethod method=new 
