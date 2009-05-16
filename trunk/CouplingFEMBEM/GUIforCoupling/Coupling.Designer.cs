@@ -142,7 +142,7 @@
             // problemCB
             // 
             this.problemCB.Name = "problemCB";
-            this.problemCB.Size = new System.Drawing.Size(100, 25);
+            this.problemCB.Size = new System.Drawing.Size(150, 25);
             // 
             // toolStripLabel1
             // 
@@ -166,6 +166,7 @@
             this.showMeshbtn.Name = "showMeshbtn";
             this.showMeshbtn.Size = new System.Drawing.Size(52, 22);
             this.showMeshbtn.Text = "Mesh";
+            this.showMeshbtn.Click += new System.EventHandler(this.showMeshbtn_Click);
             // 
             // toolStripSeparator1
             // 
@@ -185,6 +186,7 @@
             this.initProblembtn.Name = "initProblembtn";
             this.initProblembtn.Size = new System.Drawing.Size(43, 22);
             this.initProblembtn.Text = "Init";
+            this.initProblembtn.Click += new System.EventHandler(this.initProblembtn_Click);
             // 
             // runProblembtn
             // 
