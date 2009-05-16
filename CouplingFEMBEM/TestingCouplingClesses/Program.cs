@@ -18,8 +18,9 @@ namespace TestingCouplingClesses
             target.fillSystem();
             target.solveSystem();
 
-            Console.WriteLine("Hello Trots!!!");
             
+            Console.Write("prevet!!");
+            int i = 1;
         }
     }
 }
