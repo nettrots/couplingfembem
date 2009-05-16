@@ -26,9 +26,6 @@ namespace SbB.Diploma
         private List<Vertex> vertexes;
         public List<Func<double,double, double>> FuncList { get; set; }
 
-        private Matrix GlobalMatrix;
-        private Vector GlobalVector;
-        private Vector Result;
 
         public CouplingMethod(Dictionary<string, HashValue> data)
         {
@@ -198,7 +195,8 @@ namespace SbB.Diploma
 
         public override void Initialize()
         {
-            throw new NotImplementedException();
+            FEM.Initialize();
+            BEM.Initialize();
         }
 
         public override void Run()
