@@ -20,7 +20,8 @@ namespace SbB.Diploma
         private BPMethod[] methods;
         public FEMMethod FEM;
         public MakarBEMMethod BEM;
-        private MortarMethod Mortar;
+        private MortarSide mortarSide;
+        private Mortar Mortar;
         private List<Vertex> vertexes; 
         #endregion
 
@@ -57,12 +58,13 @@ namespace SbB.Diploma
             }
             methods[1] = BEM;
 
-            //TODO: Create mortar
-
-            Mortar=new MortarMethod();
-            MortarSide ms=new MortarSide(FEM,BEM,typeof(LinearMortar) );
-            Mortar.MortarSides = new List<MortarSide>();
-            Mortar.MortarSides.Add(ms);
+            //DONE: Create mortar
+            List<int> mortarsides = new List<int>();
+            for (int i = 0; i < FEM.BoundaryClasses.Length; i++)
+            {
+                if (FEM.BoundaryClasses[i].type()==BoundaryType.MORTAR) mortarsides.Add(i);
+            }
+            mortarSide = new MortarSide(FEM, mortarsides);
         }
         #endregion
 
@@ -77,6 +79,8 @@ namespace SbB.Diploma
         {
             FEM.Initialize();
             BEM.Initialize();
+            mortarSide.createMortarNodes();
+            Mortar = mortarSide.createMortar();
         }
 
         public override void Run()
