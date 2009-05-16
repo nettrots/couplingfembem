@@ -69,7 +69,7 @@ namespace TestingLib
         public void CouplingMethodConstructorTest()
         {
             string filename = string.Empty; // TODO: Initialize to an appropriate value
-            CouplingMethod target = new CouplingMethod(@"c:\Documents and Settings\Admin\Мои документы\Visual Studio 2008\Projects\1\CouplingFEMBEM\CouplingFEMBEM\Cofig\example.yaml" );
+            CouplingMethod target = new CouplingMethod(null);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

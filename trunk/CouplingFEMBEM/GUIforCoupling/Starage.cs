@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using SbB.Diploma;
 
 namespace GUIforCoupling
 {
@@ -53,7 +54,7 @@ namespace GUIforCoupling
         public List<Graphic> Graphics { get; set; }
         public List<DomainTriangulation> DomainTriangulation { get; set; }
         public List<GraphicOptions> Groptions { get; set; }
-        public List<IProblem> Problems { get; set; }
+        public List<BPMethod> Problems { get; set; }
 
         public Dictionary<string,Void>ChartRedraw { get; set; }
 
@@ -62,7 +63,7 @@ namespace GUIforCoupling
             Graphics = new List<Graphic>();
             DomainTriangulation = new List<DomainTriangulation>();
             Groptions = new List<GraphicOptions>();
-            Problems = new List<IProblem>();
+            Problems = new List<BPMethod>();
             ChartRedraw = new Dictionary<string, Void>();
         }
 
@@ -71,7 +72,7 @@ namespace GUIforCoupling
     {
         public Graphic Graphic { get; set; }
         public GraphicOptions Groption { get; set; }
-        public IProblem Problem { get; set; }
+        public BPMethod Problem { get; set; }
         public DomainTriangulation DomainTriangulation { get; set; }
         public Void ChartRedraw { get; set; }
 
