@@ -14,63 +14,50 @@ namespace GUIforCoupling
 {
     public partial class Coupling : Form
     {
-        private BaseChart chart;
-        private List<Graphic> graphs;
-        private DomainTriangulation dt;
-        private DomainTriangulation dt2;
-        private DomainTriangulation dt3;
+        
+     
 
         public Coupling()
         {
-            graphs=new List<Graphic>();
-            Polygon p =
-           new Polygon(new Vertex[] {new Vertex(0, 0), new Vertex(0, 1), new Vertex(1, 1), new Vertex(1, 0),});
-            GraphicOptions gropt=new GraphicOptions(FunctionType.ConstX,p) {ConstValue = 0.5};
-            Graphic g=new Graphic((x,y)=>-2*y*y+1) {N = 100, Name = "Name1", Options = gropt};
 
-            graphs.Add(g);
+            workspace = new Workspace();
+            listStarage = workspace.ListStarage;
+            currentStarage = workspace.CurrentStarage;
 
-            Polygon p1 =
-                new Polygon(new [] { new Vertex(0, 0), new Vertex(0, 1), new Vertex(1, 1), new Vertex(1, 0), });
-            GraphicOptions gropt1 = new GraphicOptions(FunctionType.InSegments, p1)
-                                        {
-                                            X1 = new Vertex(0, 0),
-                                            X2 = new Vertex(1, 1)
-                                        };
-            Graphic g1 = new Graphic((x, y) => x * y) {N = 100, Name = "Name2", Options = gropt1};
-            graphs.Add(g1);
-
-
-            LinearTriangle[] lintriangles=new LinearTriangle[3];
-            lintriangles[0]=new LinearTriangle(new Vertex(0,0),new Vertex(0.5,0),new Vertex(0,1) );
-            lintriangles[1] = new LinearTriangle(new Vertex(0.5, 0), new Vertex( 0.5,1), new Vertex(0.5, 0.5));
-            lintriangles[2] = new LinearTriangle(new Vertex(0, 1), new Vertex(0.5, 0.5), new Vertex(0.5, 1));
-
-            LinearBEMEdge[] segments = new LinearBEMEdge[8];
-            segments[0] = new LinearBEMEdge(new Vertex(0.5, 0), new Vertex(0.5, 0.1));
-            segments[1] = new LinearBEMEdge(new Vertex(0.5, 0.1), new Vertex(0.5, 0.2));
-            segments[2] = new LinearBEMEdge(new Vertex(0.5, 0.2), new Vertex(0.5, 0.4));
-            segments[3] = new LinearBEMEdge(new Vertex(0.5, 0.4), new Vertex(0.5, 0.6));
-            segments[4] = new LinearBEMEdge(new Vertex(0.5, 0.6), new Vertex(0.5, 0.8));
-            segments[5] = new LinearBEMEdge(new Vertex(0.5, 0.8), new Vertex(0.5, 1));
-            segments[6] = new LinearBEMEdge(new Vertex(0.5, 1), new Vertex(1, 1));
-            segments[7] = new LinearBEMEdge(new Vertex(1, 1), new Vertex(0, 1));
-
-            dt=new DomainTriangulation{Polygon=p};
-            dt2 = new DomainTriangulation { Elements = lintriangles };
-            dt3 = new DomainTriangulation() {Segments = segments};
+            listStarage.ChartRedraw.Add("empty", empty);
+            listStarage.ChartRedraw.Add("lineModeChart", lineModeChart);
+            listStarage.ChartRedraw.Add("problemModeChart", problemModeChart);
+            listStarage.ChartRedraw.Add("surfaceModeChart", surfaceModeChart);
+            currentStarage.ChartRedraw = listStarage.ChartRedraw["empty"];
 
             InitializeComponent();
             //lineModeChart();
-            triangulationeModeChart();
-            flash();
-            
+           // triangulationeModeChart();
+           // flash();
+
 
         }
+        #region Workspace region
+        public static Workspace workspace;
+        public static ListStarage listStarage;
+        public static CurrentStarage currentStarage;
+        #endregion
+
+        #region Chart region
+
+        private BaseChart chart;
+        
         private void flash()
         {
+            currentStarage.ChartRedraw();
             Canvas.Image = chart.makeImage();
+        }
 
+        private void empty()
+        {
+            chart = new XYChart(Canvas.Width, Canvas.Height);
+            chart.setSize(Canvas.Width, Canvas.Height);
+            chart.setRoundedFrame();
         }
 
         private void lineModeChart()
@@ -81,7 +68,7 @@ namespace GUIforCoupling
             chart1.setRoundedFrame();
 
             chart1.setPlotArea(30, 30, Canvas.Width - 60, Canvas.Height - 100, 0xffffff, -1, -1, 0xcccccc, 0xcccccc);
-            foreach (var graphic in graphs)
+            foreach (var graphic in listStarage.Graphics)
             {
                 graphic.drawLine(chart1);
             }
@@ -94,7 +81,7 @@ namespace GUIforCoupling
 
         }
 
-        private void triangulationeModeChart()
+        private void problemModeChart()
         {
 
             var chart1 = new XYChart(Canvas.Width, Canvas.Height);
@@ -102,9 +89,11 @@ namespace GUIforCoupling
             chart1.setRoundedFrame();
 
             chart1.setPlotArea(40, 40, Canvas.Width - 60, Canvas.Height - 100, 0xffffff, -1, -1, 0xffffff, 0xffffff);
-            dt.drawDomain(chart1);
+           
+            
+            /*dt.drawDomain(chart1);
             dt2.triangulationLayer(chart1);
-            dt3.segmentsLayer(chart1);
+            dt3.segmentsLayer(chart1);*/
             chart = chart1;
             //chart1.setShadingMode(Chart.S)
 
@@ -126,12 +115,19 @@ namespace GUIforCoupling
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            
-            lineModeChart();
+
             flash();
             //Canvas.Invalidate();
         }
-        
+        #endregion
+
+        #region Work with Problems
+        void LoadProblem()
+        {
+         
+            IProblem problem;
+        }
+        #endregion
     }
 
    
