@@ -16,21 +16,17 @@ namespace SbB.Diploma
 
     public class CouplingMethod: BPMethod
     {
-        public Polygon Polygon { get; set; }
+        #region Fields
         private BPMethod[] methods;
         public FEMMethod FEM;
-        public Polygon FemPolygon { get; set; }
         public MakarBEMMethod BEM;
-        public Polygon BemPolygon { get; set; }
         private MortarMethod Mortar;
-        private List<Vertex> vertexes;
-        public List<Func<double,double, double>> FuncList { get; set; }
+        private List<Vertex> vertexes; 
+        #endregion
 
-
+        #region Constructors
         public CouplingMethod(Dictionary<string, HashValue> data)
         {
-            
-
             if (data.ContainsKey("Polygon"))
             {
                 Vertex[] poly = new Vertex[data["Polygon"].eHash["Vertex"].eHash.Count];
@@ -67,10 +63,38 @@ namespace SbB.Diploma
             Mortar.MortarSides = new List<MortarSide>();
             Mortar.MortarSides.Add(ms);
         }
+        #endregion
 
-        public string Name
+        #region Properties
+        public Polygon Polygon { get; set; }
+        public Polygon FemPolygon { get; set; }
+        public Polygon BemPolygon { get; set; }
+        public List<Func<double, double, double>> FuncList { get; set; }
+        public string Name { get; set; }
+        #endregion
+
+        #region Methods
+
+        public override void Initialize()
         {
-            get; set;
+            FEM.Initialize();
+            BEM.Initialize();
+        }
+
+        public override void Run()
+        {
+            FEM.Run();
+            BEM.Run();
+
+            Matrix KFEM = FEM.K;
+            Matrix KBEM = BEM.K;
+            Vector FFEM = FEM.F;
+            Vector FBEM = BEM.F;
+        }
+
+        public override void Solve()
+        {
+            throw new NotImplementedException();
         }
 
         public void assemble()
@@ -99,19 +123,19 @@ namespace SbB.Diploma
 
             foreach (Vertex vertex in FEM.Vertexes)
             {
-                vertex.Dofu = new int[] {counter++, counter++};
+                vertex.Dofu = new int[] { counter++, counter++ };
             }
 
             for (int i = 0; i < FEM.BoundaryClasses.Length; i++)
             {
-                if (FEM.BoundaryClasses[i].type()==BoundaryType.MORTAR)
+                if (FEM.BoundaryClasses[i].type() == BoundaryType.MORTAR)
                 {
                     List<Vertex> boundarylist = new List<Vertex>();
                     foreach (FEMEdge edge in FEM.Boundaries[i])
                         for (int j = 0; j < edge.NodesCount; j++)
                             if (!boundarylist.Contains(edge[j])) boundarylist.Add(edge[j]);
                     boundarylist.Sort();
-                    for (int j = 1; j < boundarylist.Count-1; j++)
+                    for (int j = 1; j < boundarylist.Count - 1; j++)
                     {
                         boundarylist[i].Doft = new int[] { counter++, counter++ };
                     }
@@ -133,19 +157,19 @@ namespace SbB.Diploma
                     for (int j = 1; j < boundarylist.Count - 1; j++)
                     {
                         if (boundarylist[j].Doft.Length == 0)
-                            boundarylist[j].Doft = new int[] {counter++,counter++};
+                            boundarylist[j].Doft = new int[] { counter++, counter++ };
                     }
                     for (int j = 1; j < boundarylist.Count - 1; j++)
                     {
                         if (boundarylist[j].Dofu.Length == 0)
-                            boundarylist[j].Dofu = new int[] { counter++,counter++ };
+                            boundarylist[j].Dofu = new int[] { counter++, counter++ };
                     }
                 }
             }
 
             for (int i = 0; i < BEM.BoundaryClasses.Length; i++)
             {
-                if (BEM.BoundaryClasses[i].type()==BoundaryType.STATIC)
+                if (BEM.BoundaryClasses[i].type() == BoundaryType.STATIC)
                 {
                     List<Vertex> boundarylist = new List<Vertex>();
                     foreach (BoundEdge edge in BEM.Boundaries[i])
@@ -175,7 +199,7 @@ namespace SbB.Diploma
                     for (int j = 0; j < boundarylist.Count; j++)
                     {
                         if (boundarylist[j].Doft.Length == 0)
-                            boundarylist[j].Doft = new int[] { counter++,counter++ };
+                            boundarylist[j].Doft = new int[] { counter++, counter++ };
                     }
                 }
             }
@@ -187,26 +211,11 @@ namespace SbB.Diploma
             }*/
         }
 
-
         public override string ToString()
         {
             return Name;
         }
 
-        public override void Initialize()
-        {
-            FEM.Initialize();
-            BEM.Initialize();
-        }
-
-        public override void Run()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Solve()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }
