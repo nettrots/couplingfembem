@@ -18,6 +18,8 @@ namespace TestingCouplingClesses
             target.fillSystem();
             target.solveSystem();
 
+            Console.WriteLine("Hello 1");
+            Console.WriteLine("Hello 2");
             
             Console.Write("prevet!!");
             int i = 1;
