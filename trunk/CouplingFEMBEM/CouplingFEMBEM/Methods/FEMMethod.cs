@@ -20,6 +20,7 @@ namespace SbB.Diploma
         #region Constructors
         public FEMMethod(Dictionary<string, HashValue> data)
         {
+            Name = "FEM";
             //create read data
             Vertex[] femPolygon = new Vertex[data["Vertex"].eHash.Count];
 
@@ -72,6 +73,7 @@ namespace SbB.Diploma
         #endregion
 
         #region Properties
+        public string Name{get;set;}
         public double YoungModulus
         {
             get { return youngModulus; }

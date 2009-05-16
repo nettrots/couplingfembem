@@ -93,11 +93,19 @@ namespace GUIforCoupling
             chart1.setRoundedFrame();
 
             chart1.setPlotArea(40, 40, Canvas.Width - 60, Canvas.Height - 100, 0xffffff, -1, -1, 0xffffff, 0xffffff);
-           
-            
-            /*dt.drawDomain(chart1);
-            dt2.triangulationLayer(chart1);
-            dt3.segmentsLayer(chart1);*/
+
+            switch (currentStarage.DomainTriangulation.State)
+            {
+                case 0:
+                    currentStarage.DomainTriangulation.drawDomain(chart1);
+                    break;
+                case 1:
+                    currentStarage.DomainTriangulation.triangulationLayer(chart1);
+                    break;
+                case 2:
+                    currentStarage.DomainTriangulation.segmentsLayer(chart1);
+                    break;
+            }
             chart = chart1;
             //chart1.setShadingMode(Chart.S)
 
@@ -165,17 +173,50 @@ namespace GUIforCoupling
         {
             
             Dictionary<string, HashValue> data=ReadYaml(filename);
-            string mType = "fem";
+            string[] ss= filename.Split('.');
+            string mType = ss[ss.Length-1];
+            BPMethod meth;
             switch (mType)
             {
                 case "fem":
-                    FEMMethod meth = new FEMMethod(data);
+                     meth = new FEMMethod(data);
                     listStarage.Problems.Add(meth.ToString(), meth);
                     break;
+                case "bem":
+                     meth = new MakarBEMMethod(data);
+                    listStarage.Problems.Add(meth.ToString(), meth);
+                    break;
+                case "coupl":
+                    meth = new CouplingMethod(data);
+                    listStarage.Problems.Add(meth.ToString(), meth);
+                    break;
+                default:
+                    meth = null;
+                    break;
             }
-            //BPMethod method=new 
+            currentStarage.Problem = meth;
         }
         #endregion
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if( openFileDialog1.ShowDialog()==DialogResult.OK)
+            {
+                LoadProblem(openFileDialog1.FileName);
+                problemCB.Items.Add(currentStarage.Problem.ToString());
+            }
+        }
+
+        private void showFigurebtn_Click(object sender, EventArgs e)
+        {
+            //currentStarage.DomainTriangulation = listStarage.DomainTriangulation["problemModeChart"];
+            currentStarage.ChartRedraw = listStarage.ChartRedraw["problemModeChart"];
+            currentStarage.DomainTriangulation = new DomainTriangulation
+                                                     {
+                                                         Polygon =  currentStarage.Problem.Polygon,
+                                                         State = 0
+                                                     };
+        }
     }
 
    

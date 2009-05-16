@@ -33,23 +33,24 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadWorkSpaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.problemCB = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.showMeshbtn = new System.Windows.Forms.ToolStripButton();
             this.showFigurebtn = new System.Windows.Forms.ToolStripButton();
+            this.showMeshbtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.initProblembtn = new System.Windows.Forms.ToolStripButton();
+            this.runProblembtn = new System.Windows.Forms.ToolStripButton();
             this.solveProblembtn = new System.Windows.Forms.ToolStripButton();
+            this.doAllbtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.runProblembtn = new System.Windows.Forms.ToolStripButton();
-            this.doAllbtn = new System.Windows.Forms.ToolStripButton();
-            this.saveWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadWorkSpaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -90,6 +91,19 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.openToolStripMenuItem.Text = "Load Problem";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // loadWorkSpaceToolStripMenuItem
+            // 
+            this.loadWorkSpaceToolStripMenuItem.Name = "loadWorkSpaceToolStripMenuItem";
+            this.loadWorkSpaceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.loadWorkSpaceToolStripMenuItem.Text = "Load WorkSpace";
+            // 
+            // saveWorkspaceToolStripMenuItem
+            // 
+            this.saveWorkspaceToolStripMenuItem.Name = "saveWorkspaceToolStripMenuItem";
+            this.saveWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.saveWorkspaceToolStripMenuItem.Text = "Save Workspace";
             // 
             // exitToolStripMenuItem
             // 
@@ -101,7 +115,7 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel3,
-            this.toolStripComboBox1,
+            this.problemCB,
             this.toolStripLabel1,
             this.showFigurebtn,
             this.showMeshbtn,
@@ -119,19 +133,22 @@
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(45, 22);
+            this.toolStripLabel3.Text = "Problem";
+            // 
+            // problemCB
+            // 
+            this.problemCB.Name = "problemCB";
+            this.problemCB.Size = new System.Drawing.Size(100, 25);
+            // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(33, 22);
             this.toolStripLabel1.Text = "Show";
-            // 
-            // showMeshbtn
-            // 
-            this.showMeshbtn.Image = ((System.Drawing.Image)(resources.GetObject("showMeshbtn.Image")));
-            this.showMeshbtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.showMeshbtn.Name = "showMeshbtn";
-            this.showMeshbtn.Size = new System.Drawing.Size(52, 22);
-            this.showMeshbtn.Text = "Mesh";
             // 
             // showFigurebtn
             // 
@@ -140,6 +157,15 @@
             this.showFigurebtn.Name = "showFigurebtn";
             this.showFigurebtn.Size = new System.Drawing.Size(57, 22);
             this.showFigurebtn.Text = "Figure";
+            this.showFigurebtn.Click += new System.EventHandler(this.showFigurebtn_Click);
+            // 
+            // showMeshbtn
+            // 
+            this.showMeshbtn.Image = ((System.Drawing.Image)(resources.GetObject("showMeshbtn.Image")));
+            this.showMeshbtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.showMeshbtn.Name = "showMeshbtn";
+            this.showMeshbtn.Size = new System.Drawing.Size(52, 22);
+            this.showMeshbtn.Text = "Mesh";
             // 
             // toolStripSeparator1
             // 
@@ -160,6 +186,14 @@
             this.initProblembtn.Size = new System.Drawing.Size(43, 22);
             this.initProblembtn.Text = "Init";
             // 
+            // runProblembtn
+            // 
+            this.runProblembtn.Image = ((System.Drawing.Image)(resources.GetObject("runProblembtn.Image")));
+            this.runProblembtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.runProblembtn.Name = "runProblembtn";
+            this.runProblembtn.Size = new System.Drawing.Size(46, 22);
+            this.runProblembtn.Text = "Run";
+            // 
             // solveProblembtn
             // 
             this.solveProblembtn.Image = ((System.Drawing.Image)(resources.GetObject("solveProblembtn.Image")));
@@ -167,6 +201,14 @@
             this.solveProblembtn.Name = "solveProblembtn";
             this.solveProblembtn.Size = new System.Drawing.Size(53, 22);
             this.solveProblembtn.Text = "Solve";
+            // 
+            // doAllbtn
+            // 
+            this.doAllbtn.Image = ((System.Drawing.Image)(resources.GetObject("doAllbtn.Image")));
+            this.doAllbtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.doAllbtn.Name = "doAllbtn";
+            this.doAllbtn.Size = new System.Drawing.Size(54, 22);
+            this.doAllbtn.Text = "Do All";
             // 
             // toolStripSeparator2
             // 
@@ -181,44 +223,9 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripComboBox1
+            // openFileDialog1
             // 
-            this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(100, 25);
-            // 
-            // toolStripLabel3
-            // 
-            this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(45, 22);
-            this.toolStripLabel3.Text = "Problem";
-            // 
-            // runProblembtn
-            // 
-            this.runProblembtn.Image = ((System.Drawing.Image)(resources.GetObject("runProblembtn.Image")));
-            this.runProblembtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.runProblembtn.Name = "runProblembtn";
-            this.runProblembtn.Size = new System.Drawing.Size(46, 22);
-            this.runProblembtn.Text = "Run";
-            // 
-            // doAllbtn
-            // 
-            this.doAllbtn.Image = ((System.Drawing.Image)(resources.GetObject("doAllbtn.Image")));
-            this.doAllbtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.doAllbtn.Name = "doAllbtn";
-            this.doAllbtn.Size = new System.Drawing.Size(54, 22);
-            this.doAllbtn.Text = "Do All";
-            // 
-            // saveWorkspaceToolStripMenuItem
-            // 
-            this.saveWorkspaceToolStripMenuItem.Name = "saveWorkspaceToolStripMenuItem";
-            this.saveWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.saveWorkspaceToolStripMenuItem.Text = "Save Workspace";
-            // 
-            // loadWorkSpaceToolStripMenuItem
-            // 
-            this.loadWorkSpaceToolStripMenuItem.Name = "loadWorkSpaceToolStripMenuItem";
-            this.loadWorkSpaceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.loadWorkSpaceToolStripMenuItem.Text = "Load WorkSpace";
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Coupling
             // 
@@ -261,11 +268,12 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private System.Windows.Forms.ToolStripComboBox problemCB;
         private System.Windows.Forms.ToolStripButton runProblembtn;
         private System.Windows.Forms.ToolStripButton doAllbtn;
         private System.Windows.Forms.ToolStripMenuItem saveWorkspaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadWorkSpaceToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
     }
 }

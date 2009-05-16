@@ -27,6 +27,7 @@ namespace SbB.Diploma
         #region Constructors
         public CouplingMethod(Dictionary<string, HashValue> data)
         {
+            Name = "Coupling FEM-BEM";
             if (data.ContainsKey("Polygon"))
             {
                 Vertex[] poly = new Vertex[data["Polygon"].eHash["Vertex"].eHash.Count];
