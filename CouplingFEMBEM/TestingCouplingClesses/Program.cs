@@ -17,12 +17,13 @@ namespace TestingCouplingClesses
             target.run();
             target.fillSystem();
             target.solveSystem();
-
+            string s = "dfgdf";
             Console.WriteLine("Hello 1");
             Console.WriteLine("Hello 2");
             
             Console.Write("prevet!!");
             int i = 1;
+            double r = 5;
         }
     }
 }
