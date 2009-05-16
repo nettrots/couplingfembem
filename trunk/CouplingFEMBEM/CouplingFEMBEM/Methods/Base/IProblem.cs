@@ -9,7 +9,6 @@ namespace SbB.Diploma
     {
         double YoungModulus { get; set; }
         double PoissonRatio { get; set; }
-        Polygon Polygon { get; set; }
         BoundaryClass[] BoundaryClasses { get; set; }
     }
 }

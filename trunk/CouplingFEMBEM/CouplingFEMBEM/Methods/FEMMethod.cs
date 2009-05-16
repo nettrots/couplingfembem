@@ -72,8 +72,6 @@ namespace SbB.Diploma
         #endregion
 
         #region Properties
- 
-    
         public double YoungModulus
         {
             get { return youngModulus; }
@@ -92,7 +90,6 @@ namespace SbB.Diploma
                 refreshD();
             }
         }
-        public Polygon Polygon { get; set;}
         public BoundaryClass[] BoundaryClasses { get; set; }
 
         public List<Vertex> Vertexes { get; private set; }
