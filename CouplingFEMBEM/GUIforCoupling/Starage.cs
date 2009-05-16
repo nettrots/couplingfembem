@@ -54,7 +54,7 @@ namespace GUIforCoupling
         public List<Graphic> Graphics { get; set; }
         public List<DomainTriangulation> DomainTriangulation { get; set; }
         public List<GraphicOptions> Groptions { get; set; }
-        public List<BPMethod> Problems { get; set; }
+        public Dictionary<string, BPMethod> Problems { get; set; }
 
         public Dictionary<string,Void>ChartRedraw { get; set; }
 
@@ -63,7 +63,7 @@ namespace GUIforCoupling
             Graphics = new List<Graphic>();
             DomainTriangulation = new List<DomainTriangulation>();
             Groptions = new List<GraphicOptions>();
-            Problems = new List<BPMethod>();
+            Problems = new Dictionary<string, BPMethod>();
             ChartRedraw = new Dictionary<string, Void>();
         }
 
