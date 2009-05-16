@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using SbB.Diploma;
 
-class inv
+public class inv
 {
     /*************************************************************************
     Обращение матрицы, заданной LU-разложением
@@ -175,9 +175,10 @@ class inv
       -- ALGLIB --
          Copyright 2005 by Bochkanov Sergey
     *************************************************************************/
-    public static bool rmatrixinverse(Matrix a,
-        int n)
+    public static bool rmatrixinverse(Matrix a
+        )
     {
+        int n = a.Size.n;
         bool result = new bool();
         int[] pivots = new int[0];
 
