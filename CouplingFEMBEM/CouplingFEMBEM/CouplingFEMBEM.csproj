@@ -73,6 +73,8 @@
     <Compile Include="Base\Solvers\LDLTSolver\ssolve.cs" />
     <Compile Include="Base\Solvers\LUSolver\lu.cs" />
     <Compile Include="Base\Solvers\LUSolver\rsolve.cs" />
+    <Compile Include="Methods\Base\IDiscretization.cs" />
+    <Compile Include="Methods\Base\IProblem.cs" />
     <Compile Include="Methods\Base\LinearTriangleFEM\LinearEdge.cs" />
     <Compile Include="Methods\Base\FEM\Triangle.cs" />
     <Compile Include="Base\Vector.cs" />

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SbB.Diploma
 {
-    public class MortarMethod:MethodBase
+    public class MortarMethod:BPMethod
     {
         private List<MortarSide> mortarSides;
 
@@ -47,6 +47,11 @@ namespace SbB.Diploma
             throw new NotImplementedException();
         }
 
+        public override void Solve()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Initialize()
         {
             foreach (MortarSide side in mortarSides)
@@ -55,23 +60,5 @@ namespace SbB.Diploma
             }
         }
 
-        public override void FillGlobalmatrix(Matrix global)
-        {
-            foreach (MortarSide side in mortarSides)
-            {
-                //side.Mortar.
-            }
-            throw new NotImplementedException();
-        }
-
-        public override void FillGlobalvector(Vector global)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void GetResultsFrom(Vector results)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
