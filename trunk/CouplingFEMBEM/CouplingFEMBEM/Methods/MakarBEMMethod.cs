@@ -14,12 +14,7 @@ namespace SbB.Diploma.Methods
     {
         #region Fields
         private Matrix H, G;
-        
-
         private int elementsPerSegment = 8;
-
-        private Matrix A;
-        private Vector b;
         #endregion
 
         #region Constructors
@@ -97,6 +92,12 @@ namespace SbB.Diploma.Methods
                     Vertex v = ((double) j/ElementsPerSegment)*(Polygon[i + 1] - Polygon[i]);
                     Vertexes.Add(Polygon[i] + v);
                 }
+            }
+
+            int counter = 0;
+            foreach (Vertex vertex in Vertexes)
+            {
+                vertex.Dofu = new int[] { counter++, counter++ };
             }
             
             Boundaries = new List<BoundEdge>[Polygon.Count];
@@ -248,53 +249,50 @@ namespace SbB.Diploma.Methods
         }
         public override void Run()
         {
-            //Create A an b from G and H
-            int mDim = 2*Vertexes.Count;
-            int nDim = 0;
-            foreach (Vertex vertex in Vertexes)
+            // Create M
+            Matrix M = new Matrix(H.Size);
+            foreach (List<BoundEdge> boundary in Boundaries)
             {
-                nDim += vertex.Dofu.Length;
-                nDim += vertex.Doft.Length;
+                foreach (LinearBEMEdge edge in boundary)
+                {
+                    edge.Converting(M);
+                }
             }
-            b = new Vector(mDim);
-            A = new Matrix(mDim, nDim);
 
-            int counter = 0;
-            for (int i = 0; i < Vertexes.Count; i++)
+            // Inverse G
+            inv.rmatrixinverse(G);
+
+            // Create t
+            Vector t = new Vector(2*Vertexes.Count);
+            for (int i = 0; i < BoundaryClasses.Length; i++)
             {
-                int k = 0;
-                for (int j = 0; j < Polygon.Count; j++)
-                    if (Polygon.edge(j).hasVertex(Vertexes[i]))
-                    {
-                        k = j;
-                        break;
-                    }
-
-                if (Vertexes[i].Dofu.Length == 0)
-                { /* Kinenatic boundary type. U=0 */ }
-                else
+                if (BoundaryClasses[i].type()==BoundaryType.STATIC)
                 {
-                    for (int j = 0; j < A.Size.m; j++)
+                    Vertex p = ((StaticBoundary) BoundaryClasses[i]).P;
+                    for (int j = ElementsPerSegment*i; j <  ElementsPerSegment*(i+1); j++)
                     {
-                        A[j][counter] = H[j][2*i];
-                        A[j][counter + 1] = H[j][2*i + 1];
+                        t[Vertexes[j].Dofu[0]] += p.X;
+                        t[Vertexes[j].Dofu[1]] += p.Y;
                     }
-                    counter += 2;
                 }
+            }
 
-                if (Vertexes[i].Doft.Length==0)
+            // Create K
+            K = M*G*H;
+
+            // Create F
+            F = M*t;
+
+            for (int i = 0; i < BoundaryClasses.Length; i++)
+            {
+                if (BoundaryClasses[i].type() == BoundaryType.KINEMATIC)
                 {
-                    b += ((StaticBoundary) BoundaryClasses[k]).P.X*G[2*i];
-                    b += ((StaticBoundary) BoundaryClasses[k]).P.Y*G[2*i + 1];
-                }
-                else
-                {
-                    for (int j = 0; j < A.Size.m; j++)
+                    for (int j = ElementsPerSegment * i; j < ElementsPerSegment * (i + 1); j++)
                     {
-                        A[j][counter] = G[j][2 * i];
-                        A[j][counter + 1] = G[j][2*i + 1];
+                        K[Vertexes[j].Dofu[0]][Vertexes[j].Dofu[0]] = 1.0 / Constants.EPS;
+                        K[Vertexes[j].Dofu[1]][Vertexes[j].Dofu[1]] = 1.0 / Constants.EPS;
+                        F[Vertexes[j].Dofu[1]] = 0.0;
                     }
-                    counter += 2;
                 }
             }
         }
