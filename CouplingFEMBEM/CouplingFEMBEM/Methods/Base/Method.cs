@@ -18,6 +18,7 @@ namespace SbB.Diploma
         }
         public Matrix K { get; protected set;}
         public Vector F { get; protected set; }
+        public Polygon Polygon { get; set; }
         #endregion
 
         #region Methods

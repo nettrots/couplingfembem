@@ -72,8 +72,6 @@ namespace SbB.Diploma.Methods
 
         public double PoissonRatio { get; set; }
 
-        public Polygon Polygon { get; set; }
-
         public BoundaryClass[] BoundaryClasses { get; set; }
 
         public int ElementsPerSegment { get; set; }

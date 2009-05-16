@@ -31,8 +31,8 @@ namespace GUIforCoupling
                 problemCB.Items.Add(problem);
                 if (!b) continue;
                     if (problem.Polygon != null) domainsCB.Items.Add("Domain");
-                    if (problem.FemPolygon != null) domainsCB.Items.Add("FEMDomain");
-                    if (problem.BemPolygon != null) domainsCB.Items.Add("BEMDomain");
+                    //if (problem.FemPolygon != null) domainsCB.Items.Add("FEMDomain");
+                    //if (problem.BemPolygon != null) domainsCB.Items.Add("BEMDomain");
                     if (domainsCB.Items.Count != 0)
                     {
                         domainsCB.SelectedIndex = 0;
@@ -58,8 +58,8 @@ namespace GUIforCoupling
         {
             CouplingMethod problem = problemsD[problemCB.SelectedText];
             if (problem.Polygon != null) domainsCB.Items.Add("Domain");
-            if (problem.FemPolygon != null) domainsCB.Items.Add("FEMDomain");
-            if (problem.BemPolygon != null) domainsCB.Items.Add("BEMDomain");
+            //if (problem.FemPolygon != null) domainsCB.Items.Add("FEMDomain");
+            //if (problem.BemPolygon != null) domainsCB.Items.Add("BEMDomain");
             
         }
 

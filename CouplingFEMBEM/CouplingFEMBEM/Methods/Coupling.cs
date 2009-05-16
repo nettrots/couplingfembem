@@ -66,9 +66,6 @@ namespace SbB.Diploma
         #endregion
 
         #region Properties
-        public Polygon Polygon { get; set; }
-        public Polygon FemPolygon { get; set; }
-        public Polygon BemPolygon { get; set; }
         public List<Func<double, double, double>> FuncList { get; set; }
         public string Name { get; set; }
         #endregion
