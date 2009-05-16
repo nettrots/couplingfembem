@@ -20,6 +20,13 @@ namespace SbB.Diploma
         }
         #endregion
 
+        #region Properties
+        public List<int> MortarSides
+        {
+            get { return mortarsides; }
+        }
+        #endregion
+
         #region Methods
         public void createMortarNodes()
         {

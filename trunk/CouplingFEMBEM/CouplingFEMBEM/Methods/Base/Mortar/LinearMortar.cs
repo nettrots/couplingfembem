@@ -17,7 +17,6 @@ namespace SbB.Diploma
         #region Constructors
         public LinearMortar(List<Vertex> vertexes)
         {
-            //matrix = new Matrix(2 * femnodescount, 2 * (vertexes.Count - 2));
             this.vertexes = vertexes;
         }
         #endregion
@@ -45,41 +44,60 @@ namespace SbB.Diploma
         #endregion
 
         #region Public
-        public override void visitFunction(int nlocal, int nglobal, Phi phi)
+        private void visitFunction(int indexLocal, int indexU, int indexV, Phi phi)
         {
             Integration integration = new GaussianQuadrature(integratedFunction);
             double integral;
 
             this.phi = phi;
-            this.nlocal = nlocal;
+            this.nlocal = indexLocal;
 
             gamma = new Edge(vertexes[0], vertexes[1]);
             Nu = Nu0;
-            integral = sign ? integration.defineIntegral(0.0, 1.0) : -integration.defineIntegral(0.0, 1.0);
-            matrix[2 * nglobal][0] += integral;
-            matrix[2 * nglobal + 1][1] += integral;
+            integral = integration.defineIntegral(0.0, 1.0);
+            matrix[indexU][0] += integral;
+            matrix[indexV][1] += integral;
 
             for (int i = 1; i < vertexes.Count - 2; i++)
             {
                 gamma = new Edge(vertexes[i], vertexes[i + 1]);
 
                 Nu = Nu1;
-                integral = sign ? integration.defineIntegral(0.0, 1.0) : -integration.defineIntegral(0.0, 1.0);
-                matrix[2 * nglobal][2 * (i - 1)] += integral;
-                matrix[2 * nglobal + 1][2 * (i - 1) + 1] += integral;
+                integral = integration.defineIntegral(0.0, 1.0);
+                matrix[indexU][2*(i - 1)] += integral;
+                matrix[indexV][2*(i - 1) + 1] += integral;
 
                 Nu = Nu2;
-                integral = sign ? integration.defineIntegral(0.0, 1.0) : -integration.defineIntegral(0.0, 1.0);
-                matrix[2 * nglobal][2 * i] += integral;
-                matrix[2 * nglobal + 1][2 * i + 1] += integral;
+                integral = integration.defineIntegral(0.0, 1.0);
+                matrix[indexU][2*i] += integral;
+                matrix[indexV][2*i + 1] += integral;
             }
 
             gamma = new Edge(vertexes[vertexes.Count - 2], vertexes[vertexes.Count - 1]);
             Nu = Nu0;
-            integral = sign ? integration.defineIntegral(0.0, 1.0) : -integration.defineIntegral(0.0, 1.0);
-            matrix[2 * nglobal][2 * (vertexes.Count - 2) - 2] += integral;
-            matrix[2 * nglobal + 1][2 * (vertexes.Count - 2) - 1] += integral;
+            integral = integration.defineIntegral(0.0, 1.0);
+            matrix[indexU][2*(vertexes.Count - 2) - 2] += integral;
+            matrix[indexV][2*(vertexes.Count - 2) - 1] += integral;
         }
+
+        public override Matrix createD(int DoFsCount, List<BoundEdge>[] boundaries)
+        {
+            matrix = new Matrix(DoFsCount, 2*(vertexes.Count-2));
+
+            foreach (List<BoundEdge> boundary in boundaries)
+            {
+                foreach (BoundEdge edge in boundary)
+                {
+                    for (int i = 0; i < edge.NodesCount; i++)
+                    {
+                        visitFunction(i, edge[i].Dofu[0], edge[i].Dofu[1], edge.phi);               
+                    }
+                }
+            }
+
+            return matrix;
+        }
+
         #endregion
         #endregion
     }

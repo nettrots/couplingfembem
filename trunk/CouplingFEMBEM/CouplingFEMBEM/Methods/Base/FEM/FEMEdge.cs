@@ -17,7 +17,7 @@ namespace SbB.Diploma
         #region Methods
         public abstract void FEM(Vector V, Vertex p);
         public abstract void FEM(Matrix Af, int offset);
-        public abstract double phi(int i, double x, double y);
+        
         public override void mortar(Mortar mortarvisitor)
         {
 /*            for (int i = 0; i < Rank; i++)

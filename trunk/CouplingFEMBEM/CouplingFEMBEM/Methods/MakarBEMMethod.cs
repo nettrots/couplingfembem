@@ -299,7 +299,5 @@ namespace SbB.Diploma.Methods
         }
         #endregion
         #endregion
-
-        
     }
 }

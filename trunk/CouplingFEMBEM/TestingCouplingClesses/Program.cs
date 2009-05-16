@@ -13,7 +13,6 @@ namespace TestingCouplingClesses
         {
             CouplingMethod target = new CouplingMethod(null);
 
-            target.assemble();
         }
     }
 }
