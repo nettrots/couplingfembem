@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SbB.Diploma.Yaml.Custom;
 
 namespace SbB.Diploma
 {
@@ -17,19 +18,59 @@ namespace SbB.Diploma
         private Matrix Af;
         private Matrix A;
         private Vector b;
-
-        private Triangulation triangulation;
-        //private Polygon polygon;
-        private double angle;
-        private double area;
-
         #endregion
 
         #region Constructors
-        public FEMMethod()
+        public FEMMethod(Dictionary<string, HashValue> data)
         {
             //create read data
+            Vertex[] femPolygon = new Vertex[data["Vertex"].eHash.Count];
+
+            for (int i = 0; i < femPolygon.Length; i++)
+            {
+                double x = data["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
+                double y = data["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
+                femPolygon[i] = new Vertex(x, y);
+            }
+
+            Polygon = new Polygon(femPolygon);
+
+            Angle = data["Mesh"].eHash["angle"].eDouble;
+            Area = data["Mesh"].eHash["area"].eDouble;
+            youngModulus = data["youngModulus"].eDouble;
+            poissonRatio = data["poissonRatio"].eDouble;
             refreshD();
+
+            Triangulation = new LinialTriangleTriangulation(new Polygon(femPolygon));
+
+            BoundaryClasses = new BoundaryClass[data["BoundaryType"].eHash.Count];
+            for (int i = 0; i < BoundaryClasses.Length; i++)
+            {
+                string[] ss = data["BoundaryType"].eHash[i.ToString()].eString.Split('@');
+                switch (ss[0])
+                {
+                    case "STATIC":
+                        if (ss.Length > 1)
+                        {
+                            ss[1] = ss[1].Substring(1, ss[1].Length - 2);
+                            ss = ss[1].Split(',');
+                            BoundaryClasses[i] = new StaticBoundary(double.Parse(ss[0]), double.Parse(ss[1]));
+                        }
+                        else BoundaryClasses[i] = new StaticBoundary(0, 0);
+                        break;
+                    case "KINEMATIC":
+                        BoundaryClasses[i] = new KinematicBoundary();
+                        break;
+                    case "MORTAR":
+                        BoundaryClasses[i] = new MortarBoundary();
+                        break;
+                    case "NONMORTAR":
+                        BoundaryClasses[i] = new NonMortarBoundary();
+                        break;
+                    default:
+                        throw new Exception("A-ya-yaj!!!");
+                }
+            }
         }
         #endregion
 
@@ -83,23 +124,11 @@ namespace SbB.Diploma
 
 
 
-        public Triangulation Triangulation
-        {
-            get { return triangulation; }
-            set { triangulation = value; }
-        }
+        public Triangulation Triangulation { get; set; }
 
-        public double Angle
-        {
-            get { return angle; }
-            set { angle = value; }
-        }
+        public double Angle { get; set; }
 
-        public double Area
-        {
-            get { return area; }
-            set { area = value; }
-        }
+        public double Area { get; set; }
 
         #endregion
 
@@ -122,7 +151,7 @@ namespace SbB.Diploma
         public override void Initialize()
         {
             //triangulate
-            triangulation.triangulate(Angle, Area);
+            Triangulation.triangulate(Angle, Area);
             Vertexes = Triangulation.Vertexes;
             elements = Triangulation.Elements;
             Boundaries = Triangulation.Boundaries;
