@@ -17,6 +17,8 @@ namespace TestingCouplingClesses
             target.run();
             target.fillSystem();
             target.solveSystem();
+
+            Console.WriteLine("Hello Trots!!!");
             
         }
     }
