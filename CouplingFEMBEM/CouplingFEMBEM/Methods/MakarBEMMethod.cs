@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using SbB.Diploma.Yaml.Custom;
 
 namespace SbB.Diploma.Methods
 {
@@ -22,9 +23,49 @@ namespace SbB.Diploma.Methods
         #endregion
 
         #region Constructors
-        public MakarBEMMethod(Polygon polygon)
+        public MakarBEMMethod(Dictionary<string, HashValue> data)
         {
-            Polygon = polygon;
+            Vertex[] bemPolygon = new Vertex[data["Vertex"].eHash.Count];
+
+            for (int i = 0; i < bemPolygon.Length; i++)
+            {
+                double x = data["Vertex"].eHash[i.ToString()].eHash["0"].eDouble;
+                double y = data["Vertex"].eHash[i.ToString()].eHash["1"].eDouble;
+                bemPolygon[i] = new Vertex(x, y);
+            }
+            Polygon = new Polygon(bemPolygon);
+            ElementsPerSegment = data["elementsPerSegment"].eInt;
+            YoungModulus = data["youngModulus"].eDouble;
+            PoissonRatio = data["poissonRatio"].eDouble;
+
+            BoundaryClasses = new BoundaryClass[data["BoundaryType"].eHash.Count];
+            for (int i = 0; i < BoundaryClasses.Length; i++)
+            {
+                string[] ss = data["BoundaryType"].eHash[i.ToString()].eString.Split('@');
+                switch (ss[0])
+                {
+                    case "STATIC":
+                        if (ss.Length > 1)
+                        {
+                            ss[1] = ss[1].Substring(1, ss[1].Length - 2);
+                            ss = ss[1].Split(',');
+                            BoundaryClasses[i] = new StaticBoundary(double.Parse(ss[0]), double.Parse(ss[1]));
+                        }
+                        else BoundaryClasses[i] = new StaticBoundary(0, 0);
+                        break;
+                    case "KINEMATIC":
+                        BoundaryClasses[i] = new KinematicBoundary();
+                        break;
+                    case "MORTAR":
+                        BoundaryClasses[i] = new MortarBoundary();
+                        break;
+                    case "NONMORTAR":
+                        BoundaryClasses[i] = new NonMortarBoundary();
+                        break;
+                    default:
+                        throw new Exception("A-ya-yaj!!!");
+                }
+            }
         }
         #endregion
 
