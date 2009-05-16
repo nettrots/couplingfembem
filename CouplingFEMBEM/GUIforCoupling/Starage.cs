@@ -74,6 +74,7 @@ namespace GUIforCoupling
         public GraphicOptions Groption { get; set; }
         public BPMethod Problem { get; set; }
         public DomainTriangulation DomainTriangulation { get; set; }
+        
         public Void ChartRedraw { get; set; }
 
         public CurrentStarage()

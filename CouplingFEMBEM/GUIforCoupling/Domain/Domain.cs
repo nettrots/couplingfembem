@@ -10,6 +10,7 @@ namespace GUIforCoupling
 {
     public class DomainTriangulation
     {
+        public int State{ get; set;}
         public FEMElement[] Elements{ get; set;}
         public Edge[] Segments{ get; set; }
         public Polygon Polygon { get; set; }
