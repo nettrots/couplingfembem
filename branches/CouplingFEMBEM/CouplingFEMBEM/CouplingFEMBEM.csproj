@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{47BB2443-77B8-46D8-B14A-2AB74FBD0BF1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SbB.Diploma</RootNamespace>
+    <AssemblyName>CouplingFEMBEM</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TeamSystem.Data.UnitTesting, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\Constants.cs" />
+    <Compile Include="Base\Edge.cs" />
+    <Compile Include="Base\Itegration\GaussianQuadrature.cs" />
+    <Compile Include="Base\Itegration\GaussPont.cs" />
+    <Compile Include="Base\Solvers\FastSolver\Array.cs" />
+    <Compile Include="Base\Solvers\FastSolver\Gauss.cs" />
+    <Compile Include="Base\Solvers\FastSolver\Hash.cs" />
+    <Compile Include="Base\Solvers\FastSolver\HashMatrix.cs" />
+    <Compile Include="Base\Solvers\FastSolver\IMatrix.cs" />
+    <Compile Include="Base\Solvers\FastSolver\IRow.cs" />
+    <Compile Include="Base\Solvers\FastSolver\Matrix.cs" />
+    <Compile Include="Base\Solvers\HSSChurSolver\blas.cs" />
+    <Compile Include="Base\Solvers\HSSChurSolver\hsschur.cs" />
+    <Compile Include="Base\Itegration\Integration.cs" />
+    <Compile Include="Base\Solvers\HSSChurSolver\reflections.cs" />
+    <Compile Include="Base\Solvers\HSSChurSolver\rotations.cs" />
+    <Compile Include="Base\Solvers\LDLTSolver\ldlt.cs" />
+    <Compile Include="Base\AP.cs" />
+    <Compile Include="Base\Matrix.cs" />
+    <Compile Include="Base\Polygon.cs" />
+    <Compile Include="Base\Solvers\Solver.cs" />
+    <Compile Include="Base\Solvers\LDLTSolver\ssolve.cs" />
+    <Compile Include="Base\Solvers\LUSolver\lu.cs" />
+    <Compile Include="Base\Solvers\LUSolver\rsolve.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\LinearEdge.cs" />
+    <Compile Include="Methods\Base\FEM\Triangle.cs" />
+    <Compile Include="Base\Vector.cs" />
+    <Compile Include="Base\Vertex.cs" />
+    <Compile Include="Methods\Base\BoundaryClass.cs" />
+    <Compile Include="Methods\Base\BoundEdge.cs" />
+    <Compile Include="Methods\Base\FEM\FEMElement.cs" />
+    <Compile Include="Methods\Base\FEM\FEMEdge.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\LinearTriangle.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\LinialTriangleTriangulation.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\Triangulation.cs" />
+    <Compile Include="Methods\Base\Mortar\LinearMortar.cs" />
+    <Compile Include="Methods\Base\Mortar\MortarMethod.cs" />
+    <Compile Include="Methods\Base\LinearTriangleFEM\TriangleExe.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TriangleExe.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Methods\LinearBEMEdge.cs" />
+    <Compile Include="Methods\MakarBEMMethod.cs" />
+    <Compile Include="Methods\Coupling.cs" />
+    <Compile Include="Methods\LinearMortarMethod.cs" />
+    <Compile Include="Methods\Base\Method.cs" />
+    <Compile Include="Methods\Base\Mortar\Mortar.cs" />
+    <Compile Include="Methods\Base\Mortar\MortarSide.cs" />
+    <Compile Include="Methods\FEMMethod.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Yaml\CodeLib\Pair.cs" />
+    <Compile Include="Yaml\CodeLib\StringHelper.cs" />
+    <Compile Include="Yaml\Custom\BlockScalarModifier.cs" />
+    <Compile Include="Yaml\Custom\ChompingMethod.cs" />
+    <Compile Include="Yaml\Custom\HashValue.cs" />
+    <Compile Include="Yaml\Custom\MappingEntry.cs" />
+    <Compile Include="Yaml\Custom\Scalar.cs" />
+    <Compile Include="Yaml\Custom\YamlDocument.cs" />
+    <Compile Include="Yaml\Custom\YamlEmittor.cs" />
+    <Compile Include="Yaml\ParserCommon.cs" />
+    <Compile Include="Yaml\ParserCustom.cs" />
+    <Compile Include="Yaml\ParserInput.cs" />
+    <Compile Include="Yaml\Syntax\BlockScalarModifier.cs" />
+    <Compile Include="Yaml\Syntax\DataItem.cs" />
+    <Compile Include="Yaml\Syntax\Directive.cs" />
+    <Compile Include="Yaml\Syntax\GlobalTagPrefix.cs" />
+    <Compile Include="Yaml\Syntax\LocalTagPrefix.cs" />
+    <Compile Include="Yaml\Syntax\Mapping.cs" />
+    <Compile Include="Yaml\Syntax\MappingEntry.cs" />
+    <Compile Include="Yaml\Syntax\NamedTagHandle.cs" />
+    <Compile Include="Yaml\Syntax\NodeProperty.cs" />
+    <Compile Include="Yaml\Syntax\NonSpecificTag.cs" />
+    <Compile Include="Yaml\Syntax\PrimaryTagHandle.cs" />
+    <Compile Include="Yaml\Syntax\ReservedDirective.cs" />
+    <Compile Include="Yaml\Syntax\Scalar.cs" />
+    <Compile Include="Yaml\Syntax\SecondaryTagHandle.cs" />
+    <Compile Include="Yaml\Syntax\Sequence.cs" />
+    <Compile Include="Yaml\Syntax\ShorthandTag.cs" />
+    <Compile Include="Yaml\Syntax\Tag.cs" />
+    <Compile Include="Yaml\Syntax\TagDirective.cs" />
+    <Compile Include="Yaml\Syntax\TagHandle.cs" />
+    <Compile Include="Yaml\Syntax\TagPrefix.cs" />
+    <Compile Include="Yaml\Syntax\VerbatimTag.cs" />
+    <Compile Include="Yaml\Syntax\YamlDirective.cs" />
+    <Compile Include="Yaml\Syntax\YamlDocument.cs" />
+    <Compile Include="Yaml\Syntax\YamlStream.cs" />
+    <Compile Include="Yaml\Syntax\YamlVersion.cs" />
+    <Compile Include="Yaml\TextInput.cs" />
+    <Compile Include="Yaml\YamlParser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Base\Solvers\FastSolver\detail.php.htm" />
+    <None Include="Resources\triangle.exe" />
+    <Content Include="Resources\example.yaml" />
+    <Content Include="Resources\NSGBEM.exe" />
+    <Content Include="Yaml\YAML.PEG.txt" />
+    <Content Include="Yaml\YAML.txt" />
+    <Content Include="Yaml\YAML_Sample.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Methods\Base\LinearTriangleFEM\TriangleExe.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TriangleExe.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
