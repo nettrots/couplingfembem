@@ -14,7 +14,6 @@ namespace SbB.Diploma.Methods
     {
         #region Fields
         private Matrix H, G;
-        private int elementsPerSegment = 8;
         #endregion
 
         #region Constructors
@@ -102,12 +101,12 @@ namespace SbB.Diploma.Methods
             for (int i = 0; i < Polygon.Count; i++)
             {
                 Boundaries[i] = new List<BoundEdge>();
-                for (int j = 0; j < elementsPerSegment; j++)
+                for (int j = 0; j < ElementsPerSegment; j++)
                 {
-                    int ai = elementsPerSegment*i + j;
-                    int bi = (i == Polygon.Count - 1) && (j == elementsPerSegment - 1)
+                    int ai = ElementsPerSegment*i + j;
+                    int bi = (i == Polygon.Count - 1) && (j == ElementsPerSegment - 1)
                                  ? 0
-                                 : elementsPerSegment*i + j + 1;
+                                 : ElementsPerSegment*i + j + 1;
                     BoundEdge edge = new LinearBEMEdge(Vertexes[ai], Vertexes[bi]);
                     Boundaries[i].Add(edge);
                 }
