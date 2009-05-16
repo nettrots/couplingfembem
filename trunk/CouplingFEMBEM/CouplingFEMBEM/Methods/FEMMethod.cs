@@ -3,16 +3,15 @@ using System.Collections.Generic;
 
 namespace SbB.Diploma
 {
-    public class FEMMethod:MethodBase
+    public class FEMMethod:BPMethod, IProblem, IDiscretization 
     {
         #region Fields
 
+        private double youngModulus = 21000;
+        private double poissonRatio = 0.3;
+
         private Matrix d = new Matrix(3,3);
-        private List<Vertex> vertexes;
         private List<FEMElement> elements;
-        private List<FEMEdge>[] boundaries;
-        private BoundaryClass[] boundaryClasses;
-        public List<Func<double, double, double>> FuncList { get; set; }
         private int n;
 
         private Matrix Af;
@@ -37,34 +36,29 @@ namespace SbB.Diploma
         #region Properties
  
     
-        public override double YoungModulus
+        public double YoungModulus
         {
-            get { return base.YoungModulus; }
+            get { return youngModulus; }
             set
             {
-                base.YoungModulus = value;
+                youngModulus = value;
                 refreshD();
             }
         }
-        public override double PoissonRatio
+        public double PoissonRatio
         {
-            get { return base.PoissonRatio; }
+            get { return poissonRatio; }
             set
             {
-                base.PoissonRatio = value;
+                poissonRatio = value;
                 refreshD();
             }
         }
-        public List<Vertex> Vertexes
-        {
-            get
-            {
-                if (vertexes == null) throw new Exception("Triangulation did not complete");
-                return vertexes;
-            }
-            set { vertexes = value; }
+        public Polygon Polygon { get; set;}
+        public BoundaryClass[] BoundaryClasses { get; set; }
 
-        }
+        public List<Vertex> Vertexes { get; private set; }
+        public List<BoundEdge>[] Boundaries { get; private set; }
         public List<FEMElement> Elements
         {
             get
@@ -73,16 +67,6 @@ namespace SbB.Diploma
                 return elements;
             }
             set { elements = value; }
-
-        }
-        public List<FEMEdge>[] Boundaries
-        {
-            get
-            {
-                if (boundaries == null) throw new Exception("Triangulation did not complete");
-                return boundaries;
-            }
-            set { boundaries = value; }
 
         }
         public Matrix D
@@ -95,12 +79,9 @@ namespace SbB.Diploma
             get { return n; }
             set { n = value; }
         }
+        public List<Func<double, double, double>> FuncList { get; set; }
 
-        public BoundaryClass[] BoundaryClasses
-        {
-            get { return boundaryClasses; }
-            set { boundaryClasses = value; }
-        }
+
 
         public Triangulation Triangulation
         {
@@ -126,9 +107,9 @@ namespace SbB.Diploma
         #region Private
         private void refreshD()
         {
-            double D1 = (1 - base.PoissonRatio) * base.YoungModulus / ((1 + base.PoissonRatio) * (1 - 2 * base.PoissonRatio));
-            double D2 = D1 * (1 - 2 * base.PoissonRatio) / (2 - 2 * base.PoissonRatio);
-            double D3 = D1 * base.PoissonRatio / (1 - base.PoissonRatio);
+            double D1 = (1 - poissonRatio)*youngModulus/((1 + poissonRatio)*(1 - 2*poissonRatio));
+            double D2 = D1*(1 - 2*poissonRatio)/(2 - 2*poissonRatio);
+            double D3 = D1*poissonRatio/(1 - poissonRatio);
             D[0][0] = D1;
             D[0][1] = D[1][0] = D3;
             D[1][1] = D1;
@@ -142,9 +123,9 @@ namespace SbB.Diploma
         {
             //triangulate
             triangulation.triangulate(Angle, Area);
-            vertexes = Triangulation.Vertexes;
+            Vertexes = Triangulation.Vertexes;
             elements = Triangulation.Elements;
-            boundaries = Triangulation.Boundaries;
+            Boundaries = Triangulation.Boundaries;
             
         }
 
@@ -158,7 +139,7 @@ namespace SbB.Diploma
             for (int i = 0; i < BoundaryClasses.Length; i++)
                 if (BoundaryClasses[i].type() == BoundaryType.KINEMATIC)
                 {
-                    foreach (FEMEdge edge in boundaries[i])
+                    foreach (FEMEdge edge in Boundaries[i])
                         for (int j = 0; j < edge.NodesCount; j++)
                         {
                             for (int k = 0; k < edge[j].Dofu.Length; k++)
@@ -171,12 +152,12 @@ namespace SbB.Diploma
                 if (BoundaryClasses[i].type() == BoundaryType.STATIC)
                 {
                     Vertex p = ((StaticBoundary) BoundaryClasses[i]).P;
-                    foreach (FEMEdge edge in boundaries[i])
+                    foreach (FEMEdge edge in Boundaries[i])
                         edge.FEM(b, p);
                 }
             for (int i = 0; i < BoundaryClasses.Length; i++)
                 if (BoundaryClasses[i].type() == BoundaryType.KINEMATIC)
-                    foreach (FEMEdge edge in boundaries[i])
+                    foreach (FEMEdge edge in Boundaries[i])
                         for (int j = 0; j < edge.NodesCount; j++)
                         {
                             for (int k = 0; k < edge[j].Dofu.Length; k++)
@@ -184,7 +165,7 @@ namespace SbB.Diploma
                         }
             //Somehow create AF
             int dim = 0;
-            foreach (Vertex vertex in vertexes)
+            foreach (Vertex vertex in Vertexes)
             {
                 dim += vertex.Doft.Length;
             }
@@ -194,7 +175,7 @@ namespace SbB.Diploma
                 if (BoundaryClasses[i].type() == BoundaryType.MORTAR)
                 {
                     int min = int.MaxValue;
-                    foreach (FEMEdge edge in boundaries[i])
+                    foreach (FEMEdge edge in Boundaries[i])
                     {
                         for (int j = 0; j < edge.NodesCount; j++)
                         {
@@ -204,39 +185,16 @@ namespace SbB.Diploma
                             }
                         }
                     }
-                    foreach (FEMEdge edge in boundaries[i])
+                    foreach (FEMEdge edge in Boundaries[i])
                         edge.FEM(Af, min);
                 }
         }
 
-        public override void FillGlobalmatrix(Matrix global)
+        public override void Solve()
         {
-            //every vertex has few rows in matrix. iterating all of them and we fill GM
-            // fill matrix A
-            for (int i = 0; i < A.Size.m; i++)
-                for (int j = 0; j < A.Size.n; j++)
-                    global[i][j] = A[i][j];
-
-            // fill matrix Af
-            for (int i = 0; i < Af.Size.m; i++)
-                for (int j = 0; j < Af.Size.n; j++)
-                    global[i + A.Size.m][j + A.Size.n] = Af[i][j];
+            throw new NotImplementedException();
         }
 
-        public override void FillGlobalvector(Vector global)
-        {
-            for (int i = 0; i < b.Length; i++)
-                global[i] = b[i];
-        }
-
-        public override void GetResultsFrom(Vector vector)
-        {
-            results = new Vector(2*vertexes.Count);
-            int counter = 0;
-            for (int i = 0; i < vertexes.Count; i++)
-                for (int j = 0; j < vertexes[i].Dofu.Length; j++)
-                    results[counter++] = vector[vertexes[i].Dofu[j]]; 
-        }
         #endregion
         #endregion
 

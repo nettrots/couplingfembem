@@ -8,15 +8,15 @@ namespace SbB.Diploma
     {
         #region Fields
         private Vertex[] nodes;
-        private MethodBase mortar;
-        private MethodBase nonmortar;
+        private BPMethod mortar;
+        private BPMethod nonmortar;
         private List<Vertex> vertexes;
         //private Mortar mortar;
         private readonly Type mortarType;
         #endregion
 
         #region Constructors
-        public MortarSide(MethodBase mortar, MethodBase nonmortar,Type mortarType)
+        public MortarSide(BPMethod mortar, BPMethod nonmortar,Type mortarType)
         {
             this.mortar = mortar;
             this.nonmortar = nonmortar;
@@ -25,13 +25,13 @@ namespace SbB.Diploma
         #endregion
 
         #region Properties
-        public MethodBase Mortar
+        public BPMethod Mortar
         {
             get { return mortar; }
             set { mortar = value; }
 
         }
-        public MethodBase Nonmortar
+        public BPMethod Nonmortar
         {
             get { return nonmortar; }
             set { nonmortar = value; }
@@ -56,7 +56,7 @@ namespace SbB.Diploma
         }
         public void createMortarNodes()
         {
-            vertexes = new List<Vertex>();
+            /*vertexes = new List<Vertex>();
             for (int i = 0; i < nodes.Length - 1; i++)
             {
                 Edge e = new Edge(nodes[i], nodes[i + 1]);
@@ -79,7 +79,7 @@ namespace SbB.Diploma
                     }
                 }
             }
-            vertexes.Add(nodes[nodes.Length - 1]);
+            vertexes.Add(nodes[nodes.Length - 1]);*/
         }
         public Mortar createMortar(int femnodescount)
         {

@@ -9,7 +9,7 @@ namespace SbB.Diploma
         protected Polygon polygon;
         protected List<Vertex> vertexes;
         protected List<FEMElement> elements;
-        protected List<FEMEdge>[] boundaries;
+        protected List<BoundEdge>[] boundaries;
         #endregion
 
         #region Properties
@@ -30,7 +30,7 @@ namespace SbB.Diploma
             }
  
         }
-        public List<FEMEdge>[] Boundaries
+        public List<BoundEdge>[] Boundaries
         {
             get
             {

@@ -81,11 +81,11 @@ namespace SbB.Diploma
             int vertexNum = int.Parse(number[0]);
 
             vertexes = new List<Vertex>();
-            boundaries = new List<FEMEdge>[polygon.Count];
+            boundaries = new List<BoundEdge>[polygon.Count];
             List<Vertex>[] temp = new List<Vertex>[polygon.Count];
             for (int i = 0; i < polygon.Count; i++)
             {
-                boundaries[i] = new List<FEMEdge>();
+                boundaries[i] = new List<BoundEdge>();
                 temp[i] = new List<Vertex>();
             }
 

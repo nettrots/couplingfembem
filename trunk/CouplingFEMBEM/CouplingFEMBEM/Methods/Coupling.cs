@@ -12,9 +12,9 @@ using SbB.Diploma.Yaml.Custom;
 
 namespace SbB.Diploma
 {
-
     using MyHash=Dictionary<string, object> ; 
-    public class CouplingMethod
+
+    public class CouplingMethod: BPMethod
     {
         public Polygon Polygon { get; set; }
         public FEMMethod FEM;
@@ -320,44 +320,25 @@ namespace SbB.Diploma
             }*/
         }
 
-        public void run()
-        {
-            FEM.Run();
-            BEM.Run();
-            //Mortar.Run();
-        }
 
-        public void fillSystem()
-        {
-            //Create system from all methods
-            //FEM+BEM+Mortar
-            int dim = 0;
-            foreach (Vertex vertex in vertexes)
-            {
-                dim += vertex.Doft.Length;
-                dim += vertex.Dofu.Length;
-                dim += vertex.Dofm.Length;
-            }
-            GlobalMatrix = new Matrix(dim, dim);
-            GlobalVector = new Vector(dim);
-
-            FEM.FillGlobalmatrix(GlobalMatrix);
-            FEM.FillGlobalvector(GlobalVector);
-            BEM.FillGlobalmatrix(GlobalMatrix);
-            BEM.FillGlobalvector(GlobalVector);
-            //Mortar.FillGlobalmatrix(GlobalMatrix);
-            //Mortar.FillGlobalvector(GlobalVector);
-        }
-
-        public void solveSystem()
-        {
-            LUSolve.Solve(GlobalMatrix, GlobalVector,out Result);
-            FEM.GetResultsFrom(Result);
-            BEM.GetResultsFrom(Result);
-        }
         public override string ToString()
         {
             return Name;
+        }
+
+        public override void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Run()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Solve()
+        {
+            throw new NotImplementedException();
         }
     }
 }

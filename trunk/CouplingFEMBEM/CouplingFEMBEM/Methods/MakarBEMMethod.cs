@@ -9,14 +9,11 @@ using System.Threading;
 
 namespace SbB.Diploma.Methods
 {
-    public class MakarBEMMethod:MethodBase
+    public class MakarBEMMethod:BPMethod, IProblem, IDiscretization
     {
         #region Fields
         private Matrix H, G;
-        private List<Vertex> vertexes;
-        private List<BoundEdge>[] boundaries;
-        private BoundaryClass[] boundaryClasses;
-        public List<Func<double, double, double>> FuncList { get; set; }
+        
 
         private int elementsPerSegment = 8;
 
@@ -27,60 +24,52 @@ namespace SbB.Diploma.Methods
         #region Constructors
         public MakarBEMMethod(Polygon polygon)
         {
-            this.polygon = polygon;
+            Polygon = polygon;
         }
         #endregion
 
         #region Properties
-        public List<Vertex> Vertexes
-        {
-            get { return vertexes; }
-        }
-        public BoundaryClass[] BoundaryClasses
-        {
-            get { return boundaryClasses; }
-            set { boundaryClasses = value; }
-        }
+        public List<Vertex> Vertexes { get; private set; }
+        public List<BoundEdge>[] Boundaries { get; private set; }
 
-        public List<BoundEdge>[] Boundaries
-        {
-            get { return boundaries; }
-        }
+        public double YoungModulus { get; set; }
 
-        public int ElementsPerSegment
-        {
-            get { return elementsPerSegment; }
-            set { elementsPerSegment = value; }
-        }
+        public double PoissonRatio { get; set; }
 
+        public Polygon Polygon { get; set; }
+
+        public BoundaryClass[] BoundaryClasses { get; set; }
+
+        public int ElementsPerSegment { get; set; }
+        public List<Func<double, double, double>> FuncList { get; set; }
         #endregion
 
         #region Methods
         #region Private
         private void createVertexes()
         {
-            vertexes = new List<Vertex>();
-            for (int i = 0; i < polygon.Count; i++)
+            Vertexes = new List<Vertex>();
+            for (int i = 0; i < Polygon.Count; i++)
             {
                 for (int j = 0; j < ElementsPerSegment; j++)
                 {
-                    Vertex v = ((double) j/ElementsPerSegment)*(polygon[i + 1] - polygon[i]);
-                    vertexes.Add(polygon[i] + v);
+                    Vertex v = ((double) j/ElementsPerSegment)*(Polygon[i + 1] - Polygon[i]);
+                    Vertexes.Add(Polygon[i] + v);
                 }
             }
             
-            boundaries = new List<BoundEdge>[polygon.Count];
-            for (int i = 0; i < polygon.Count; i++)
+            Boundaries = new List<BoundEdge>[Polygon.Count];
+            for (int i = 0; i < Polygon.Count; i++)
             {
-                boundaries[i] = new List<BoundEdge>();
+                Boundaries[i] = new List<BoundEdge>();
                 for (int j = 0; j < elementsPerSegment; j++)
                 {
                     int ai = elementsPerSegment*i + j;
-                    int bi = (i == polygon.Count - 1) && (j == elementsPerSegment - 1)
+                    int bi = (i == Polygon.Count - 1) && (j == elementsPerSegment - 1)
                                  ? 0
                                  : elementsPerSegment*i + j + 1;
-                    BoundEdge edge = new LinearBEMEdge(vertexes[ai], vertexes[bi]);
-                    boundaries[i].Add(edge);
+                    BoundEdge edge = new LinearBEMEdge(Vertexes[ai], Vertexes[bi]);
+                    Boundaries[i].Add(edge);
                 }
             }
         }
@@ -100,8 +89,8 @@ namespace SbB.Diploma.Methods
         private void writeMaterial()
         {
             StreamWriter sw = new StreamWriter("ConstBEM.txt");
-            sw.WriteLine("{0}", youngModulus);
-            sw.WriteLine("{0}", poissonRatio);
+            sw.WriteLine("{0}", YoungModulus);
+            sw.WriteLine("{0}", PoissonRatio);
             sw.WriteLine("$#");
             sw.Close();
         }
@@ -109,22 +98,22 @@ namespace SbB.Diploma.Methods
         {
             StreamWriter sw = new StreamWriter("Domain.txt");
             // кількість точок
-            sw.WriteLine("{0}", 2*polygon.Count);
-            for (int i = 0; i < polygon.Count; i++)
+            sw.WriteLine("{0}", 2*Polygon.Count);
+            for (int i = 0; i < Polygon.Count; i++)
             {
                 // вершина
-                sw.WriteLine("{0} {1} {2} {3}", 2*i+1, polygon[i].X, polygon[i].Y, /*показник подвоєності*/0);
-                Vertex middle = (polygon[i] + polygon[i + 1])*0.5;
+                sw.WriteLine("{0} {1} {2} {3}", 2*i+1, Polygon[i].X, Polygon[i].Y, /*показник подвоєності*/0);
+                Vertex middle = (Polygon[i] + Polygon[i + 1])*0.5;
                 sw.WriteLine("{0} {1} {2} {3}", 2 * i + 2, middle.X, middle.Y, /*показник подвоєності*/0);
                 // середина відрізка
             }
 
             // кількість сегментів
-            sw.WriteLine("{0}", polygon.Count);
-            for (int i = 0; i < polygon.Count; i++)
+            sw.WriteLine("{0}", Polygon.Count);
+            for (int i = 0; i < Polygon.Count; i++)
             {
                 // інформація про сегмент
-                sw.WriteLine("{0} {1} {2} {3} {4} {5} {6}", i+1, 2*i+1, 2*i+2, (2*i+3)%(2*polygon.Count), 0, 0, 0);
+                sw.WriteLine("{0} {1} {2} {3} {4} {5} {6}", i+1, 2*i+1, 2*i+2, (2*i+3)%(2*Polygon.Count), 0, 0, 0);
             }
 
             // кількість сегментів для FEM
@@ -133,8 +122,8 @@ namespace SbB.Diploma.Methods
             sw.WriteLine("{0}", 0);
 
             // кількість сегментів для BEM
-            sw.WriteLine("{0}", polygon.Count);
-            for(int i=0; i<polygon.Count; i++)
+            sw.WriteLine("{0}", Polygon.Count);
+            for(int i=0; i<Polygon.Count; i++)
             {
                 // номери сегментів BEM, кількість елементів
                 sw.WriteLine("{0} {1}", i+1, ElementsPerSegment);
@@ -219,9 +208,9 @@ namespace SbB.Diploma.Methods
         public override void Run()
         {
             //Create A an b from G and H
-            int mDim = 2*vertexes.Count;
+            int mDim = 2*Vertexes.Count;
             int nDim = 0;
-            foreach (Vertex vertex in vertexes)
+            foreach (Vertex vertex in Vertexes)
             {
                 nDim += vertex.Dofu.Length;
                 nDim += vertex.Doft.Length;
@@ -230,17 +219,17 @@ namespace SbB.Diploma.Methods
             A = new Matrix(mDim, nDim);
 
             int counter = 0;
-            for (int i = 0; i < vertexes.Count; i++)
+            for (int i = 0; i < Vertexes.Count; i++)
             {
                 int k = 0;
-                for (int j = 0; j < polygon.Count; j++)
-                    if (polygon.edge(j).hasVertex(vertexes[i]))
+                for (int j = 0; j < Polygon.Count; j++)
+                    if (Polygon.edge(j).hasVertex(Vertexes[i]))
                     {
                         k = j;
                         break;
                     }
 
-                if (vertexes[i].Dofu.Length == 0)
+                if (Vertexes[i].Dofu.Length == 0)
                 { /* Kinenatic boundary type. U=0 */ }
                 else
                 {
@@ -252,10 +241,10 @@ namespace SbB.Diploma.Methods
                     counter += 2;
                 }
 
-                if (vertexes[i].Doft.Length==0)
+                if (Vertexes[i].Doft.Length==0)
                 {
-                    b += ((StaticBoundary) boundaryClasses[k]).P.X*G[2*i];
-                    b += ((StaticBoundary) boundaryClasses[k]).P.Y*G[2*i + 1];
+                    b += ((StaticBoundary) BoundaryClasses[k]).P.X*G[2*i];
+                    b += ((StaticBoundary) BoundaryClasses[k]).P.Y*G[2*i + 1];
                 }
                 else
                 {
@@ -268,54 +257,9 @@ namespace SbB.Diploma.Methods
                 }
             }
         }
-        public override void FillGlobalmatrix(Matrix global)
+        public override void Solve()
         {
-            int[] indexes = new int[A.Size.m];
-            int counter = 0;
-            foreach (Vertex vertex in vertexes)
-                for (int i = 0; i < vertex.Dofu.Length; i++)
-                    indexes[counter++] = vertex.Dofu[i];
-
-            counter = 0;
-            for (int i = 0; i < vertexes.Count; i++)
-            {
-                for (int j = 0; j < vertexes[i].Dofu.Length; j++)
-                {
-                    for (int k = 0; k < indexes.Length; k++)
-                        global[indexes[k]][vertexes[i].Dofu[j]] += A[k][counter + j];
-                }
-                counter += vertexes[i].Dofu.Length;
-
-                for (int j = 0; j < vertexes[i].Doft.Length; j++)
-                {
-                    for (int k = 0; k < indexes.Length; k++)
-                        global[indexes[k]][vertexes[i].Doft[j]] += A[k][counter + j];
-                }
-                counter += vertexes[i].Doft.Length;
-            }
-        }
-        public override void FillGlobalvector(Vector global)
-        {
-            int[] indexes = new int[b.Length];
-            int counter = 0;
-            foreach (Vertex vertex in vertexes)
-                for (int i = 0; i < vertex.Dofu.Length; i++)
-                    indexes[counter++] = vertex.Dofu[i];
-
-            for (int i = 0; i < indexes.Length; i++)
-                global[indexes[i]] += b[i];
-        }
-        public override void GetResultsFrom(Vector vector)
-        {
-            results = new Vector(A.Size.n);
-            int counter = 0;
-            for (int i = 0; i < vertexes.Count; i++)
-            {
-                for (int j = 0; j < vertexes[i].Dofu.Length; j++)
-                    results[counter++] = vector[vertexes[i].Dofu[j]];
-                for (int j = 0; j < vertexes[i].Doft.Length; j++)
-                    results[counter++] = vector[vertexes[i].Doft[j]];
-            }
+            throw new NotImplementedException();
         }
         #endregion
         #endregion
