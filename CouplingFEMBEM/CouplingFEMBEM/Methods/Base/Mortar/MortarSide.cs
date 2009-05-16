@@ -7,83 +7,37 @@ namespace SbB.Diploma
     public class MortarSide
     {
         #region Fields
-        private Vertex[] nodes;
-        private BPMethod mortar;
-        private BPMethod nonmortar;
+        private List<int> mortarsides;
+        private IDiscretization descritization;
         private List<Vertex> vertexes;
-        //private Mortar mortar;
-        private readonly Type mortarType;
         #endregion
 
         #region Constructors
-        public MortarSide(BPMethod mortar, BPMethod nonmortar,Type mortarType)
+        public MortarSide(IDiscretization descritization, List<int> mortarsides)
         {
-            this.mortar = mortar;
-            this.nonmortar = nonmortar;
-            this.mortarType = mortarType;
+            this.descritization = descritization;
+            this.mortarsides = mortarsides;
         }
-        #endregion
-
-        #region Properties
-        public BPMethod Mortar
-        {
-            get { return mortar; }
-            set { mortar = value; }
-
-        }
-        public BPMethod Nonmortar
-        {
-            get { return nonmortar; }
-            set { nonmortar = value; }
-        }
-        public int NodesCount
-        {
-            get { return nodes.Length; }
-        }
-
-        public List<Vertex> Vertexes
-        {
-            get { return vertexes; }
-            set { vertexes = value; }
-        }
-
         #endregion
 
         #region Methods
-        public Edge edge(int i)
-        { 
-            return new Edge(nodes[i], nodes[i+1]);
-        }
         public void createMortarNodes()
         {
-            /*vertexes = new List<Vertex>();
-            for (int i = 0; i < nodes.Length - 1; i++)
+            vertexes = new List<Vertex>();
+            foreach (int i in mortarsides)
             {
-                Edge e = new Edge(nodes[i], nodes[i + 1]);
-                
+                foreach (BoundEdge edge in descritization.Boundaries[i])
                 {
-                    int k = mortar.Polygon.isEdgeOnPolygon(e);
-                    if (k >= 0)
+                    for (int j = 0; j < edge.NodesCount; j++)
                     {
-                        List<Vertex> localVertexes = new List<Vertex>();
-                        foreach (FEMEdge femedge in ((FEMMethod)mortar).Boundaries[k])
-                        {
-                            for (int m = 0; m < femedge.NodesCount; m++)
-                                if (!localVertexes.Contains(femedge[m])) localVertexes.Add(femedge[m]);
-                        }
-                        localVertexes.Sort();
-                        if (localVertexes[0] != e.A) localVertexes.Reverse();
-                        for (int m = 0; m < localVertexes.Count - 1; m++)
-                            vertexes.Add(localVertexes[m]);
-                        break;
+                        if (!vertexes.Contains(edge[j])) vertexes.Add(edge[j]);
                     }
                 }
             }
-            vertexes.Add(nodes[nodes.Length - 1]);*/
         }
-        public Mortar createMortar(int femnodescount)
+        public Mortar createMortar()
         {
-           return (Mortar)(mortarType.GetConstructor(new Type[] { typeof(int), typeof(List<Vertex>) })).Invoke(new object[] { femnodescount, Vertexes });
+            return new LinearMortar(vertexes);
         }
         #endregion
     }

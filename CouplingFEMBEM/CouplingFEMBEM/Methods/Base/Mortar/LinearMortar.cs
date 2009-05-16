@@ -15,9 +15,9 @@ namespace SbB.Diploma
         #endregion
 
         #region Constructors
-        public LinearMortar(int femnodescount, List<Vertex> vertexes)
+        public LinearMortar(List<Vertex> vertexes)
         {
-            matrix = new Matrix(2 * femnodescount, 2 * (vertexes.Count - 2));
+            //matrix = new Matrix(2 * femnodescount, 2 * (vertexes.Count - 2));
             this.vertexes = vertexes;
         }
         #endregion

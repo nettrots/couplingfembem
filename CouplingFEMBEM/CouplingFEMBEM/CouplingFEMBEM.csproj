@@ -147,6 +147,7 @@
   <ItemGroup>
     <Content Include="Base\Solvers\FastSolver\detail.php.htm" />
     <None Include="Resources\triangle.exe" />
+    <None Include="Methods\Base\LinearTriangleFEM\triangle.exe" />
     <Content Include="Resources\example.yaml" />
     <Content Include="Resources\NSGBEM.exe" />
     <Content Include="Yaml\YAML.PEG.txt" />
