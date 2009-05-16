@@ -95,6 +95,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Starage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CouplingFEMBEM\CouplingFEMBEM.csproj">
