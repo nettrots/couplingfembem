@@ -43,8 +43,8 @@ namespace GUIforCoupling
         }
         #region Workspace region
         public static Workspace workspace;
-        public static ListStarage listStarage;
-        public static CurrentStarage currentStarage;
+        public static ListStorage listStarage;
+        public static CurrentStorage currentStarage;
         #endregion
 
         #region Chart region
@@ -100,10 +100,8 @@ namespace GUIforCoupling
                     currentStarage.DomainTriangulation.drawDomain(chart1);
                     break;
                 case 1:
-                    currentStarage.DomainTriangulation.triangulationLayer(chart1);
-                    break;
-                case 2:
-                    currentStarage.DomainTriangulation.segmentsLayer(chart1);
+
+                    currentStarage.DomainTriangulation.drawTringulation(chart1);
                     break;
             }
             chart = chart1;
@@ -204,6 +202,7 @@ namespace GUIforCoupling
             {
                 LoadProblem(openFileDialog1.FileName);
                 problemCB.Items.Add(currentStarage.Problem.ToString());
+                problemCB.SelectedIndex = problemCB.Items.Count - 1;
             }
         }
 
@@ -216,6 +215,55 @@ namespace GUIforCoupling
                                                          Polygon =  currentStarage.Problem.Polygon,
                                                          State = 0
                                                      };
+            flash();
+        }
+
+        private void showMeshbtn_Click(object sender, EventArgs e)
+        {
+            currentStarage.ChartRedraw = listStarage.ChartRedraw["problemModeChart"];
+
+            FEMElement[] elements=null;
+            Edge[] segments=null;
+            List<Edge> segmentsTemp = null;
+            if (currentStarage.Problem is CouplingMethod)
+            {
+                elements = (currentStarage.Problem as CouplingMethod).FEM.Elements.ToArray();
+                foreach (var edges in (currentStarage.Problem as CouplingMethod).BEM.Boundaries)
+                {
+                    foreach (var list in edges)
+                    {
+                        segmentsTemp.Add(list);
+                    }
+                }
+                segments = segmentsTemp.ToArray();
+            }
+            if (currentStarage.Problem is FEMMethod)
+                elements = (currentStarage.Problem as CouplingMethod).FEM.Elements.ToArray();
+            if (currentStarage.Problem is MakarBEMMethod)
+            {
+                foreach (var edges in (currentStarage.Problem as CouplingMethod).BEM.Boundaries)
+                {
+                    foreach (var list in edges)
+                    {
+                        segmentsTemp.Add(list);
+                    }
+                }
+                segments = segmentsTemp.ToArray();
+            }
+
+            currentStarage.DomainTriangulation = new DomainTriangulation
+                                                     {
+                                                         Elements = elements,
+                                                         Segments = segments,
+                                                         State = 1
+                                                     };
+            flash();
+        }
+
+        private void initProblembtn_Click(object sender, EventArgs e)
+        {
+            currentStarage.Problem.Initialize();
+
         }
     }
 

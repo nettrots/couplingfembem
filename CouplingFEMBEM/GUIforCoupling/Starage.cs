@@ -13,8 +13,8 @@ namespace GUIforCoupling
     [Serializable()]
     public class Workspace : ISerializable
     {
-        public ListStarage ListStarage { get; set; }
-        public CurrentStarage CurrentStarage { get; set; }
+        public ListStorage ListStarage { get; set; }
+        public CurrentStorage CurrentStarage { get; set; }
 
         public static void Save(string fileName, Workspace wsp)
         {
@@ -34,22 +34,22 @@ namespace GUIforCoupling
 
         public Workspace()
         {
-            ListStarage = new ListStarage();
-            CurrentStarage = new CurrentStarage();
+            ListStarage = new ListStorage();
+            CurrentStarage = new CurrentStorage();
         }
         public Workspace(SerializationInfo info, StreamingContext ctxt)
         {
-            ListStarage = (ListStarage)info.GetValue("listStarage", typeof(ListStarage));
-            CurrentStarage = (CurrentStarage)info.GetValue("currentStarage", typeof(CurrentStarage));
+            ListStarage = (ListStorage)info.GetValue("listStarage", typeof(ListStorage));
+            CurrentStarage = (CurrentStorage)info.GetValue("currentStarage", typeof(CurrentStorage));
         }
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("listStarage", typeof(ListStarage));
-            info.AddValue("currentStarage", typeof(CurrentStarage));
+            info.AddValue("listStarage", typeof(ListStorage));
+            info.AddValue("currentStarage", typeof(CurrentStorage));
         }
     }
 
-    public class ListStarage
+    public class ListStorage
     {
         public List<Graphic> Graphics { get; set; }
         public List<DomainTriangulation> DomainTriangulation { get; set; }
@@ -58,7 +58,7 @@ namespace GUIforCoupling
 
         public Dictionary<string,Void>ChartRedraw { get; set; }
 
-        public ListStarage()
+        public ListStorage()
         {
             Graphics = new List<Graphic>();
             DomainTriangulation = new List<DomainTriangulation>();
@@ -68,7 +68,7 @@ namespace GUIforCoupling
         }
 
     }
-    public class CurrentStarage
+    public class CurrentStorage
     {
         public Graphic Graphic { get; set; }
         public GraphicOptions Groption { get; set; }
@@ -77,7 +77,7 @@ namespace GUIforCoupling
         
         public Void ChartRedraw { get; set; }
 
-        public CurrentStarage()
+        public CurrentStorage()
         {
   
         }
