@@ -30,39 +30,9 @@ namespace SbB.Diploma
         private Vector GlobalVector;
         private Vector Result;
 
-        public CouplingMethod(string filename)
+        public CouplingMethod(Dictionary<string, HashValue> data)
         {
-            //Create methods and fill with data
-
-            //load yaml file
-            //traverse tree to arraylist
-            //ArrayList data=new ArrayList();
-            Dictionary<string, HashValue> data = new Dictionary<string, HashValue>();
-            if (!File.Exists(filename))
-            {
-                MessageBox.Show(filename + " does not exist.");
-                return;
-            }
-            YamlParser parser = new YamlParser();
-            TextInput input = new TextInput(File.ReadAllText(filename));
-            bool success;
-            YamlStream yamlStream = parser.ParseYamlStream(input, out success);
-            if (success)
-            {
-                data.Clear();
-                foreach (YamlDocument doc in yamlStream.Documents)
-                {
-                    Dictionary<string, HashValue> a1 = YamlEmittor.CreateNode(doc.Root).eHash;
-                    foreach (KeyValuePair<string, HashValue> pair in a1)
-                    {
-                        data.Add(pair.Key, pair.Value);
-                    }
-                }
-            }
-            else
-            {
-             //   MessageBox.Show(parser.GetEorrorMessages());
-            }
+            
 
             if (data.ContainsKey("Polygon"))
             {
