@@ -26,6 +26,14 @@ namespace SbB.Diploma.Methods
             ;
         }
 
+        public override double phi(int i, double x, double y)
+        {
+            Vertex v = new Vertex(x, y);
+            if (!hasVertex(v)) return 0;
+            if (i != 0 && i != 1) return 0;
+            return (v - this[(i + 1) % 2]).Length / Length;
+        }
+
         public override void mortar(Mortar mortarvisitor)
         {
             throw new NotImplementedException();

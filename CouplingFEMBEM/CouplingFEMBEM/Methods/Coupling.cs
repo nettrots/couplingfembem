@@ -92,125 +92,71 @@ namespace SbB.Diploma
             Matrix KBEM = BEM.K;
             Vector FFEM = FEM.F;
             Vector FBEM = BEM.F;
+
+            List<BoundEdge>[] boundaries = new List<BoundEdge>[mortarSide.MortarSides.Count];
+            for (int i = 0; i < boundaries.Length; i++)
+            {
+                boundaries[i] = FEM.Boundaries[mortarSide.MortarSides[i]];
+            }
+            Matrix DFEM = Mortar.createD(2*FEM.Vertexes.Count, boundaries);
+
+            for (int i = 0; i < boundaries.Length; i++)
+            {
+                int k = BEM.Polygon.isEdgeOnPolygon(FEM.Polygon.edge(mortarSide.MortarSides[i]));
+                boundaries[i] = BEM.Boundaries[i];
+            }
+            Matrix DBEM = -1*Mortar.createD(2*BEM.Vertexes.Count, boundaries);
+
+            
+
+            // Create k and F
+            int size = KFEM.Size.m + KBEM.Size.m + DFEM.Size.n;
+            K = new Matrix(size, size);
+            F = new Vector(size);
+
+            for (int i = 0; i < KFEM.Size.m; i++)
+            {
+                F[i] = FFEM[i];
+                for (int j = 0; j < KFEM.Size.n; j++)
+                {
+                    K[i][j] = KFEM[i][j];
+                }
+            }
+
+            size = KFEM.Size.m;
+            for (int i = 0; i < KBEM.Size.m; i++)
+            {
+                F[size + i] = FBEM[i];
+                for (int j = 0; j < KBEM.Size.n; j++)
+                {
+                    K[size + i][size + j] = KBEM[i][j];
+                }   
+
+            }
+
+            size += KBEM.Size.n;
+            for (int i = 0; i < DFEM.Size.m; i++)
+            {
+                for (int j = 0; j < DFEM.Size.n; j++)
+                {
+                    K[i][size + j] = DFEM[i][j];
+                    K[size + j][i] = DFEM[i][j];
+                }
+            }
+
+            for (int i = 0; i < DBEM.Size.m; i++)
+            {
+                for (int j = 0; j < DBEM.Size.n; j++)
+                {
+                    K[KFEM.Size.m + i][size + j] = DBEM[i][j];
+                    K[size + j][KFEM.Size.m + i] = DBEM[i][j];
+                }
+            }
         }
 
         public override void Solve()
         {
-            throw new NotImplementedException();
-        }
-
-        public void assemble()
-        {
-            FEM.Initialize();
-            BEM.Initialize();
-            //Mortar.Initialize();
-
-            //Assamble vertexes (dofs) in all methods
-            vertexes = new List<Vertex>();
-
-            foreach (Vertex vertex in FEM.Vertexes)
-                vertexes.Add(vertex);
-
-            for (int i = 0; i < BEM.Vertexes.Count; i++)
-            {
-                int k = vertexes.IndexOf(BEM.Vertexes[i]);
-                if (k >= 0) BEM.Vertexes[i] = vertexes[k];
-                else vertexes.Add(BEM.Vertexes[i]);
-            }
-
-            vertexes.Sort();
-
-
-            int counter = 0;
-
-            foreach (Vertex vertex in FEM.Vertexes)
-            {
-                vertex.Dofu = new int[] { counter++, counter++ };
-            }
-
-            for (int i = 0; i < FEM.BoundaryClasses.Length; i++)
-            {
-                if (FEM.BoundaryClasses[i].type() == BoundaryType.MORTAR)
-                {
-                    List<Vertex> boundarylist = new List<Vertex>();
-                    foreach (FEMEdge edge in FEM.Boundaries[i])
-                        for (int j = 0; j < edge.NodesCount; j++)
-                            if (!boundarylist.Contains(edge[j])) boundarylist.Add(edge[j]);
-                    boundarylist.Sort();
-                    for (int j = 1; j < boundarylist.Count - 1; j++)
-                    {
-                        boundarylist[i].Doft = new int[] { counter++, counter++ };
-                    }
-                }
-            }
-
-            for (int i = 0; i < BEM.BoundaryClasses.Length; i++)
-            {
-                if (BEM.BoundaryClasses[i].type() == BoundaryType.NONMORTAR)
-                {
-                    List<Vertex> boundarylist = new List<Vertex>();
-                    foreach (BoundEdge edge in BEM.Boundaries[i])
-                        for (int j = 0; j < edge.NodesCount; j++)
-                        {
-                            edge[j] = vertexes[vertexes.IndexOf(edge[j])];
-                            if (!boundarylist.Contains(edge[j])) boundarylist.Add(edge[j]);
-                        }
-                    boundarylist.Sort();
-                    for (int j = 1; j < boundarylist.Count - 1; j++)
-                    {
-                        if (boundarylist[j].Doft.Length == 0)
-                            boundarylist[j].Doft = new int[] { counter++, counter++ };
-                    }
-                    for (int j = 1; j < boundarylist.Count - 1; j++)
-                    {
-                        if (boundarylist[j].Dofu.Length == 0)
-                            boundarylist[j].Dofu = new int[] { counter++, counter++ };
-                    }
-                }
-            }
-
-            for (int i = 0; i < BEM.BoundaryClasses.Length; i++)
-            {
-                if (BEM.BoundaryClasses[i].type() == BoundaryType.STATIC)
-                {
-                    List<Vertex> boundarylist = new List<Vertex>();
-                    foreach (BoundEdge edge in BEM.Boundaries[i])
-                        for (int j = 0; j < edge.NodesCount; j++)
-                        {
-                            edge[j] = vertexes[vertexes.IndexOf(edge[j])];
-                            if (!boundarylist.Contains(edge[j])) boundarylist.Add(edge[j]);
-                        }
-                    boundarylist.Sort();
-                    for (int j = 0; j < boundarylist.Count; j++)
-                    {
-                        if (boundarylist[j].Dofu.Length == 0)
-                            boundarylist[j].Dofu = new int[] { counter++, counter++ };
-                    }
-                }
-
-                if (BEM.BoundaryClasses[i].type() == BoundaryType.KINEMATIC)
-                {
-                    List<Vertex> boundarylist = new List<Vertex>();
-                    foreach (BoundEdge edge in BEM.Boundaries[i])
-                        for (int j = 0; j < edge.NodesCount; j++)
-                        {
-                            edge[j] = vertexes[vertexes.IndexOf(edge[j])];
-                            if (!boundarylist.Contains(edge[j])) boundarylist.Add(edge[j]);
-                        }
-                    boundarylist.Sort();
-                    for (int j = 0; j < boundarylist.Count; j++)
-                    {
-                        if (boundarylist[j].Doft.Length == 0)
-                            boundarylist[j].Doft = new int[] { counter++, counter++ };
-                    }
-                }
-            }
-
-            /*foreach (MortarSide side in Mortar.MortarSides)
-            {
-                for (int i = 1; i < side.Vertexes.Count-1; i++)
-                    side.Vertexes[i].Dofm = new int[] { counter++, counter++ };
-            }*/
+            LUSolve.Solve(K, F, out results);
         }
 
         public override string ToString()

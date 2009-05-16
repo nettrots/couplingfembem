@@ -7,15 +7,9 @@ namespace SbB.Diploma
         #region Fields
         protected Matrix matrix;
         protected List<Vertex> vertexes; 
-        protected bool sign = true;
         #endregion
 
         #region Properties
-        public bool Sign
-        {
-            get { return sign; }
-            set { sign = value; }
-        }
         public Matrix D
         {
             get { return matrix; }
@@ -23,7 +17,7 @@ namespace SbB.Diploma
         #endregion
 
         #region Methods
-        public abstract void visitFunction(int nlocal, int nglobal, Phi phi);
+        public abstract Matrix createD(int DoFsCount, List<BoundEdge>[] boundaries);
         #endregion
 
 
