@@ -15,9 +15,6 @@ namespace SbB.Diploma
         private List<FEMElement> elements;
         private int n;
 
-        private Matrix Af;
-        private Matrix A;
-        private Vector b;
         #endregion
 
         #region Constructors
@@ -155,15 +152,21 @@ namespace SbB.Diploma
             Vertexes = Triangulation.Vertexes;
             elements = Triangulation.Elements;
             Boundaries = Triangulation.Boundaries;
-            
+
+            int counter = 0;
+            foreach (Vertex vertex in Vertexes)
+            {
+                vertex.Dofu = new int[] {counter++, counter++};
+            }
         }
 
         public override void Run()
         {
-            A = new Matrix(2*Vertexes.Count, 2*Vertexes.Count);
+            // Create K
+            K = new Matrix(2*Vertexes.Count, 2*Vertexes.Count);
 
             foreach (FEMElement element in elements)
-                element.FEM(A, D);
+                element.FEM(K, D);
 
             for (int i = 0; i < BoundaryClasses.Length; i++)
                 if (BoundaryClasses[i].type() == BoundaryType.KINEMATIC)
@@ -172,17 +175,18 @@ namespace SbB.Diploma
                         for (int j = 0; j < edge.NodesCount; j++)
                         {
                             for (int k = 0; k < edge[j].Dofu.Length; k++)
-                                A[edge[j].Dofu[k]][edge[j].Dofu[k]] = 1.0/Constants.EPS;
+                                K[edge[j].Dofu[k]][edge[j].Dofu[k]] = 1.0/Constants.EPS;
                         }
                 }
-            //
-            b = new Vector(2*Vertexes.Count);
+
+            // Create F
+            F = new Vector(2*Vertexes.Count);
             for (int i = 0; i < BoundaryClasses.Length; i++)
                 if (BoundaryClasses[i].type() == BoundaryType.STATIC)
                 {
                     Vertex p = ((StaticBoundary) BoundaryClasses[i]).P;
                     foreach (FEMEdge edge in Boundaries[i])
-                        edge.FEM(b, p);
+                        edge.FEM(F, p);
                 }
             for (int i = 0; i < BoundaryClasses.Length; i++)
                 if (BoundaryClasses[i].type() == BoundaryType.KINEMATIC)
@@ -190,38 +194,13 @@ namespace SbB.Diploma
                         for (int j = 0; j < edge.NodesCount; j++)
                         {
                             for (int k = 0; k < edge[j].Dofu.Length; k++)
-                                b[edge[j].Dofu[k]] = 0.0;
+                                F[edge[j].Dofu[k]] = 0.0;
                         }
-            //Somehow create AF
-            int dim = 0;
-            foreach (Vertex vertex in Vertexes)
-            {
-                dim += vertex.Doft.Length;
-            }
-            Af = new Matrix(dim, dim);
-
-            for (int i = 0; i < BoundaryClasses.Length; i++)
-                if (BoundaryClasses[i].type() == BoundaryType.MORTAR)
-                {
-                    int min = int.MaxValue;
-                    foreach (FEMEdge edge in Boundaries[i])
-                    {
-                        for (int j = 0; j < edge.NodesCount; j++)
-                        {
-                            for (int k = 0; k < edge[j].Doft.Length; k++)
-                            {
-                                if (min > edge[j].Doft[k]) min = edge[j].Doft[k];
-                            }
-                        }
-                    }
-                    foreach (FEMEdge edge in Boundaries[i])
-                        edge.FEM(Af, min);
-                }
         }
 
         public override void Solve()
         {
-            throw new NotImplementedException();
+            LUSolve.Solve(K, F, out results);
         }
 
         #endregion

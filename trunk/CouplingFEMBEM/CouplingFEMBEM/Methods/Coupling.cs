@@ -17,6 +17,7 @@ namespace SbB.Diploma
     public class CouplingMethod: BPMethod
     {
         public Polygon Polygon { get; set; }
+        private BPMethod[] methods;
         public FEMMethod FEM;
         public Polygon FemPolygon { get; set; }
         public MakarBEMMethod BEM;
@@ -76,16 +77,22 @@ namespace SbB.Diploma
                 Polygon = new Polygon(poly);
             }
 
+            methods = new BPMethod[2];
+
             //DONE: Create FEM
             if (data.ContainsKey("FEM"))
             {
                 FEM = new FEMMethod(data["FEM"].eHash);
             }
+            methods[0] = FEM;
+
             //DONE: Create BEM
             if (data.ContainsKey("BEM"))
             {
                 BEM = new MakarBEMMethod(data["BEM"].eHash);
             }
+            methods[1] = BEM;
+
             //TODO: Create mortar
 
             Mortar=new MortarMethod();

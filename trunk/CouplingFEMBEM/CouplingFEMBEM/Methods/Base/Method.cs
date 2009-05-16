@@ -16,8 +16,8 @@ namespace SbB.Diploma
         {
             get { return results; }
         }
-        public Matrix K { get; private set;}
-        public Vector F { get; private set; }
+        public Matrix K { get; protected set;}
+        public Vector F { get; protected set; }
         #endregion
 
         #region Methods
