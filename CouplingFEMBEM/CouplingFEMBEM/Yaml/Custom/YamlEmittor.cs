@@ -9,7 +9,7 @@ using SbB.Diploma.Yaml.Custom;
 
 namespace QiHe.Yaml.YamlUtility.UI
 {
-    class YamlEmittor
+    public class YamlEmittor
     {
         public static HashValue CreateNode(DataItem item)
         {

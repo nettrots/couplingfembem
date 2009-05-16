@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ChartDirector;
+using QiHe.Yaml.Grammar;
 using SbB.Diploma;
 using SbB.Diploma.Methods;
+using SbB.Diploma.Yaml.Custom;
+using QiHe.Yaml.YamlUtility.UI;
 
 namespace GUIforCoupling
 {
@@ -122,10 +126,53 @@ namespace GUIforCoupling
         #endregion
 
         #region Work with Problems
+        Dictionary<string, HashValue> readYaml(string filename)
+        {
+            //Create methods and fill with data
+
+            //load yaml file
+            //traverse tree to arraylist
+            //ArrayList data=new ArrayList();
+            Dictionary<string, HashValue> data = new Dictionary<string, HashValue>();
+            if (!File.Exists(filename))
+            {
+                MessageBox.Show(filename + " does not exist.");
+                return null;
+            }
+            YamlParser parser = new YamlParser();
+            TextInput input = new TextInput(File.ReadAllText(filename));
+            bool success;
+            YamlStream yamlStream = parser.ParseYamlStream(input, out success);
+            if (success)
+            {
+                data.Clear();
+                foreach (YamlDocument doc in yamlStream.Documents)
+                {
+                    Dictionary<string, HashValue> a1 = YamlEmittor.CreateNode(doc.Root).eHash;
+                    foreach (KeyValuePair<string, HashValue> pair in a1)
+                    {
+                        data.Add(pair.Key, pair.Value);
+                    }
+                }
+            }
+            else
+            {
+                //   MessageBox.Show(parser.GetEorrorMessages());
+            }
+            return data;
+        }
         void LoadProblem()
         {
-         
-            IProblem problem;
+            string filename;
+            
+            string mType = "fem";
+            switch (mType)
+            {
+                case "fem":
+
+                    break;
+            }
+            //BPMethod method=new 
         }
         #endregion
     }

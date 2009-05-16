@@ -11,7 +11,7 @@ namespace TestingCouplingClesses
     {
         static void Main(string[] args)
         {
-            CouplingMethod target = new CouplingMethod(@"c:\Documents and Settings\Admin\Мои документы\Visual Studio 2008\Projects\1\CouplingFEMBEM\CouplingFEMBEM\Cofig\example.yaml");
+            CouplingMethod target = new CouplingMethod(null);
 
             target.assemble();
         }
