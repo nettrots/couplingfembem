@@ -52,7 +52,7 @@ namespace GUIforCoupling
 
         private BaseChart chart;
         
-        private void flash()
+        private void  flash()
         {
             currentStarage.ChartRedraw();
             Canvas.Image = chart.makeImage();
@@ -191,6 +191,10 @@ namespace GUIforCoupling
                         meth = new CouplingMethod(data);
                         listStarage.Problems.Add(meth.ToString(), meth);
                         break;
+                    case "coupff":
+                        meth = new CouplingFEMs(data);
+                        listStarage.Problems.Add(meth.ToString(), meth);
+                        break;
                     default:
                         meth = null;
                         break;
@@ -257,6 +261,12 @@ namespace GUIforCoupling
                     }
                 }
                 segments = segmentsTemp.ToArray();
+            }
+            if (currentStarage.Problem is CouplingFEMs)
+            {
+                List<FEMElement> elementsList = (currentStarage.Problem as CouplingFEMs).FEMs[0].Elements;
+                elementsList.AddRange((currentStarage.Problem as CouplingFEMs).FEMs[1].Elements);
+                elements = elementsList.ToArray();
             }
 
             currentStarage.DomainTriangulation = new DomainTriangulation
@@ -339,6 +349,16 @@ namespace GUIforCoupling
             if (problemCB.SelectedItem.ToString()!="")
             currentStarage.Problem = listStarage.Problems[problemCB.SelectedItem.ToString()];
             
+        }
+
+        private void problemCB_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void grOptionsCB_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
