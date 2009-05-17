@@ -24,7 +24,6 @@ namespace SbB.Diploma
         #region Constructors
         public CouplingFEMs(Dictionary<string, HashValue> data)
         {
-            Name = "Coupling FEM-FEM";
             if (data.ContainsKey("Polygon"))
             {
                 Vertex[] poly = new Vertex[data["Polygon"].eHash["Vertex"].eHash.Count];
@@ -49,7 +48,7 @@ namespace SbB.Diploma
             //DONE: Create BEM
             if (data.ContainsKey("FEM2"))
             {
-                FEMs[1] = new FEMMethod(data["FEM"].eHash);
+                FEMs[1] = new FEMMethod(data["FEM2"].eHash);
             }
 
             //DONE: Create mortar
@@ -59,13 +58,16 @@ namespace SbB.Diploma
                 if (FEMs[0].BoundaryClasses[i].type() == BoundaryType.MORTAR) mortarsides.Add(i);
             }
             mortarSide = new MortarSide(FEMs[0], mortarsides);
+
+            Name = "FEM(" + FEMs[0].Area + ")-FEM(" + FEMs[1].Area + ")";
+
         }
         #endregion
 
         #region Properties
         public FEMMethod[] FEMs{ get; set;}
         public List<Func<double, double, double>> FuncList { get; set; }
-        public string Name { get; set; }
+        public override string Name { get; set; }
         #endregion
 
         #region Methods
@@ -81,7 +83,7 @@ namespace SbB.Diploma
         public override void Run()
         {
             for (int i = 0; i < FEMs.Length; i++)
-                FEMs[i].Initialize();
+                FEMs[i].Run();
 
             Matrix[] D = new Matrix[FEMs.Length];
 
@@ -147,18 +149,16 @@ namespace SbB.Diploma
 
         public override double U(double x, double y)
         {
-            double u = 0.0;
             for (int i = 0; i < FEMs.Length; i++)
-                u += FEMs[0].U(x, y);
-            return u;
+                if (FEMs[i].Polygon.hasVertex(new Vertex(x, y))) return FEMs[i].U(x, y);
+            return 0.0;
         }
 
         public override double V(double x, double y)
         {
-            double v = 0.0;
             for (int i = 0; i < FEMs.Length; i++)
-                v += FEMs[0].V(x, y);
-            return v;
+                if (FEMs[i].Polygon.hasVertex(new Vertex(x, y))) return FEMs[i].V(x, y);
+            return 0.0;
         }
 
         public override string ToString()

@@ -24,7 +24,7 @@ namespace GUIforCoupling
             var b = true;
             foreach (var problem in listStarage.Problems)
             {
-              problemLB.Items.Add(problem);
+              problemLB.Items.Add(problem.Key);
               problemLB.SelectedIndex = problemLB.Items.IndexOf(currentStorage.Problem);
             }
             foreach (var graphic in listStarage.Graphics)
@@ -86,6 +86,7 @@ namespace GUIforCoupling
             }
             optionNewName.Text = opt.Name;
             currentStorage.Groption = opt;
+           
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -147,9 +148,10 @@ namespace GUIforCoupling
 
         private void problemLB_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currentStorage.Problem = listStarage.Problems[problemLB.SelectedItem.ToString()];
             listStarage.Functions=new Dictionary<string, fxy>();
             listStarage.Functions.Add("U", currentStorage.Problem.U);
-            listStarage.Functions.Add("V",currentStorage.Problem.V);
+            listStarage.Functions.Add("V", currentStorage.Problem.V);
 
             functionsLB.Items.Clear();
             functionsLB.Items.Add("U");
@@ -160,6 +162,7 @@ namespace GUIforCoupling
 
         private void functionsLB_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (functionsLB.Items.Count == 0) return;
            currentStorage.Function = listStarage.Functions[functionsLB.SelectedItem.ToString()];
            if (currentStorage.Groption!=null)
             functionNameTB.Text = functionsLB.SelectedItem.ToString() + " " + currentStorage.Groption.Name + "("+currentStorage.Problem.ToString() + ")";
@@ -168,7 +171,13 @@ namespace GUIforCoupling
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            int i = functionsLB.SelectedIndex;
+            graphicsLB.Items.Clear();
+            foreach (var s in listStarage.Graphics)
+            {
+                graphicsLB.Items.Add(s);
+            }
+            graphicsLB.SelectedIndex = i;
         }
 
  
