@@ -1,0 +1,55 @@
+Polygon:
+ Vertex:
+  - [ -1, -1]
+  - [ 1, -1]
+  - [ 1, 0]
+  - [ 0, 0]
+  - [ 0, 1]
+  - [ -1, 1]
+FEM:
+ youngModulus: 21000
+ poissonRatio: 0.3
+ Vertex:
+  - [ -0.25, -0.25]
+  - [ 0.25, -0.25]
+  - [ 0.25, 0]
+  - [ 0, 0]
+  - [ 0, 0.25]
+  - [ -0.25, 0.25]
+ BoundaryType:
+  - MORTAR
+  - MORTAR
+  - STATIC
+  - STATIC
+  - MORTAR
+  - MORTAR
+ Mesh:
+  area: 0.01
+  angle: 20
+BEM:
+ youngModulus: 21000
+ poissonRatio: 0.3
+ elementsPerSegment: 8
+ Vertex:
+  - [ -1, -1]
+  - [ 1, -1]
+  - [ 1, 0]
+  - [ 0.25, 0]
+  - [ 0.25, -0.25]
+  - [ -0.25, -0.25]
+  - [ -0.25, 0.25]
+  - [ 0, 0.25]
+  - [ 0, 1]
+  - [ -1, 1]
+ BoundaryType:
+  - STATIC
+  - KINEMATIC
+  - STATIC
+  - NONMORTAR
+  - NONMORTAR
+  - NONMORTAR
+  - NONMORTAR
+  - STATIC
+  - KINEMATIC
+  - STATIC@[-1,0]
+

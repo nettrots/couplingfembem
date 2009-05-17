@@ -18,7 +18,7 @@ FEM1:
   - STATIC@[0,-1]
   - KINEMATIC
  Mesh:
-  area: 0.01
+  area: 0.05
   angle: 20
 FEM2:
  youngModulus: 21000
@@ -34,5 +34,5 @@ FEM2:
   - STATIC@[0,-1]
   - NONMORTAR
  Mesh:
-  area: 0.1
+  area: 0.05
   angle: 20

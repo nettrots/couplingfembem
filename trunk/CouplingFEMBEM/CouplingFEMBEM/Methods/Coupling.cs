@@ -78,79 +78,56 @@ namespace SbB.Diploma
 
         public override void Initialize()
         {
-            FEM.Initialize();
-            BEM.Initialize();
+            for (int i = 0; i < methods.Length; i++)
+                methods[i].Initialize();
             mortarSide.createMortarNodes();
             Mortar = mortarSide.createMortar();
         }
 
         public override void Run()
         {
-            FEM.Run();
-            BEM.Run();
+            for (int i = 0; i < methods.Length; i++)
+                methods[i].Run();
 
-            Matrix KFEM = FEM.K;
-            Matrix KBEM = BEM.K;
-            Vector FFEM = FEM.F;
-            Vector FBEM = BEM.F;
+            Matrix[] D = new Matrix[methods.Length];
 
             List<BoundEdge>[] boundaries = new List<BoundEdge>[mortarSide.MortarSides.Count];
+
             for (int i = 0; i < boundaries.Length; i++)
-            {
-                boundaries[i] = FEM.Boundaries[mortarSide.MortarSides[i]];
-            }
-            Matrix DFEM = Mortar.createD(2*FEM.Vertexes.Count, boundaries);
+                boundaries[i] = (methods[0] as IDiscretization).Boundaries[mortarSide.MortarSides[i]];
+            D[0] = Mortar.createD(2 * (methods[0] as IDiscretization).Vertexes.Count, boundaries);
 
             for (int i = 0; i < boundaries.Length; i++)
             {
-                int k = BEM.Polygon.isEdgeOnPolygon(FEM.Polygon.edge(mortarSide.MortarSides[i]));
-                boundaries[i] = BEM.Boundaries[k];
+                int k = methods[1].Polygon.isEdgeOnPolygon(methods[0].Polygon.edge(mortarSide.MortarSides[i]));
+                boundaries[i] = (methods[1] as IDiscretization).Boundaries[k];
             }
-            Matrix DBEM = -1*Mortar.createD(2*BEM.Vertexes.Count, boundaries);
+            D[1] = -1 * Mortar.createD(2 * (methods[1] as IDiscretization).Vertexes.Count, boundaries);
 
-            
 
             // Create k and F
-            int size = KFEM.Size.m + KBEM.Size.m + DFEM.Size.n;
+            int size = methods[0].K.Size.m + methods[1].K.Size.m + D[0].Size.n;
+            int sizeK = methods[0].K.Size.m + methods[1].K.Size.m;
             K = new Matrix(size, size);
             F = new Vector(size);
 
-            for (int i = 0; i < KFEM.Size.m; i++)
+            for (int i = 0; i < methods.Length; i++)
             {
-                F[i] = FFEM[i];
-                for (int j = 0; j < KFEM.Size.n; j++)
+                size = 0;
+                for (int l = 0; l < i; l++)
                 {
-                    K[i][j] = KFEM[i][j];
+                    size += methods[l].K.Size.m;
                 }
-            }
-
-            size = KFEM.Size.m;
-            for (int i = 0; i < KBEM.Size.m; i++)
-            {
-                F[size + i] = FBEM[i];
-                for (int j = 0; j < KBEM.Size.n; j++)
+                for (int j = 0; j < methods[i].K.Size.m; j++)
                 {
-                    K[size + i][size + j] = KBEM[i][j];
-                }   
-
-            }
-
-            size += KBEM.Size.n;
-            for (int i = 0; i < DFEM.Size.m; i++)
-            {
-                for (int j = 0; j < DFEM.Size.n; j++)
-                {
-                    K[i][size + j] = DFEM[i][j];
-                    K[size + j][i] = DFEM[i][j];
-                }
-            }
-
-            for (int i = 0; i < DBEM.Size.m; i++)
-            {
-                for (int j = 0; j < DBEM.Size.n; j++)
-                {
-                    K[KFEM.Size.m + i][size + j] = DBEM[i][j];
-                    K[size + j][KFEM.Size.m + i] = DBEM[i][j];
+                    F[size + j] = methods[i].F[j];
+                    for (int k = 0; k < methods[i].K.Size.n; k++)
+                        K[size + j][size + k] = methods[i].K[j][k];
+                    for (int k = 0; k < D[i].Size.n; k++)
+                    {
+                        K[size + j][sizeK + k] = D[i][j][k];
+                        K[sizeK + k][size + j] = D[i][j][k];
+                    }
                 }
             }
         }

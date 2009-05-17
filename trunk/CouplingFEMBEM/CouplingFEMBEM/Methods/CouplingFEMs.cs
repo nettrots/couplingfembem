@@ -102,7 +102,7 @@ namespace SbB.Diploma
 
 
             // Create k and F
-            int size = FEMs[0].K.Size.m + FEMs[1].K.Size.m + D[0].Size.n+D[1].Size.n;
+            int size = FEMs[0].K.Size.m + FEMs[1].K.Size.m + D[0].Size.n;
             int sizeK = FEMs[0].K.Size.m + FEMs[1].K.Size.m;
             K = new Matrix(size, size);
             F = new Vector(size);
@@ -110,11 +110,9 @@ namespace SbB.Diploma
             for (int i = 0; i < FEMs.Length; i++)
             {
                 size = 0;
-                int sizeD = 0;
                 for (int l = 0; l < i; l++)
                 {
                     size += FEMs[l].K.Size.m;
-                    sizeD += D[l].Size.n;
                 }
                 for (int j = 0; j < FEMs[i].K.Size.m; j++)
                 {
@@ -123,8 +121,8 @@ namespace SbB.Diploma
                         K[size + j][size + k] = FEMs[i].K[j][k];
                     for (int k = 0; k < D[i].Size.n; k++)
                     {
-                        K[size + j][sizeK + sizeD + k] = D[i][j][k];
-                        K[sizeK + sizeD + k][size + j] = D[i][j][k];
+                        K[size + j][sizeK + k] = D[i][j][k];
+                        K[sizeK + k][size + j] = D[i][j][k];
                     }
                 }
             }

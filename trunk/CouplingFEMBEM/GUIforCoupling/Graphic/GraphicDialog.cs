@@ -62,11 +62,25 @@ namespace GUIforCoupling
 
         private void button6_Click(object sender, EventArgs e)
         {
-           GraphicOptions gr=new GraphicOptions(FunctionType.ConstX,currentStorage.Problem.Polygon);
-            gr.ConstValue = 0;
-            gr.Name = "on x=0";
-            listStarage.Groptions.Add(gr);
-            optionsLB.Items.Add(gr);
+            GraphicOptions go;
+            switch (tabControl1.SelectedIndex)
+            {
+                case 0:
+                    go =new GraphicOptions(FunctionType.ConstX, currentStorage.Problem.Polygon);
+                    go.ConstValue = double.Parse(xConstValueTB.Text);
+                    go.Name = optionNewName.Text;
+                    optionsLB.Items.Add(go);
+                    listStarage.Groptions.Add(go);
+                    break;
+                case 1:
+                    go = new GraphicOptions(FunctionType.ConstY, currentStorage.Problem.Polygon);
+                    go.ConstValue = double.Parse(yConstValueTB.Text);
+                    go.Name = optionNewName.Text;
+                    optionsLB.Items.Add(go);
+                    listStarage.Groptions.Add(go);
+                    break;
+            }
+
             optionsLB.SelectedIndex = optionsLB.Items.Count - 1;
         }
 
@@ -114,6 +128,12 @@ namespace GUIforCoupling
                 
                
             }
+            listStarage.Groptions.Clear();
+            foreach (GraphicOptions s in optionsLB.Items)
+            {
+                listStarage.Groptions.Add(s);
+            }
+            
             int i = optionsLB.SelectedIndex;
             optionsLB.Items.Clear();
             foreach (var s in listStarage.Groptions)
@@ -171,13 +191,14 @@ namespace GUIforCoupling
 
         private void button3_Click(object sender, EventArgs e)
         {
-            int i = functionsLB.SelectedIndex;
+            int i = graphicsLB.SelectedIndex;
+            listStarage.Graphics.RemoveAt(i);
             graphicsLB.Items.Clear();
             foreach (var s in listStarage.Graphics)
             {
                 graphicsLB.Items.Add(s);
             }
-            graphicsLB.SelectedIndex = i;
+            graphicsLB.SelectedIndex = -1;
         }
 
  
