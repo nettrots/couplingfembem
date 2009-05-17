@@ -33,6 +33,7 @@ namespace GUIforCoupling
         private fxy f;
         private int n;
 
+        public bool Enabled { get; set; }
         public Graphic(fxy f) {
             this.f = f; }
 

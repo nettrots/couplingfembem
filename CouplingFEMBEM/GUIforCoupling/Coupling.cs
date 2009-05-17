@@ -178,11 +178,11 @@ namespace GUIforCoupling
             switch (mType)
             {
                 case "fem":
-                     meth = new FEMMethod(data);
+                     meth = new FEMMethod(data["FEM"].eHash);
                     listStarage.Problems.Add(meth.ToString(), meth);
                     break;
                 case "bem":
-                     meth = new MakarBEMMethod(data);
+                    meth = new MakarBEMMethod(data["BEM"].eHash);
                     listStarage.Problems.Add(meth.ToString(), meth);
                     break;
                 case "coupl":
@@ -273,7 +273,11 @@ namespace GUIforCoupling
         private void functionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GraphicDialog grDialog = new GraphicDialog();
-            grDialog.Show();
+            if(grDialog.ShowDialog()==DialogResult.OK)
+            {
+
+                grOptionsCB.Items.AddRange(listStarage.Groptions.ToArray());
+            }
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -296,6 +300,32 @@ namespace GUIforCoupling
              currentStarage.Problem.Initialize();
              currentStarage.Problem.Run();
              currentStarage.Problem.Solve();
+        }
+
+        private void grOptionsCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (var item in listStarage.Groptions)
+            {
+                if (item.Name == grOptionsCB.SelectedText)
+                {
+                    currentStarage.Groption = item;
+                    break;
+                }
+            }
+            foreach (var item in listStarage.Graphics)
+            {
+                if (item.Options == currentStarage.Groption)
+                    item.Enabled = true;
+                else
+                    item.Enabled = false;
+            }
+            //currentStarage.Groption=
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            currentStarage.ChartRedraw = listStarage.ChartRedraw["lineModeChart"];
+            flash();
         }
     }
 
