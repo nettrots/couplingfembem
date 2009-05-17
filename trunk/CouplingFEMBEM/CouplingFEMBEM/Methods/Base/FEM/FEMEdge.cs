@@ -17,12 +17,6 @@ namespace SbB.Diploma
         #region Methods
         public abstract void FEM(Vector V, Vertex p);
         public abstract void FEM(Matrix Af, int offset);
-        
-        public override void mortar(Mortar mortarvisitor)
-        {
-/*            for (int i = 0; i < Rank; i++)
-                mortarvisitor.visitFunction(i,nodes[i].Number, phi);*/
-        }
         #endregion
     }
 }
