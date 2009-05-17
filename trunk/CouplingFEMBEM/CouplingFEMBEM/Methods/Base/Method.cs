@@ -15,6 +15,7 @@ namespace SbB.Diploma
         public Vector Results
         {
             get { return results; }
+            set { results = value; }
         }
         public Matrix K { get; protected set;}
         public Vector F { get; protected set; }
