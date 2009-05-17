@@ -12,5 +12,5 @@ FEM:
   - STATIC@[0,-1]
   - KINEMATIC
  Mesh:
-  area: 0.02
+  area: 0.005
   angle: 20

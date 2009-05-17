@@ -241,11 +241,11 @@ namespace GUIforCoupling
                 segments = segmentsTemp.ToArray();
             }
             if (currentStarage.Problem is FEMMethod)
-                elements = (currentStarage.Problem as CouplingMethod).FEM.Elements.ToArray();
+                elements = (currentStarage.Problem as FEMMethod).Elements.ToArray();
             if (currentStarage.Problem is MakarBEMMethod)
             {
                 segmentsTemp = new List<Edge>();
-                foreach (var edges in (currentStarage.Problem as CouplingMethod).BEM.Boundaries)
+                foreach (var edges in (currentStarage.Problem as MakarBEMMethod).Boundaries)
                 {
                     foreach (var list in edges)
                     {

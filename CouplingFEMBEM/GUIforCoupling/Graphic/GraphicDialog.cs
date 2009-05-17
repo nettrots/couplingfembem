@@ -143,6 +143,7 @@ namespace GUIforCoupling
             listStarage.Functions.Add("U", currentStorage.Problem.U);
             listStarage.Functions.Add("V",currentStorage.Problem.V);
 
+            functionsLB.Items.Clear();
             functionsLB.Items.Add("U");
             functionsLB.Items.Add("V");
             functionsLB.SelectedIndex = 0;
