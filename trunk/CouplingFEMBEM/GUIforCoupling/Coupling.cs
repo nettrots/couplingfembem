@@ -35,6 +35,7 @@ namespace GUIforCoupling
             currentStarage.ChartRedraw = listStarage.ChartRedraw["empty"];
 
             InitializeComponent();
+            
             //lineModeChart();
            // triangulationeModeChart();
            // flash();
@@ -227,7 +228,9 @@ namespace GUIforCoupling
             List<Edge> segmentsTemp = null;
             if (currentStarage.Problem is CouplingMethod)
             {
+
                 elements = (currentStarage.Problem as CouplingMethod).FEM.Elements.ToArray();
+                segmentsTemp = new List<Edge>();
                 foreach (var edges in (currentStarage.Problem as CouplingMethod).BEM.Boundaries)
                 {
                     foreach (var list in edges)
@@ -241,6 +244,7 @@ namespace GUIforCoupling
                 elements = (currentStarage.Problem as CouplingMethod).FEM.Elements.ToArray();
             if (currentStarage.Problem is MakarBEMMethod)
             {
+                segmentsTemp = new List<Edge>();
                 foreach (var edges in (currentStarage.Problem as CouplingMethod).BEM.Boundaries)
                 {
                     foreach (var list in edges)
@@ -264,6 +268,34 @@ namespace GUIforCoupling
         {
             currentStarage.Problem.Initialize();
 
+        }
+
+        private void functionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GraphicDialog grDialog = new GraphicDialog();
+            grDialog.Show();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            functionsToolStripMenuItem_Click( sender,  e);
+        }
+
+        private void runProblembtn_Click(object sender, EventArgs e)
+        {
+            currentStarage.Problem.Run();
+        }
+
+        private void solveProblembtn_Click(object sender, EventArgs e)
+        {
+             currentStarage.Problem.Solve();
+        }
+
+        private void doAllbtn_Click(object sender, EventArgs e)
+        {
+             currentStarage.Problem.Initialize();
+             currentStarage.Problem.Run();
+             currentStarage.Problem.Solve();
         }
     }
 

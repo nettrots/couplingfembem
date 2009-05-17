@@ -34,7 +34,7 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.functionsLB = new System.Windows.Forms.CheckedListBox();
+            this.graphicsLB = new System.Windows.Forms.CheckedListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.functionNameTB = new System.Windows.Forms.TextBox();
@@ -45,12 +45,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.pointsNumberTB = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.functionCB = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.domainsCB = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.problemCB = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox5 = new System.Windows.Forms.TextBox();
@@ -60,10 +55,13 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.optionControl = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.optionNewName = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.label2 = new System.Windows.Forms.Label();
+            this.problemLB = new System.Windows.Forms.ListBox();
+            this.functionsLB = new System.Windows.Forms.ListBox();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.optionControl.Panel1.SuspendLayout();
@@ -94,17 +92,16 @@
             // textBox3
             // 
             this.textBox3.BackColor = System.Drawing.Color.Black;
-            this.textBox3.Location = new System.Drawing.Point(216, 154);
+            this.textBox3.Location = new System.Drawing.Point(398, 282);
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(30, 20);
+            this.textBox3.Size = new System.Drawing.Size(97, 20);
             this.textBox3.TabIndex = 40;
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(184, 157);
+            this.label8.Location = new System.Drawing.Point(394, 260);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(34, 13);
             this.label8.TabIndex = 39;
@@ -113,23 +110,23 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(339, 18);
+            this.label7.Location = new System.Drawing.Point(252, 9);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(46, 13);
             this.label7.TabIndex = 38;
             this.label7.Text = "Функції";
             // 
-            // functionsLB
+            // graphicsLB
             // 
-            this.functionsLB.FormattingEnabled = true;
-            this.functionsLB.Location = new System.Drawing.Point(342, 36);
-            this.functionsLB.Name = "functionsLB";
-            this.functionsLB.Size = new System.Drawing.Size(166, 109);
-            this.functionsLB.TabIndex = 37;
+            this.graphicsLB.FormattingEnabled = true;
+            this.graphicsLB.Location = new System.Drawing.Point(255, 27);
+            this.graphicsLB.Name = "graphicsLB";
+            this.graphicsLB.Size = new System.Drawing.Size(166, 109);
+            this.graphicsLB.TabIndex = 37;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(442, 151);
+            this.button3.Location = new System.Drawing.Point(355, 142);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(66, 24);
             this.button3.TabIndex = 36;
@@ -138,7 +135,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(342, 151);
+            this.button4.Location = new System.Drawing.Point(255, 142);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(56, 24);
             this.button4.TabIndex = 35;
@@ -148,7 +145,7 @@
             // 
             // functionNameTB
             // 
-            this.functionNameTB.Location = new System.Drawing.Point(189, 125);
+            this.functionNameTB.Location = new System.Drawing.Point(397, 237);
             this.functionNameTB.Name = "functionNameTB";
             this.functionNameTB.Size = new System.Drawing.Size(100, 20);
             this.functionNameTB.TabIndex = 34;
@@ -156,7 +153,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(186, 109);
+            this.label6.Location = new System.Drawing.Point(394, 218);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(78, 13);
             this.label6.TabIndex = 33;
@@ -164,7 +161,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(85, 337);
+            this.button5.Location = new System.Drawing.Point(172, 128);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(64, 21);
             this.button5.TabIndex = 32;
@@ -174,7 +171,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(15, 337);
+            this.button6.Location = new System.Drawing.Point(95, 128);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(64, 21);
             this.button6.TabIndex = 31;
@@ -185,16 +182,16 @@
             // optionsLB
             // 
             this.optionsLB.FormattingEnabled = true;
-            this.optionsLB.Location = new System.Drawing.Point(15, 210);
+            this.optionsLB.Location = new System.Drawing.Point(12, 27);
             this.optionsLB.Name = "optionsLB";
-            this.optionsLB.Size = new System.Drawing.Size(134, 121);
+            this.optionsLB.Size = new System.Drawing.Size(224, 95);
             this.optionsLB.TabIndex = 30;
             this.optionsLB.SelectedIndexChanged += new System.EventHandler(this.optionsLB_SelectedIndexChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 192);
+            this.label5.Location = new System.Drawing.Point(9, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 29;
@@ -202,72 +199,29 @@
             // 
             // pointsNumberTB
             // 
-            this.pointsNumberTB.Location = new System.Drawing.Point(189, 84);
+            this.pointsNumberTB.Location = new System.Drawing.Point(396, 195);
             this.pointsNumberTB.Name = "pointsNumberTB";
             this.pointsNumberTB.Size = new System.Drawing.Size(98, 20);
             this.pointsNumberTB.TabIndex = 28;
+            this.pointsNumberTB.Text = "100";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(186, 67);
+            this.label4.Location = new System.Drawing.Point(393, 178);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(84, 13);
             this.label4.TabIndex = 27;
             this.label4.Text = "Кількість точок";
             // 
-            // functionCB
-            // 
-            this.functionCB.FormattingEnabled = true;
-            this.functionCB.Location = new System.Drawing.Point(190, 37);
-            this.functionCB.Name = "functionCB";
-            this.functionCB.Size = new System.Drawing.Size(98, 21);
-            this.functionCB.TabIndex = 26;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(186, 19);
+            this.label3.Location = new System.Drawing.Point(252, 178);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 13);
             this.label3.TabIndex = 25;
             this.label3.Text = "Функція";
-            // 
-            // domainsCB
-            // 
-            this.domainsCB.FormattingEnabled = true;
-            this.domainsCB.Location = new System.Drawing.Point(29, 93);
-            this.domainsCB.Name = "domainsCB";
-            this.domainsCB.Size = new System.Drawing.Size(98, 21);
-            this.domainsCB.TabIndex = 24;
-            this.domainsCB.SelectedIndexChanged += new System.EventHandler(this.domainsCB_SelectedIndexChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 75);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 13);
-            this.label2.TabIndex = 23;
-            this.label2.Text = "Область";
-            // 
-            // problemCB
-            // 
-            this.problemCB.FormattingEnabled = true;
-            this.problemCB.Location = new System.Drawing.Point(30, 46);
-            this.problemCB.Name = "problemCB";
-            this.problemCB.Size = new System.Drawing.Size(98, 21);
-            this.problemCB.TabIndex = 22;
-            this.problemCB.SelectedIndexChanged += new System.EventHandler(this.problemCB_SelectedIndexChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Задача";
             // 
             // textBox4
             // 
@@ -283,7 +237,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(238, 108);
+            this.tabPage1.Size = new System.Drawing.Size(220, 82);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Const X";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -307,9 +261,9 @@
             // button7
             // 
             this.button7.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button7.Location = new System.Drawing.Point(171, 0);
+            this.button7.Location = new System.Drawing.Point(181, 0);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 28);
+            this.button7.Size = new System.Drawing.Size(47, 25);
             this.button7.TabIndex = 0;
             this.button7.Text = "Save";
             this.button7.UseVisualStyleBackColor = true;
@@ -331,14 +285,14 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(238, 108);
+            this.tabPage2.Size = new System.Drawing.Size(220, 82);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Const Y";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // optionControl
             // 
-            this.optionControl.Location = new System.Drawing.Point(189, 192);
+            this.optionControl.Location = new System.Drawing.Point(12, 237);
             this.optionControl.Name = "optionControl";
             this.optionControl.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -348,11 +302,11 @@
             // 
             // optionControl.Panel2
             // 
-            this.optionControl.Panel2.Controls.Add(this.textBox1);
+            this.optionControl.Panel2.Controls.Add(this.optionNewName);
             this.optionControl.Panel2.Controls.Add(this.label11);
             this.optionControl.Panel2.Controls.Add(this.button7);
-            this.optionControl.Size = new System.Drawing.Size(246, 166);
-            this.optionControl.SplitterDistance = 134;
+            this.optionControl.Size = new System.Drawing.Size(228, 137);
+            this.optionControl.SplitterDistance = 108;
             this.optionControl.TabIndex = 41;
             // 
             // tabControl1
@@ -363,15 +317,15 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(246, 134);
+            this.tabControl1.Size = new System.Drawing.Size(228, 108);
             this.tabControl1.TabIndex = 0;
             // 
-            // textBox1
+            // optionNewName
             // 
-            this.textBox1.Location = new System.Drawing.Point(51, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(114, 20);
-            this.textBox1.TabIndex = 5;
+            this.optionNewName.Location = new System.Drawing.Point(52, 2);
+            this.optionNewName.Name = "optionNewName";
+            this.optionNewName.Size = new System.Drawing.Size(114, 20);
+            this.optionNewName.TabIndex = 5;
             // 
             // label11
             // 
@@ -386,16 +340,46 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 148);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.TabIndex = 42;
+            this.label2.Text = "Задача";
+            // 
+            // problemLB
+            // 
+            this.problemLB.FormattingEnabled = true;
+            this.problemLB.Location = new System.Drawing.Point(12, 164);
+            this.problemLB.Name = "problemLB";
+            this.problemLB.Size = new System.Drawing.Size(224, 69);
+            this.problemLB.TabIndex = 43;
+            this.problemLB.SelectedIndexChanged += new System.EventHandler(this.problemLB_SelectedIndexChanged);
+            // 
+            // functionsLB
+            // 
+            this.functionsLB.FormattingEnabled = true;
+            this.functionsLB.Location = new System.Drawing.Point(255, 194);
+            this.functionsLB.Name = "functionsLB";
+            this.functionsLB.Size = new System.Drawing.Size(133, 108);
+            this.functionsLB.TabIndex = 44;
+            this.functionsLB.SelectedIndexChanged += new System.EventHandler(this.functionsLB_SelectedIndexChanged);
+            // 
             // GraphicDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(523, 432);
+            this.Controls.Add(this.functionsLB);
+            this.Controls.Add(this.problemLB);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.optionControl);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.functionsLB);
+            this.Controls.Add(this.graphicsLB);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.functionNameTB);
@@ -406,16 +390,11 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.pointsNumberTB);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.functionCB);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.domainsCB);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.problemCB);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "GraphicDialog";
-            this.Text = "Form2";
+            this.Text = "Function Manager";
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -438,7 +417,7 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.CheckedListBox functionsLB;
+        private System.Windows.Forms.CheckedListBox graphicsLB;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox functionNameTB;
@@ -449,12 +428,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox pointsNumberTB;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox functionCB;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox domainsCB;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox problemCB;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TextBox textBox5;
@@ -466,7 +440,10 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox optionNewName;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListBox problemLB;
+        private System.Windows.Forms.ListBox functionsLB;
     }
 }

@@ -159,6 +159,16 @@ namespace SbB.Diploma
             LUSolve.Solve(K, F, out results);
         }
 
+        public override double U(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double V(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             return Name;

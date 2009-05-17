@@ -25,6 +25,8 @@ namespace SbB.Diploma
         public abstract void Initialize();
         public abstract void Run();
         public abstract void Solve();
+        public abstract double U(double x, double y);
+        public abstract double V(double x, double y);
         #endregion
     }
 }
