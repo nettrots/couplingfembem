@@ -1,0 +1,28 @@
+Polygon:
+ Vertex:
+  - [ -1, -1]
+  - [ 1, -1]
+  - [ 1, 0]
+  - [ 0, 0]
+  - [ 0, 1]
+  - [ -1, 1]
+FEM:
+ youngModulus: 21000
+ poissonRatio: 0.3
+ Vertex:
+  - [ -1, -1]
+  - [ 1, -1]
+  - [ 1, 0]
+  - [ 0, 0]
+  - [ 0, 1]
+  - [ -1, 1]
+ BoundaryType:
+  - STATIC
+  - KINEMATIC
+  - STATIC
+  - STATIC
+  - KINEMATIC
+  - STATIC@[-1,0]
+ Mesh:
+  area: 0.01
+  angle: 20

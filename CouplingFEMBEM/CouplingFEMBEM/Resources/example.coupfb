@@ -23,7 +23,7 @@ FEM:
 BEM:
  youngModulus: 21000
  poissonRatio: 0.3
- elementsPerSegment: 4
+ elementsPerSegment: 16
  Vertex:
   - [ 1, 0]
   - [ 2, 0]
