@@ -52,6 +52,16 @@ namespace SbB.Diploma
             throw new NotImplementedException();
         }
 
+        public override double U(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double V(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Initialize()
         {
             foreach (MortarSide side in mortarSides)
