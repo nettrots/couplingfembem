@@ -33,10 +33,5 @@ namespace SbB.Diploma.Methods
             if (i != 0 && i != 1) return 0;
             return (v - this[(i + 1) % 2]).Length / Length;
         }
-
-        public override void mortar(Mortar mortarvisitor)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

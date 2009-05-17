@@ -88,17 +88,15 @@
     <Compile Include="Methods\Base\LinearTriangleFEM\LinearTriangle.cs" />
     <Compile Include="Methods\Base\LinearTriangleFEM\LinialTriangleTriangulation.cs" />
     <Compile Include="Methods\Base\LinearTriangleFEM\Triangulation.cs" />
-    <Compile Include="Methods\Base\Mortar\LinearMortar.cs" />
-    <Compile Include="Methods\Base\Mortar\MortarMethod.cs" />
     <Compile Include="Methods\Base\LinearTriangleFEM\TriangleExe.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TriangleExe.resx</DependentUpon>
     </Compile>
+    <Compile Include="Methods\Base\Mortar\LinearMortar.cs" />
     <Compile Include="Methods\LinearBEMEdge.cs" />
     <Compile Include="Methods\MakarBEMMethod.cs" />
     <Compile Include="Methods\Coupling.cs" />
-    <Compile Include="Methods\LinearMortarMethod.cs" />
     <Compile Include="Methods\Base\Method.cs" />
     <Compile Include="Methods\Base\Mortar\Mortar.cs" />
     <Compile Include="Methods\Base\Mortar\MortarSide.cs" />
