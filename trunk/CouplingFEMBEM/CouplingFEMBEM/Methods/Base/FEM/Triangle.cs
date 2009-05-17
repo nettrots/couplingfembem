@@ -18,17 +18,10 @@ namespace SbB.Diploma
         #region Methods
         public bool isVertexInTriangle(Vertex v)
         {
-
-            if (isVertexOnTriangle(v)) return false;
-            Polygon p = new Polygon(new Vertex[] { nodes[0], nodes[1], nodes[2] });
-            return p.isVertexInPolygon(v);
-            Triangle a1, a2, a3;
-            Vertex a = nodes[0], b = nodes[1], c = nodes[2];
-            a1 = new LinearTriangle(a, b, v);
-            a2 = new LinearTriangle(a, c, v);
-            a3 = new LinearTriangle(c, b, v);
-
-            return (Math.Abs(S - (a1.S + a2.S + a3.S))<=Constants.EPS);
+            VertexPos possition = v.classify(nodes[2], nodes[0]);
+            for (int i = 0; i < 2; i++)
+                if (v.classify(nodes[i], nodes[i + 1]) != possition) return false;
+            return true;
         }
         public bool isVertexOnTriangle(Vertex v)
         {

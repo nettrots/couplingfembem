@@ -94,6 +94,7 @@
       <DependentUpon>TriangleExe.resx</DependentUpon>
     </Compile>
     <Compile Include="Methods\Base\Mortar\LinearMortar.cs" />
+    <Compile Include="Methods\CouplingFEMs.cs" />
     <Compile Include="Methods\LinearBEMEdge.cs" />
     <Compile Include="Methods\MakarBEMMethod.cs" />
     <Compile Include="Methods\Coupling.cs" />

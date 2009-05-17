@@ -22,7 +22,6 @@ namespace SbB.Diploma
         public MakarBEMMethod BEM;
         private MortarSide mortarSide;
         private Mortar Mortar;
-        private List<Vertex> vertexes; 
         #endregion
 
         #region Constructors
@@ -103,7 +102,7 @@ namespace SbB.Diploma
             for (int i = 0; i < boundaries.Length; i++)
             {
                 int k = BEM.Polygon.isEdgeOnPolygon(FEM.Polygon.edge(mortarSide.MortarSides[i]));
-                boundaries[i] = BEM.Boundaries[i];
+                boundaries[i] = BEM.Boundaries[k];
             }
             Matrix DBEM = -1*Mortar.createD(2*BEM.Vertexes.Count, boundaries);
 
