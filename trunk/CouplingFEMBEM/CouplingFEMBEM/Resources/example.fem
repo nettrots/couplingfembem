@@ -1,0 +1,16 @@
+FEM:
+ youngModulus: 21000
+ poissonRatio: 0.3
+ Vertex:
+  - [ 0, 0]
+  - [ 2, 0]
+  - [ 2, 1]
+  - [ 0, 1]
+ BoundaryType:
+  - STATIC
+  - STATIC
+  - STATIC@[0,-1]
+  - KINEMATIC
+ Mesh:
+  area: 0.02
+  angle: 20

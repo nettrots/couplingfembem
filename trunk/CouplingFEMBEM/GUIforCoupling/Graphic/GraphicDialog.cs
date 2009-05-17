@@ -30,21 +30,25 @@ namespace GUIforCoupling
             foreach (var graphic in listStarage.Graphics)
             {
                 graphicsLB.Items.Add(graphic);
+                if (currentStorage.Graphic!=null)
                 graphicsLB.SelectedIndex = graphicsLB.Items.IndexOf(currentStorage.Graphic);
             }
             foreach (var gropt in listStarage.Groptions)
             {
                optionsLB.Items.Add(gropt);
+               if (currentStorage.Groption != null)
                optionsLB.SelectedIndex = optionsLB.Items.IndexOf(currentStorage.Groption);
             }
             foreach (var gropt in listStarage.Functions)
             {
                 functionsLB.Items.Add(gropt);
+                if (currentStorage.Function != null)
                 functionsLB.SelectedIndex = functionsLB.Items.IndexOf(currentStorage.Function);
             }
             
         }
 
+        
        void reTie()
        {
            currentStorage.Graphic = graphicsLB.SelectedItem as Graphic;
@@ -60,7 +64,13 @@ namespace GUIforCoupling
         {
             Polygon poly=currentStorage.Problem.Polygon;
             GraphicOptions gro=new GraphicOptions(FunctionType.ConstX,poly);
-            gro.Name = "default x=" + FunctionType.ConstX;
+            try
+            {
+                gro.ConstValue = int.Parse(xConstValueTB.Text);
+                
+            }
+            catch{}
+            gro.Name = "Option x=" + functionNameTB.Text;
             listStarage.Groptions.Add(gro);
             optionsLB.Items.Add(gro);
             optionsLB.SelectedIndex = optionsLB.Items.IndexOf(gro);
@@ -73,33 +83,37 @@ namespace GUIforCoupling
             {
                 case FunctionType.ConstX:
                     tabControl1.SelectedIndex = 0;
-                    textBox5.Text = opt.ConstValue.ToString();
+                    xConstValueTB.Text = opt.ConstValue.ToString();
                     break;
                 case FunctionType.ConstY:
                     tabControl1.SelectedIndex = 1;
-                    textBox4.Text = opt.ConstValue.ToString();
+                    yConstValueTB.Text = opt.ConstValue.ToString();
                     break;
             }
-            optionNewName.Text = Name;
+            optionNewName.Text = opt.Name;
 
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             var opt = optionsLB.SelectedItem as GraphicOptions;
+            if(optionsLB.Items.Count==0)optionsLB.Items.Add(new GraphicOptions(FunctionType.ConstX, opt.Polygon));
+            if (optionsLB.SelectedIndex == -1) optionsLB.SelectedItem = 0;
             switch (tabControl1.SelectedIndex)
             {
                 case 0:
                     optionsLB.SelectedItem = new GraphicOptions(FunctionType.ConstX, opt.Polygon);
-                    ((GraphicOptions) optionsLB.SelectedItem).ConstValue = double.Parse(optionNewName.Text);
+                    ((GraphicOptions)optionsLB.SelectedItem).ConstValue = double.Parse(xConstValueTB.Text);
                     ((GraphicOptions) optionsLB.SelectedItem).Name = optionNewName.Text;
                     break;
                 case 1:
                     optionsLB.SelectedItem = new GraphicOptions(FunctionType.ConstY, opt.Polygon);
-                    ((GraphicOptions)optionsLB.SelectedItem).ConstValue = double.Parse(textBox4.Text);
+                    ((GraphicOptions)optionsLB.SelectedItem).ConstValue = double.Parse(yConstValueTB.Text);
                     ((GraphicOptions)optionsLB.SelectedItem).Name = optionNewName.Text;
                     break;
-            }    
+            }
+            optionsLB.ResetText();
+       
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -112,8 +126,14 @@ namespace GUIforCoupling
         {
             var opt = optionsLB.SelectedItem as GraphicOptions;
             Polygon poly = currentStorage.Problem.Polygon;
-           
 
+            Graphic gr = new Graphic(currentStorage.Function);
+            gr.N = int.Parse(pointsNumberTB.Text);
+            gr.Name = functionNameTB.Text;
+            gr.Options = opt;
+
+            listStarage.Graphics.Add(gr);
+            graphicsLB.Items.Add(gr);
  
         }
 

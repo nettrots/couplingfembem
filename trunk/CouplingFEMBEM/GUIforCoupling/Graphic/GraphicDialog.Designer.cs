@@ -46,9 +46,9 @@
             this.pointsNumberTB = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.yConstValueTB = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.xConstValueTB = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
@@ -73,6 +73,7 @@
             // 
             // button1
             // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Location = new System.Drawing.Point(124, 396);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 24);
@@ -82,6 +83,7 @@
             // 
             // button2
             // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button2.Location = new System.Drawing.Point(297, 396);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 24);
@@ -223,16 +225,16 @@
             this.label3.TabIndex = 25;
             this.label3.Text = "Функція";
             // 
-            // textBox4
+            // yConstValueTB
             // 
-            this.textBox4.Location = new System.Drawing.Point(35, 33);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(114, 20);
-            this.textBox4.TabIndex = 3;
+            this.yConstValueTB.Location = new System.Drawing.Point(35, 33);
+            this.yConstValueTB.Name = "yConstValueTB";
+            this.yConstValueTB.Size = new System.Drawing.Size(114, 20);
+            this.yConstValueTB.TabIndex = 3;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.textBox5);
+            this.tabPage1.Controls.Add(this.xConstValueTB);
             this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -242,12 +244,12 @@
             this.tabPage1.Text = "Const X";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // textBox5
+            // xConstValueTB
             // 
-            this.textBox5.Location = new System.Drawing.Point(43, 34);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(114, 20);
-            this.textBox5.TabIndex = 1;
+            this.xConstValueTB.Location = new System.Drawing.Point(43, 34);
+            this.xConstValueTB.Name = "xConstValueTB";
+            this.xConstValueTB.Size = new System.Drawing.Size(114, 20);
+            this.xConstValueTB.TabIndex = 1;
             // 
             // label9
             // 
@@ -280,7 +282,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.textBox4);
+            this.tabPage2.Controls.Add(this.yConstValueTB);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -369,8 +371,10 @@
             // 
             // GraphicDialog
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(523, 432);
             this.Controls.Add(this.functionsLB);
             this.Controls.Add(this.problemLB);
@@ -429,9 +433,9 @@
         private System.Windows.Forms.TextBox pointsNumberTB;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox yConstValueTB;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox xConstValueTB;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Label label10;
