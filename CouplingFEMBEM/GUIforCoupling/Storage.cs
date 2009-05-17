@@ -66,18 +66,19 @@ namespace GUIforCoupling
             Groptions = new List<GraphicOptions>();
             Problems = new Dictionary<string, BPMethod>();
             ChartRedraw = new Dictionary<string, Void>();
-              Functions =new Dictionary<string, fxy>();
+             Functions =new Dictionary<string, fxy>();
         }
 
     }
     public class CurrentStorage
     {
         public Graphic Graphic { get; set; }
+        public Countur SurfaceGraph { get; set; }
         public GraphicOptions Groption { get; set; }
         public BPMethod Problem { get; set; }
         public DomainTriangulation DomainTriangulation { get; set; }
-        public  fxy Function { get; set; }
-        
+        public fxy Function { get; set; }
+        public fxy SurfaceFunction { get; set; }
         public Void ChartRedraw { get; set; }
 
         public CurrentStorage()

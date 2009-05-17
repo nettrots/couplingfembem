@@ -113,14 +113,15 @@ namespace GUIforCoupling
 
         private void surfaceModeChart()
         {
-            SurfaceChart chart1 = new SurfaceChart(Canvas.Width, Canvas.Height, 0xffffff, 0x888888);
+            XYChart chart1 = new XYChart(Canvas.Width, Canvas.Height, 0xffffff, 0x888888);
             chart1.setSize(Canvas.Width, Canvas.Height);
             chart1.setRoundedFrame();
-            chart1.setPlotRegion(40, 40, Canvas.Width - 60, Canvas.Height - 100, 150);
-            chart1.setViewAngle(90);
-            chart1.setWallThickness(0);
-            chart1.setPerspective(0);
+          
 
+            chart1.setPlotArea(40, 40, Canvas.Width - 60, Canvas.Height - 100, 150);
+           
+            currentStarage.SurfaceGraph.drawCounturs(chart1);
+            chart = chart1;
             //chart1.setShadingMode(Chart.S)
 
         }
@@ -331,6 +332,7 @@ namespace GUIforCoupling
             foreach (var item in listStarage.Graphics)
             {
                 if (item.Options == currentStarage.Groption)
+                if (item.Options.ToString() == currentStarage.Groption.ToString())
                     item.Enabled = true;
                 else
                     item.Enabled = false;
@@ -347,8 +349,13 @@ namespace GUIforCoupling
         private void problemCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (problemCB.SelectedItem.ToString()!="")
+            if (problemCB.SelectedItem.ToString()=="")return;
             currentStarage.Problem = listStarage.Problems[problemCB.SelectedItem.ToString()];
             
+            surfaceFunctionsCB.Items.Clear();
+            surfaceFunctionsCB.Items.Add("U");
+            surfaceFunctionsCB.Items.Add("V");
+            surfaceFunctionsCB.SelectedIndex = 0;
         }
 
         private void problemCB_Click(object sender, EventArgs e)
@@ -356,9 +363,40 @@ namespace GUIforCoupling
 
         }
 
-        private void grOptionsCB_Click(object sender, EventArgs e)
+        private void surfaceFunctionsCB_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (surfaceFunctionsCB.Items.Count==0) return;
+            if (surfaceFunctionsCB.SelectedItem == "U")
+                currentStarage.SurfaceFunction = currentStarage.Problem.U;
+            if (surfaceFunctionsCB.SelectedItem == "V")
+                currentStarage.SurfaceFunction = currentStarage.Problem.V;
+        }
 
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            if(currentStarage.SurfaceFunction==null)return;
+            currentStarage.SurfaceGraph=new Countur();
+            currentStarage.SurfaceGraph.Fxy = currentStarage.SurfaceFunction;
+            List<Vertex> vertexesList=new List<Vertex>();
+
+            if (currentStarage.Problem is CouplingMethod)
+            {
+                vertexesList.AddRange((currentStarage.Problem as CouplingMethod).FEM.Vertexes);
+                vertexesList.AddRange((currentStarage.Problem as CouplingMethod).BEM.Vertexes);
+            }
+            if (currentStarage.Problem is CouplingFEMs)
+            {
+                vertexesList.AddRange((currentStarage.Problem as CouplingFEMs).FEMs[0].Vertexes);
+                vertexesList.AddRange((currentStarage.Problem as CouplingFEMs).FEMs[1].Vertexes);
+            }
+
+            if (currentStarage.Problem is IDiscretization)
+                vertexesList.AddRange((currentStarage.Problem as IDiscretization).Vertexes);
+
+            currentStarage.SurfaceGraph.NewVertexes = vertexesList;
+
+            currentStarage.ChartRedraw = listStarage.ChartRedraw["surfaceModeChart"];
+            flash();
         }
     }
 

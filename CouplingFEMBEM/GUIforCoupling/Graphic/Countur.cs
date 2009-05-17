@@ -10,7 +10,7 @@ namespace GUIforCoupling
     public class Countur
     {
         public List<Vertex> NewVertexes{ get; set;}
-        public Func<double, double, double> Fxy { get; set; }
+        public fxy Fxy { get; set; }
 
         public Countur(){}
 
