@@ -204,17 +204,37 @@ namespace SbB.Diploma
 
         public override double U(double x, double y)
         {
-            throw new NotImplementedException();
+            double rez = 0.0;
+            Vertex v = new Vertex(x,y);
+            foreach (FEMElement element in elements)
+            {
+                if (element.hasVertex(v))
+                {
+                    for (int i = 0; i < element.NodesCount; i++)
+                        rez += results[element[i].Dofu[0]]*element.phi(i, v);
+                    return rez;
+                }
+            }
+            return rez;
         }
 
         public override double V(double x, double y)
         {
-            throw new NotImplementedException();
+            double rez = 0.0;
+            Vertex v = new Vertex(x, y);
+            foreach (FEMElement element in elements)
+            {
+                if (element.hasVertex(v))
+                {
+                    for (int i = 0; i < element.NodesCount; i++)
+                        rez += results[element[i].Dofu[1]]*element.phi(i, v);
+                    return rez;
+                }
+            }
+            return rez;
         }
 
         #endregion
         #endregion
-
-        
     }
 }

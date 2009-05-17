@@ -157,16 +157,24 @@ namespace SbB.Diploma
         public override void Solve()
         {
             LUSolve.Solve(K, F, out results);
+
+            FEM.Results = new Vector(FEM.K.Size.m);
+            for (int i = 0; i < FEM.Results.Length; i++)
+                FEM.Results[i] = results[i];
+
+            BEM.Results = new Vector(BEM.K.Size.m);
+            for (int i = 0; i < BEM.Results.Length; i++)
+                BEM.Results[i] = results[FEM.Results.Length + i];
         }
 
         public override double U(double x, double y)
         {
-            throw new NotImplementedException();
+            return FEM.U(x, y);
         }
 
         public override double V(double x, double y)
         {
-            throw new NotImplementedException();
+            return FEM.V(x, y);
         }
 
         public override string ToString()
