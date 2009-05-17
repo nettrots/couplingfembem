@@ -59,6 +59,7 @@ namespace SbB.Diploma.Methods
                     default:
                         throw new Exception("A-ya-yaj!!!");
                 }
+                Name = "BEM" + this.ElementsPerSegment;
             }
         }
         #endregion

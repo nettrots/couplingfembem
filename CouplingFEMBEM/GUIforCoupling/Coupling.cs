@@ -75,6 +75,7 @@ namespace GUIforCoupling
             chart1.setPlotArea(30, 30, Canvas.Width - 60, Canvas.Height - 100, 0xffffff, -1, -1, 0xcccccc, 0xcccccc);
             foreach (var graphic in listStarage.Graphics)
             {
+                if (graphic.Enabled)
                 graphic.drawLine(chart1);
             }
 
@@ -170,30 +171,33 @@ namespace GUIforCoupling
         }
         void LoadProblem(string filename)
         {
-            
-            Dictionary<string, HashValue> data=ReadYaml(filename);
-            string[] ss= filename.Split('.');
-            string mType = ss[ss.Length-1];
-            BPMethod meth;
-            switch (mType)
+            try
             {
-                case "fem":
-                     meth = new FEMMethod(data["FEM"].eHash);
-                    listStarage.Problems.Add(meth.ToString(), meth);
-                    break;
-                case "bem":
-                    meth = new MakarBEMMethod(data["BEM"].eHash);
-                    listStarage.Problems.Add(meth.ToString(), meth);
-                    break;
-                case "coupl":
-                    meth = new CouplingMethod(data);
-                    listStarage.Problems.Add(meth.ToString(), meth);
-                    break;
-                default:
-                    meth = null;
-                    break;
+                Dictionary<string, HashValue> data = ReadYaml(filename);
+                string[] ss = filename.Split('.');
+                string mType = ss[ss.Length - 1];
+                BPMethod meth;
+                switch (mType)
+                {
+                    case "fem":
+                        meth = new FEMMethod(data["FEM"].eHash);
+                        listStarage.Problems.Add(meth.ToString(), meth);
+                        break;
+                    case "bem":
+                        meth = new MakarBEMMethod(data["BEM"].eHash);
+                        listStarage.Problems.Add(meth.ToString(), meth);
+                        break;
+                    case "coupfb":
+                        meth = new CouplingMethod(data);
+                        listStarage.Problems.Add(meth.ToString(), meth);
+                        break;
+                    default:
+                        meth = null;
+                        break;
+                }
+                currentStarage.Problem = meth;
             }
-            currentStarage.Problem = meth;
+            catch(Exception e){}
         }
         #endregion
 
@@ -202,7 +206,7 @@ namespace GUIforCoupling
             if( openFileDialog1.ShowDialog()==DialogResult.OK)
             {
                 LoadProblem(openFileDialog1.FileName);
-                problemCB.Items.Add(currentStarage.Problem.ToString());
+                problemCB.Items.Add(currentStarage.Problem.Name);
                 problemCB.SelectedIndex = problemCB.Items.Count - 1;
             }
         }
@@ -273,9 +277,11 @@ namespace GUIforCoupling
         private void functionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GraphicDialog grDialog = new GraphicDialog();
+            grOptionsCB.Items.Clear();
+            
             if(grDialog.ShowDialog()==DialogResult.OK)
             {
-
+                
                 grOptionsCB.Items.AddRange(listStarage.Groptions.ToArray());
             }
         }
@@ -326,6 +332,13 @@ namespace GUIforCoupling
         {
             currentStarage.ChartRedraw = listStarage.ChartRedraw["lineModeChart"];
             flash();
+        }
+
+        private void problemCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (problemCB.SelectedItem.ToString()!="")
+            currentStarage.Problem = listStarage.Problems[problemCB.SelectedItem.ToString()];
+            
         }
     }
 

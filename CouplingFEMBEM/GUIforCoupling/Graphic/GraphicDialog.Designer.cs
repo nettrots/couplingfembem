@@ -134,6 +134,7 @@
             this.button3.TabIndex = 36;
             this.button3.Text = "Видалити";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -163,7 +164,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(172, 128);
+            this.button5.Location = new System.Drawing.Point(176, 305);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(64, 21);
             this.button5.TabIndex = 32;
@@ -173,7 +174,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(95, 128);
+            this.button6.Location = new System.Drawing.Point(12, 305);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(64, 21);
             this.button6.TabIndex = 31;
@@ -184,7 +185,7 @@
             // optionsLB
             // 
             this.optionsLB.FormattingEnabled = true;
-            this.optionsLB.Location = new System.Drawing.Point(12, 27);
+            this.optionsLB.Location = new System.Drawing.Point(12, 110);
             this.optionsLB.Name = "optionsLB";
             this.optionsLB.Size = new System.Drawing.Size(224, 95);
             this.optionsLB.TabIndex = 30;
@@ -193,7 +194,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 9);
+            this.label5.Location = new System.Drawing.Point(9, 92);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 13);
             this.label5.TabIndex = 29;
@@ -227,10 +228,11 @@
             // 
             // yConstValueTB
             // 
-            this.yConstValueTB.Location = new System.Drawing.Point(35, 33);
+            this.yConstValueTB.Location = new System.Drawing.Point(28, 3);
             this.yConstValueTB.Name = "yConstValueTB";
             this.yConstValueTB.Size = new System.Drawing.Size(114, 20);
             this.yConstValueTB.TabIndex = 3;
+            this.yConstValueTB.Text = "0";
             // 
             // tabPage1
             // 
@@ -239,14 +241,14 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(220, 82);
+            this.tabPage1.Size = new System.Drawing.Size(220, 33);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Const X";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // xConstValueTB
             // 
-            this.xConstValueTB.Location = new System.Drawing.Point(43, 34);
+            this.xConstValueTB.Location = new System.Drawing.Point(28, 3);
             this.xConstValueTB.Name = "xConstValueTB";
             this.xConstValueTB.Size = new System.Drawing.Size(114, 20);
             this.xConstValueTB.TabIndex = 1;
@@ -254,7 +256,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(20, 37);
+            this.label9.Location = new System.Drawing.Point(5, 6);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(26, 13);
             this.label9.TabIndex = 0;
@@ -262,10 +264,9 @@
             // 
             // button7
             // 
-            this.button7.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button7.Location = new System.Drawing.Point(181, 0);
+            this.button7.Location = new System.Drawing.Point(100, 305);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(47, 25);
+            this.button7.Size = new System.Drawing.Size(47, 21);
             this.button7.TabIndex = 0;
             this.button7.Text = "Save";
             this.button7.UseVisualStyleBackColor = true;
@@ -274,7 +275,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 36);
+            this.label10.Location = new System.Drawing.Point(5, 6);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(26, 13);
             this.label10.TabIndex = 2;
@@ -287,14 +288,14 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(220, 82);
+            this.tabPage2.Size = new System.Drawing.Size(220, 33);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Const Y";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // optionControl
             // 
-            this.optionControl.Location = new System.Drawing.Point(12, 237);
+            this.optionControl.Location = new System.Drawing.Point(12, 211);
             this.optionControl.Name = "optionControl";
             this.optionControl.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -306,9 +307,8 @@
             // 
             this.optionControl.Panel2.Controls.Add(this.optionNewName);
             this.optionControl.Panel2.Controls.Add(this.label11);
-            this.optionControl.Panel2.Controls.Add(this.button7);
-            this.optionControl.Size = new System.Drawing.Size(228, 137);
-            this.optionControl.SplitterDistance = 108;
+            this.optionControl.Size = new System.Drawing.Size(228, 88);
+            this.optionControl.SplitterDistance = 59;
             this.optionControl.TabIndex = 41;
             // 
             // tabControl1
@@ -319,12 +319,12 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(228, 108);
+            this.tabControl1.Size = new System.Drawing.Size(228, 59);
             this.tabControl1.TabIndex = 0;
             // 
             // optionNewName
             // 
-            this.optionNewName.Location = new System.Drawing.Point(52, 2);
+            this.optionNewName.Location = new System.Drawing.Point(46, 0);
             this.optionNewName.Name = "optionNewName";
             this.optionNewName.Size = new System.Drawing.Size(114, 20);
             this.optionNewName.TabIndex = 5;
@@ -332,7 +332,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(11, 5);
+            this.label11.Location = new System.Drawing.Point(5, 7);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(35, 13);
             this.label11.TabIndex = 4;
@@ -345,7 +345,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 148);
+            this.label2.Location = new System.Drawing.Point(9, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(43, 13);
             this.label2.TabIndex = 42;
@@ -354,7 +354,7 @@
             // problemLB
             // 
             this.problemLB.FormattingEnabled = true;
-            this.problemLB.Location = new System.Drawing.Point(12, 164);
+            this.problemLB.Location = new System.Drawing.Point(12, 25);
             this.problemLB.Name = "problemLB";
             this.problemLB.Size = new System.Drawing.Size(224, 69);
             this.problemLB.TabIndex = 43;
@@ -378,6 +378,7 @@
             this.ClientSize = new System.Drawing.Size(523, 432);
             this.Controls.Add(this.functionsLB);
             this.Controls.Add(this.problemLB);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.optionControl);
             this.Controls.Add(this.textBox3);

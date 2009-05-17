@@ -64,12 +64,14 @@ namespace SbB.Diploma
                 if (FEM.BoundaryClasses[i].type()==BoundaryType.MORTAR) mortarsides.Add(i);
             }
             mortarSide = new MortarSide(FEM, mortarsides);
+
+            Name = "FEM(" + FEM.Area+ ")-BEM("+BEM.ElementsPerSegment+")";
         }
         #endregion
 
         #region Properties
         public List<Func<double, double, double>> FuncList { get; set; }
-        public string Name { get; set; }
+        public override string Name { get; set; }
         #endregion
 
         #region Methods

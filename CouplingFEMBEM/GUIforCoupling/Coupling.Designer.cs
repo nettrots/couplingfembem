@@ -165,7 +165,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(544, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(620, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -179,7 +179,8 @@
             // 
             this.problemCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.problemCB.Name = "problemCB";
-            this.problemCB.Size = new System.Drawing.Size(75, 25);
+            this.problemCB.Size = new System.Drawing.Size(120, 25);
+            this.problemCB.SelectedIndexChanged += new System.EventHandler(this.problemCB_SelectedIndexChanged);
             // 
             // toolStripLabel1
             // 
@@ -312,7 +313,7 @@
             this.toolStripButton1});
             this.toolStrip2.Location = new System.Drawing.Point(3, 25);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(420, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(389, 25);
             this.toolStrip2.TabIndex = 3;
             // 
             // toolStripLabel4

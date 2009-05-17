@@ -20,6 +20,7 @@ namespace SbB.Diploma
         public Matrix K { get; protected set;}
         public Vector F { get; protected set; }
         public Polygon Polygon { get; set; }
+        public virtual string Name { get; set; }
         #endregion
 
         #region Methods
@@ -28,6 +29,10 @@ namespace SbB.Diploma
         public abstract void Solve();
         public abstract double U(double x, double y);
         public abstract double V(double x, double y);
+        public override string ToString()
+        {
+            return Name;
+        }
         #endregion
     }
 }
