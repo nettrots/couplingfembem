@@ -62,18 +62,12 @@ namespace GUIforCoupling
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Polygon poly=currentStorage.Problem.Polygon;
-            GraphicOptions gro=new GraphicOptions(FunctionType.ConstX,poly);
-            try
-            {
-                gro.ConstValue = int.Parse(xConstValueTB.Text);
-                
-            }
-            catch{}
-            gro.Name = "Option x=" + functionNameTB.Text;
-            listStarage.Groptions.Add(gro);
-            optionsLB.Items.Add(gro);
-            optionsLB.SelectedIndex = optionsLB.Items.IndexOf(gro);
+           GraphicOptions gr=new GraphicOptions(FunctionType.ConstX,currentStorage.Problem.Polygon);
+            gr.ConstValue = 0;
+            gr.Name = "on x=0";
+            listStarage.Groptions.Add(gr);
+            optionsLB.Items.Add(gr);
+            optionsLB.SelectedIndex = optionsLB.Items.Count - 1;
         }
 
         private void optionsLB_SelectedIndexChanged(object sender, EventArgs e)
@@ -91,28 +85,42 @@ namespace GUIforCoupling
                     break;
             }
             optionNewName.Text = opt.Name;
-
+            currentStorage.Groption = opt;
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            var opt = optionsLB.SelectedItem as GraphicOptions;
-            if(optionsLB.Items.Count==0)optionsLB.Items.Add(new GraphicOptions(FunctionType.ConstX, opt.Polygon));
-            if (optionsLB.SelectedIndex == -1) optionsLB.SelectedItem = 0;
+
+            try
+            {
+
             switch (tabControl1.SelectedIndex)
             {
                 case 0:
-                    optionsLB.SelectedItem = new GraphicOptions(FunctionType.ConstX, opt.Polygon);
+                    optionsLB.SelectedItem = new GraphicOptions(FunctionType.ConstX, currentStorage.Problem.Polygon);
                     ((GraphicOptions)optionsLB.SelectedItem).ConstValue = double.Parse(xConstValueTB.Text);
                     ((GraphicOptions) optionsLB.SelectedItem).Name = optionNewName.Text;
                     break;
                 case 1:
-                    optionsLB.SelectedItem = new GraphicOptions(FunctionType.ConstY, opt.Polygon);
+                    optionsLB.SelectedItem = new GraphicOptions(FunctionType.ConstY,currentStorage.Problem.Polygon);
                     ((GraphicOptions)optionsLB.SelectedItem).ConstValue = double.Parse(yConstValueTB.Text);
                     ((GraphicOptions)optionsLB.SelectedItem).Name = optionNewName.Text;
                     break;
             }
-            optionsLB.ResetText();
+                }
+            catch (Exception)
+            {
+                
+               
+            }
+            int i = optionsLB.SelectedIndex;
+            optionsLB.Items.Clear();
+            foreach (var s in listStarage.Groptions)
+            {
+                optionsLB.Items.Add(s);
+            }
+            optionsLB.SelectedIndex = i;
+            //optionsLB.ResetText();
        
         }
 
@@ -153,6 +161,14 @@ namespace GUIforCoupling
         private void functionsLB_SelectedIndexChanged(object sender, EventArgs e)
         {
            currentStorage.Function = listStarage.Functions[functionsLB.SelectedItem.ToString()];
+           if (currentStorage.Groption!=null)
+            functionNameTB.Text = functionsLB.SelectedItem.ToString() + " " + currentStorage.Groption.Name + "("+currentStorage.Problem.ToString() + ")";
+           //functionsLB.Items.Remove(functionsLB.SelectedItem);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
 
  
