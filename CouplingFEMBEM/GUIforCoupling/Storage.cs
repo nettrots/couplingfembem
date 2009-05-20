@@ -28,7 +28,7 @@ namespace GUIforCoupling
         {
             Stream stream = File.Open(fileName, FileMode.Open);
             BinaryFormatter bformatter = new BinaryFormatter();
-            wsp = (Workspace)bformatter.Deserialize(stream);
+            Workspace wsp1 = (Workspace)bformatter.Deserialize(stream);
             stream.Close();
         }
 
@@ -44,8 +44,8 @@ namespace GUIforCoupling
         }
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("listStarage", typeof(ListStorage));
-            info.AddValue("currentStarage", typeof(CurrentStorage));
+            info.AddValue("ListStarage", typeof(ListStorage));
+            info.AddValue("CurrentStarage", typeof(CurrentStorage));
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -189,7 +190,7 @@ namespace GUIforCoupling
                         listStarage.Problems.Add(meth.ToString(), meth);
                         break;
                     case "coupfb":
-                        meth = new CouplingMethod(data);
+                        meth = new CouplingFEMBEM(data);
                         listStarage.Problems.Add(meth.ToString(), meth);
                         break;
                     case "coupff":
@@ -235,12 +236,12 @@ namespace GUIforCoupling
             FEMElement[] elements=null;
             Edge[] segments=null;
             List<Edge> segmentsTemp = null;
-            if (currentStarage.Problem is CouplingMethod)
+            if (currentStarage.Problem is CouplingFEMBEM)
             {
 
-                elements = (currentStarage.Problem as CouplingMethod).FEM.Elements.ToArray();
+                elements = (currentStarage.Problem as CouplingFEMBEM).FEM.Elements.ToArray();
                 segmentsTemp = new List<Edge>();
-                foreach (var edges in (currentStarage.Problem as CouplingMethod).BEM.Boundaries)
+                foreach (var edges in (currentStarage.Problem as CouplingFEMBEM).BEM.Boundaries)
                 {
                     foreach (var list in edges)
                     {
@@ -379,10 +380,10 @@ namespace GUIforCoupling
             currentStarage.SurfaceGraph.Fxy = currentStarage.SurfaceFunction;
             List<Vertex> vertexesList=new List<Vertex>();
 
-            if (currentStarage.Problem is CouplingMethod)
+            if (currentStarage.Problem is CouplingFEMBEM)
             {
-                vertexesList.AddRange((currentStarage.Problem as CouplingMethod).FEM.Vertexes);
-                vertexesList.AddRange((currentStarage.Problem as CouplingMethod).BEM.Vertexes);
+                vertexesList.AddRange((currentStarage.Problem as CouplingFEMBEM).FEM.Vertexes);
+                vertexesList.AddRange((currentStarage.Problem as CouplingFEMBEM).BEM.Vertexes);
             }
             if (currentStarage.Problem is CouplingFEMs)
             {
@@ -397,6 +398,41 @@ namespace GUIforCoupling
 
             currentStarage.ChartRedraw = listStarage.ChartRedraw["surfaceModeChart"];
             flash();
+        }
+
+        private void saveWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Workspace.Save("default.wsp",workspace);
+            
+        }
+
+        private void loadWorkSpaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Workspace.Load("default.wsp", workspace);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void saveTSMI_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "Image Files(*.bpm;*.jpg;*.png)|*.bmp;*.jpg;*.png|All files (*.*)|*.*";
+            saveFileDialog1.FileName = currentStarage.Problem+"_";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                FileInfo fi = new FileInfo(saveFileDialog1.FileName);
+                
+                if(fi.Extension==".jpeg"||fi.Extension==".jpg")
+                {Canvas.Image.Save(saveFileDialog1.FileName,ImageFormat.Jpeg);return;}
+                if (fi.Extension == ".bmp")
+                { Canvas.Image.Save(saveFileDialog1.FileName, ImageFormat.Bmp); return; }
+                if (fi.Extension == ".png")
+                { Canvas.Image.Save(saveFileDialog1.FileName, ImageFormat.Png); return; }
+
+                Canvas.Image.Save(saveFileDialog1.FileName + ".jpg", ImageFormat.Jpeg);
+            }
         }
     }
 

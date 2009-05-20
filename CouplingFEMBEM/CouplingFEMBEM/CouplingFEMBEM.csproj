@@ -97,7 +97,7 @@
     <Compile Include="Methods\CouplingFEMs.cs" />
     <Compile Include="Methods\LinearBEMEdge.cs" />
     <Compile Include="Methods\MakarBEMMethod.cs" />
-    <Compile Include="Methods\Coupling.cs" />
+    <Compile Include="Methods\CouplingMethod.cs" />
     <Compile Include="Methods\Base\Method.cs" />
     <Compile Include="Methods\Base\Mortar\Mortar.cs" />
     <Compile Include="Methods\Base\Mortar\MortarSide.cs" />

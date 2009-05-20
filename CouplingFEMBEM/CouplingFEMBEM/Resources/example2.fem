@@ -3,8 +3,8 @@ FEM:
  poissonRatio: 0.3
  Vertex:
   - [ 0, 0]
-  - [ 1, 0]
-  - [ 1, 1]
+  - [ 2, 0]
+  - [ 21, 1]
   - [ 0, 1]
  BoundaryType:
   - STATIC
