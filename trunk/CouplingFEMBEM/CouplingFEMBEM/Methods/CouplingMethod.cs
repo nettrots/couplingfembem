@@ -14,7 +14,7 @@ namespace SbB.Diploma
 {
     using MyHash=Dictionary<string, object> ; 
 
-    public class CouplingMethod: BPMethod
+    public class CouplingFEMBEM: BPMethod
     {
         #region Fields
         private BPMethod[] methods;
@@ -25,9 +25,8 @@ namespace SbB.Diploma
         #endregion
 
         #region Constructors
-        public CouplingMethod(Dictionary<string, HashValue> data)
+        public CouplingFEMBEM(Dictionary<string, HashValue> data)
         {
-            Name = "Coupling FEM-BEM";
             if (data.ContainsKey("Polygon"))
             {
                 Vertex[] poly = new Vertex[data["Polygon"].eHash["Vertex"].eHash.Count];

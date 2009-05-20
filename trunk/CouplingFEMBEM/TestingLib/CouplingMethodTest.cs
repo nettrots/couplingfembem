@@ -69,7 +69,7 @@ namespace TestingLib
         public void CouplingMethodConstructorTest()
         {
             string filename = string.Empty; // TODO: Initialize to an appropriate value
-            CouplingMethod target = new CouplingMethod(null);
+            CouplingFEMBEM target = new CouplingFEMBEM(null);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
     }

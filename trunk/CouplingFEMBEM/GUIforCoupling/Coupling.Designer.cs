@@ -54,8 +54,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripContainer2 = new System.Windows.Forms.ToolStripContainer();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
@@ -67,10 +66,12 @@
             this.toolStripLabel5 = new System.Windows.Forms.ToolStripLabel();
             this.surfaceFunctionsCB = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.saveTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.contextMenu.SuspendLayout();
             this.toolStripContainer2.ContentPanel.SuspendLayout();
             this.toolStripContainer2.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer2.SuspendLayout();
@@ -80,6 +81,7 @@
             // 
             // Canvas
             // 
+            this.Canvas.ContextMenuStrip = this.contextMenu;
             this.Canvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Canvas.Location = new System.Drawing.Point(0, 0);
             this.Canvas.Name = "Canvas";
@@ -122,29 +124,32 @@
             this.loadWorkSpaceToolStripMenuItem.Name = "loadWorkSpaceToolStripMenuItem";
             this.loadWorkSpaceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.loadWorkSpaceToolStripMenuItem.Text = "Load WorkSpace";
+            this.loadWorkSpaceToolStripMenuItem.Click += new System.EventHandler(this.loadWorkSpaceToolStripMenuItem_Click);
             // 
             // saveWorkspaceToolStripMenuItem
             // 
             this.saveWorkspaceToolStripMenuItem.Name = "saveWorkspaceToolStripMenuItem";
             this.saveWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.saveWorkspaceToolStripMenuItem.Text = "Save Workspace";
+            this.saveWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.saveWorkspaceToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // problemsToolStripMenuItem
             // 
             this.problemsToolStripMenuItem.Name = "problemsToolStripMenuItem";
-            this.problemsToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.problemsToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.problemsToolStripMenuItem.Text = "Problems";
             // 
             // functionsToolStripMenuItem
             // 
             this.functionsToolStripMenuItem.Name = "functionsToolStripMenuItem";
-            this.functionsToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.functionsToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.functionsToolStripMenuItem.Text = "Functions";
             this.functionsToolStripMenuItem.Click += new System.EventHandler(this.functionsToolStripMenuItem_Click);
             // 
@@ -170,7 +175,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(589, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(592, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -191,7 +196,7 @@
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(33, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(36, 22);
             this.toolStripLabel1.Text = "Show";
             // 
             // showFigurebtn
@@ -208,7 +213,7 @@
             this.showMeshbtn.Image = ((System.Drawing.Image)(resources.GetObject("showMeshbtn.Image")));
             this.showMeshbtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.showMeshbtn.Name = "showMeshbtn";
-            this.showMeshbtn.Size = new System.Drawing.Size(52, 22);
+            this.showMeshbtn.Size = new System.Drawing.Size(53, 22);
             this.showMeshbtn.Text = "Mesh";
             this.showMeshbtn.Click += new System.EventHandler(this.showMeshbtn_Click);
             // 
@@ -228,7 +233,7 @@
             this.initProblembtn.Image = ((System.Drawing.Image)(resources.GetObject("initProblembtn.Image")));
             this.initProblembtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.initProblembtn.Name = "initProblembtn";
-            this.initProblembtn.Size = new System.Drawing.Size(43, 22);
+            this.initProblembtn.Size = new System.Drawing.Size(40, 22);
             this.initProblembtn.Text = "Init";
             this.initProblembtn.Click += new System.EventHandler(this.initProblembtn_Click);
             // 
@@ -246,7 +251,7 @@
             this.solveProblembtn.Image = ((System.Drawing.Image)(resources.GetObject("solveProblembtn.Image")));
             this.solveProblembtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.solveProblembtn.Name = "solveProblembtn";
-            this.solveProblembtn.Size = new System.Drawing.Size(53, 22);
+            this.solveProblembtn.Size = new System.Drawing.Size(54, 22);
             this.solveProblembtn.Text = "Solve";
             this.solveProblembtn.Click += new System.EventHandler(this.solveProblembtn_Click);
             // 
@@ -255,7 +260,7 @@
             this.doAllbtn.Image = ((System.Drawing.Image)(resources.GetObject("doAllbtn.Image")));
             this.doAllbtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.doAllbtn.Name = "doAllbtn";
-            this.doAllbtn.Size = new System.Drawing.Size(54, 22);
+            this.doAllbtn.Size = new System.Drawing.Size(55, 22);
             this.doAllbtn.Text = "Do All";
             this.doAllbtn.Click += new System.EventHandler(this.doAllbtn_Click);
             // 
@@ -276,18 +281,12 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // contextMenuStrip1
+            // contextMenu
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(117, 26);
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
+            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveTSMI});
+            this.contextMenu.Name = "contextMenuStrip1";
+            this.contextMenu.Size = new System.Drawing.Size(125, 26);
             // 
             // toolStripContainer2
             // 
@@ -306,8 +305,8 @@
             // toolStripContainer2.TopToolStripPanel
             // 
             this.toolStripContainer2.TopToolStripPanel.Controls.Add(this.toolStrip1);
-            this.toolStripContainer2.TopToolStripPanel.Controls.Add(this.toolStrip2);
             this.toolStripContainer2.TopToolStripPanel.Controls.Add(this.toolStrip3);
+            this.toolStripContainer2.TopToolStripPanel.Controls.Add(this.toolStrip2);
             // 
             // toolStrip2
             // 
@@ -318,15 +317,15 @@
             this.toolStripSeparator3,
             this.toolStripButton2,
             this.toolStripButton1});
-            this.toolStrip2.Location = new System.Drawing.Point(3, 25);
+            this.toolStrip2.Location = new System.Drawing.Point(3, 50);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(389, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(393, 25);
             this.toolStrip2.TabIndex = 3;
             // 
             // toolStripLabel4
             // 
             this.toolStripLabel4.Name = "toolStripLabel4";
-            this.toolStripLabel4.Size = new System.Drawing.Size(83, 22);
+            this.toolStripLabel4.Size = new System.Drawing.Size(85, 22);
             this.toolStripLabel4.Text = "Graphic Options";
             // 
             // grOptionsCB
@@ -345,7 +344,7 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(52, 22);
+            this.toolStripButton2.Size = new System.Drawing.Size(54, 22);
             this.toolStripButton2.Text = "Draw";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
@@ -365,9 +364,9 @@
             this.toolStripLabel5,
             this.surfaceFunctionsCB,
             this.toolStripButton3});
-            this.toolStrip3.Location = new System.Drawing.Point(3, 50);
+            this.toolStrip3.Location = new System.Drawing.Point(3, 25);
             this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(237, 25);
+            this.toolStrip3.Size = new System.Drawing.Size(206, 25);
             this.toolStrip3.TabIndex = 4;
             // 
             // toolStripLabel5
@@ -392,6 +391,13 @@
             this.toolStripButton3.Text = "Draw Surface";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
+            // saveTSMI
+            // 
+            this.saveTSMI.Name = "saveTSMI";
+            this.saveTSMI.Size = new System.Drawing.Size(152, 22);
+            this.saveTSMI.Text = "Save As";
+            this.saveTSMI.Click += new System.EventHandler(this.saveTSMI_Click);
+            // 
             // Coupling
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -409,7 +415,7 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.contextMenu.ResumeLayout(false);
             this.toolStripContainer2.ContentPanel.ResumeLayout(false);
             this.toolStripContainer2.TopToolStripPanel.ResumeLayout(false);
             this.toolStripContainer2.TopToolStripPanel.PerformLayout();
@@ -447,8 +453,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveWorkspaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadWorkSpaceToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripComboBox problemCB;
         private System.Windows.Forms.ToolStripMenuItem problemsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem functionsToolStripMenuItem;
@@ -463,6 +468,8 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel5;
         private System.Windows.Forms.ToolStripComboBox surfaceFunctionsCB;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripMenuItem saveTSMI;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 
     }
 }

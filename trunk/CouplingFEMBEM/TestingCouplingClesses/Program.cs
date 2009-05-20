@@ -11,7 +11,7 @@ namespace TestingCouplingClesses
     {
         static void Main(string[] args)
         {
-            CouplingMethod target = new CouplingMethod(null);
+            CouplingFEMBEM target = new CouplingFEMBEM(null);
 
         }
     }
