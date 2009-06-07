@@ -12,7 +12,7 @@ namespace SbB.Diploma
         #endregion
 
         #region Properties
-        public Vector Results
+        public virtual Vector Results
         {
             get { return results; }
             set { results = value; }
@@ -29,6 +29,9 @@ namespace SbB.Diploma
         public abstract void Solve();
         public abstract double U(double x, double y);
         public abstract double V(double x, double y);
+        public abstract double[] U(Vertex[] vertices);
+
+        public abstract double[] V(Vertex[] vertices);
         public override string ToString()
         {
             return Name;

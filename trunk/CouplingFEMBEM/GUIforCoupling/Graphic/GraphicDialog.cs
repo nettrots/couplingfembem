@@ -169,7 +169,7 @@ namespace GUIforCoupling
         private void problemLB_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentStorage.Problem = listStarage.Problems[problemLB.SelectedItem.ToString()];
-            listStarage.Functions=new Dictionary<string, fxy>();
+            listStarage.Functions=new Dictionary<string, fxyArr>();
             listStarage.Functions.Add("U", currentStorage.Problem.U);
             listStarage.Functions.Add("V", currentStorage.Problem.V);
 

@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Base\Solvers\FastSolver\detail.php.htm" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\example.coupl" />
     <None Include="Methods\Base\LinearTriangleFEM\triangle.exe" />
     <None Include="Resources\example.fem" />

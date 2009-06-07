@@ -235,6 +235,26 @@ namespace SbB.Diploma
             return rez;
         }
 
+        public override double[] U(Vertex[] vertices)
+        {
+         List<double> rez=new List<double>();
+            foreach (Vertex vertex in vertices)
+            {
+                rez.Add(U(vertex.X, vertex.Y));
+            }
+            return rez.ToArray();
+        }
+
+        public override double[] V(Vertex[] vertices)
+        {
+            List<double> rez = new List<double>();
+            foreach (Vertex vertex in vertices)
+            {
+                rez.Add(V(vertex.X, vertex.Y));
+            }
+            return rez.ToArray();
+        }
+
         #endregion
         #endregion
     }

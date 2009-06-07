@@ -383,7 +383,18 @@ namespace GUIforCoupling
             if (currentStarage.Problem is CouplingFEMBEM)
             {
                 vertexesList.AddRange((currentStarage.Problem as CouplingFEMBEM).FEM.Vertexes);
-                vertexesList.AddRange((currentStarage.Problem as CouplingFEMBEM).BEM.Vertexes);
+                int n = 10;
+                MakarBEMMethod temp = (currentStarage.Problem as CouplingFEMBEM).BEM;
+                LinialTriangleTriangulation ltt=new LinialTriangleTriangulation(temp.Polygon);
+                ltt.triangulate(20, (currentStarage.Problem as CouplingFEMBEM).FEM.Area);
+                List<Vertex> tv=new List<Vertex>();
+                foreach (var vertex in ltt.Vertexes)
+                {
+                    if (!(currentStarage.Problem as CouplingFEMBEM).FEM.Polygon.hasVertex(vertex))
+                        tv.Add(vertex);
+                }
+                tv.Sort();
+                vertexesList.AddRange(tv);
             }
             if (currentStarage.Problem is CouplingFEMs)
             {
@@ -391,7 +402,17 @@ namespace GUIforCoupling
                 vertexesList.AddRange((currentStarage.Problem as CouplingFEMs).FEMs[1].Vertexes);
             }
 
-            if (currentStarage.Problem is IDiscretization)
+            if (currentStarage.Problem is MakarBEMMethod)
+            {
+                MakarBEMMethod temp = (currentStarage.Problem as MakarBEMMethod);
+                LinialTriangleTriangulation ltt = new LinialTriangleTriangulation(temp.Polygon);
+                ltt.triangulate(20, 0.01);
+
+
+                ltt.Vertexes.Sort();
+                vertexesList.AddRange(ltt.Vertexes);
+            }
+            if (currentStarage.Problem is FEMMethod)
                 vertexesList.AddRange((currentStarage.Problem as IDiscretization).Vertexes);
 
             currentStarage.SurfaceGraph.NewVertexes = vertexesList;
