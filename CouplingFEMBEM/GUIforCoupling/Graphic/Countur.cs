@@ -10,7 +10,7 @@ namespace GUIforCoupling
     public class Countur
     {
         public List<Vertex> NewVertexes{ get; set;}
-        public fxy Fxy { get; set; }
+        public fxyArr Fxy { get; set; }
 
         public Countur(){}
 
@@ -22,11 +22,16 @@ namespace GUIforCoupling
             {
                 X[i] = NewVertexes[i].X;
                 Y[i] = NewVertexes[i].Y;
-                Z[i] = Fxy(NewVertexes[i].X, NewVertexes[i].Y);
+                
+            }
+            Z = Fxy(NewVertexes.ToArray());
+
+            for (int i = 0; i < NewVertexes.Count; i++)
+            {
+
                 if (Z[i] > max) max = Z[i];
                 if (Z[i] < min) min = Z[i];
             }
-
             // Add a scatter layer to the chart to show the position of the data
             // points
             chart.addScatterLayer(X, Y, "", Chart.Cross2Shape(0.2), 4, 0x000000);

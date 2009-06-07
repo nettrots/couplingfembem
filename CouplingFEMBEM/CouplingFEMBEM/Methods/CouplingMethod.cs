@@ -142,6 +142,8 @@ namespace SbB.Diploma
             BEM.Results = new Vector(BEM.K.Size.m);
             for (int i = 0; i < BEM.Results.Length; i++)
                 BEM.Results[i] = results[FEM.Results.Length + i];
+
+            BEM.caltT();
         }
 
         public override double U(double x, double y)
@@ -152,6 +154,42 @@ namespace SbB.Diploma
         public override double V(double x, double y)
         {
             return FEM.V(x, y);
+        }
+
+        public override double[] U(Vertex[] vertices)
+        {
+            List<Vertex> rezF = new List<Vertex>();
+            List<Vertex> rezB = new List<Vertex>();
+            foreach (Vertex vertex in vertices)
+            {
+                if(FEM.Polygon.hasVertex(vertex))
+                    rezF.Add(vertex);
+                else
+                    rezB.Add(vertex);
+
+            }
+            List<double> rez = new List<double>();
+            rez.AddRange(FEM.U(rezF.ToArray()));
+            rez.AddRange(BEM.U(rezB.ToArray()));
+            return rez.ToArray();
+        }
+
+        public override double[] V(Vertex[] vertices)
+        {
+            List<Vertex> rezF = new List<Vertex>();
+            List<Vertex> rezB = new List<Vertex>();
+            foreach (Vertex vertex in vertices)
+            {
+                if (FEM.Polygon.hasVertex(vertex))
+                    rezF.Add(vertex);
+                else
+                    rezB.Add(vertex);
+
+            }
+            List<double> rez = new List<double>();
+            rez.AddRange(FEM.V(rezF.ToArray()));
+            rez.AddRange(BEM.V(rezB.ToArray()));
+            return rez.ToArray();
         }
 
         public override string ToString()

@@ -251,7 +251,7 @@ public class lu
                             for(i_=j2+1; i_<=n-1;i_++)
                             {
                                 a[i][i_] = a[i][i_] - v*a[j][i_];
-                            }
+                             }
                         }
                     }
                 }

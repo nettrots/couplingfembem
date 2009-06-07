@@ -82,6 +82,7 @@ namespace SbB.Diploma
 
         public override Matrix createD(int DoFsCount, List<BoundEdge>[] boundaries)
         {
+            if (vertexes.Count==0)return new Matrix(0,0);
             matrix = new Matrix(DoFsCount, 2*(vertexes.Count-2));
 
             foreach (List<BoundEdge> boundary in boundaries)

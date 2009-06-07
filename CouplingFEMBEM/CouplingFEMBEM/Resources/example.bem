@@ -1,6 +1,7 @@
-FEM:
+BEM:
  youngModulus: 21000
  poissonRatio: 0.3
+ elementsPerSegment: 5
  Vertex:
   - [ 0, 0]
   - [ 2, 0]
@@ -11,6 +12,3 @@ FEM:
   - STATIC
   - STATIC@[0,-1]
   - KINEMATIC
- Mesh:
-  area: 0.05
-  angle: 20

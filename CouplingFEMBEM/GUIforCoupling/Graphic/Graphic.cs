@@ -6,6 +6,7 @@ using SbB.Diploma;
 namespace GUIforCoupling
 {
     public delegate double f(double t);
+    public delegate double[] fxyArr(Vertex[] v);
     public delegate double fxy(double x, double y);
     public class Box
     {
@@ -31,11 +32,13 @@ namespace GUIforCoupling
     {
         private GraphicOptions options;
         private fxy f;
+        private fxyArr farr;
         private int n;
 
+
         public bool Enabled { get; set; }
-        public Graphic(fxy f) {
-            this.f = f; }
+        public Graphic(fxyArr f) {
+            farr = f; }
 
         public GraphicOptions Options
         {
@@ -48,7 +51,11 @@ namespace GUIforCoupling
             set { f = value; }
             get { return  f; }
         }
-
+        public fxyArr FxyArr
+        {
+            set { farr = value; }
+            get { return farr; }
+        }
         public string Name
         {
             get; set;
@@ -64,6 +71,16 @@ namespace GUIforCoupling
         {
             return options.CheckPoint(options.getX(t), options.getY(t)) ? f(options.getX(t), options.getY(t)) : double.NaN;
         }
+        public double[] F(double[] t)
+        {
+            Vertex[] vertices=new Vertex[t.Length];
+            for (int i = 0; i < t.Length; i++)
+            {
+                vertices[i] = new Vertex(options.getX(t[i]), options.getY(t[i]));
+            }
+            return farr(vertices);
+            //return options.CheckPoint(options.getX(x), options.getYarr(x)) ? f(options.getX(t), options.getY(t)) : double.NaN;
+        }
         public override string ToString()
         {
             return Name;
@@ -71,16 +88,16 @@ namespace GUIforCoupling
       
         public void drawLine(XYChart chart)
         {
-            double[] x=new double[N+1],y=new double[N+1], z=new double[N+1];
+            double[] x = new double[N + 1], y = new double[N + 1], z = new double[N + 1], zt = new double[N + 1];
             string[] s=new string[N+1];
             for (int i = 0; i < N+1; i++)
             {
                 x[i] = Options.getX((float)i/N);
                 y[i] = Options.getY((float)i / N);
                 s[i] = "(" +x[i]+ ";"+y[i]+")";
-                z[i] = F((float) i/N);
+                zt[i] = ((float) i/N);
             }
-
+            z = F(zt);
             // Add a title to the y axis
            //chart.yAxis().setTitle("MBytes per hour");
 
@@ -175,6 +192,7 @@ namespace GUIforCoupling
         public f getX { get; private set; }
 
         public f getY { get; private set; }
+
 
         public double ConstValue
         {

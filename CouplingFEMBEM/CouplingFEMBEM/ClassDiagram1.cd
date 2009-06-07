@@ -1,0 +1,692 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AP.Math" Collapsed="true">
+    <Position X="18.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACACIAACAAAAAAAARABAQAAAAAAQAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Base\AP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Constants" Collapsed="true">
+    <Position X="22.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Edge" Collapsed="true">
+    <Position X="1.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAgAAAAAAAQEiAACAABAAAAAAIBAAAAAIAEAIiA=</HashCode>
+      <FileName>Base\Edge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SbB.Diploma.GaussianQuadrature" Collapsed="true">
+    <Position X="14.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAhAAAAAAAA=</HashCode>
+      <FileName>Base\Itegration\GaussianQuadrature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.GaussPont" Collapsed="true">
+    <Position X="25.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABQAAAAAAAgAAAgCAAABAAA=</HashCode>
+      <FileName>Base\Itegration\GaussPont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Integration" Collapsed="true">
+    <Position X="14.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Itegration\Integration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Matrix" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAQEYAVAAABAAAAAAAAggAAAAAAAABI=</HashCode>
+      <FileName>Base\Matrix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SbB.Diploma.Polygon" Collapsed="true">
+    <Position X="17" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAEAQAAAECAAAAAQAAAQAIAAIAAQAAACABAE=</HashCode>
+      <FileName>Base\Polygon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Solver" Collapsed="true">
+    <Position X="22.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAEAAAAAAAAgAAAAAAAAAABAAA=</HashCode>
+      <FileName>Base\Solvers\Solver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Vector" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAE8AUAAABAAAAAAIAgAAAAAQAAAjA=</HashCode>
+      <FileName>Base\Vector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SbB.Diploma.Vertex" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQMAAAEDAAAQE4AGAAgBAAAAAAIBAAABgAAAAZzA=</HashCode>
+      <FileName>Base\Vertex.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SbB.Diploma.BoundaryClass" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\BoundaryClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.KinematicBoundary" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\BoundaryClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.StaticBoundary" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAEAAAABAAAA=</HashCode>
+      <FileName>Methods\Base\BoundaryClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.MortarBoundary" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\BoundaryClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.NonMortarBoundary" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\BoundaryClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.BoundEdge" Collapsed="true">
+    <Position X="1.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\BoundEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.FEMEdge" Collapsed="true">
+    <Position X="2.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\FEM\FEMEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.FEMElement" Collapsed="true">
+    <Position X="5.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAIgAAEAIQBQACAAAAAAAAgAAAEAAAAAAABAAIAA=</HashCode>
+      <FileName>Methods\Base\FEM\FEMElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SbB.Diploma.Triangle" Collapsed="true">
+    <Position X="5.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAACAAAA=</HashCode>
+      <FileName>Methods\Base\FEM\Triangle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.LinearEdge" Collapsed="true">
+    <Position X="2.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\LinearTriangleFEM\LinearEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.LinearTriangle">
+    <Position X="5.5" Y="15" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAgAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\LinearTriangleFEM\LinearTriangle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.LinialTriangleTriangulation" Collapsed="true">
+    <Position X="13.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAgAAAACAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Methods\Base\LinearTriangleFEM\LinialTriangleTriangulation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Triangulation" Collapsed="true">
+    <Position X="13.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAABAAAAgQgAAIAQAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\LinearTriangleFEM\Triangulation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.BPMethod">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAEAAAAAAQICAAAAAgAAAAAEIASACI=</HashCode>
+      <FileName>Methods\Base\Method.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.LinearMortar">
+    <Position X="11.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAAAAAAAAAAIAAAFAAAAAAAAAEAAAAAAAAAAAQA=</HashCode>
+      <FileName>Methods\Base\Mortar\LinearMortar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Mortar" Collapsed="true">
+    <Position X="11.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEACAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\Mortar\Mortar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.MortarSide" Collapsed="true">
+    <Position X="22.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Methods\Base\Mortar\MortarSide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.CouplingFEMs" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAgAAAAAQAMAAAAAAQIAQAAAAAAAAAAAAASAAI=</HashCode>
+      <FileName>Methods\CouplingFEMs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.CouplingFEMBEM" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAgAACIAQAMAAAAAAQIAAAAAAAAAAAAQAASAAI=</HashCode>
+      <FileName>Methods\CouplingMethod.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.FEMMethod" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgIAAAACAAARAIAAgUIAQIAAAAAAEEUEAABVASAAI=</HashCode>
+      <FileName>Methods\FEMMethod.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SbB.Diploma.Base.Solvers.FastSolver.Array" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAIAAAEAAAAAACAAAAAAAAAAAAI=</HashCode>
+      <FileName>Base\Solvers\FastSolver\Array.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SbB.Diploma.Base.Solvers.FastSolver.Gauss" Collapsed="true">
+    <Position X="24" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAICAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\FastSolver\Gauss.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Base.Solvers.FastSolver.Hash" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACACAAIAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\FastSolver\Hash.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SbB.Diploma.Base.Solvers.FastSolver.HashMatrix" Collapsed="true">
+    <Position X="8.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAgAAAAAiAAAAIAAAEAAAAAIAAAAAAAA0AAAAA=</HashCode>
+      <FileName>Base\Solvers\FastSolver\HashMatrix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Base.Solvers.FastSolver.Matrix" Collapsed="true">
+    <Position X="8.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAACAAAAIAAAEAAAAgABAQAAAAAhAAEAU=</HashCode>
+      <FileName>Base\Solvers\FastSolver\Matrix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="blas" Collapsed="true">
+    <Position X="18.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAQAAAAAQAQAAAAACAAAAAAAAAAAASAAECAA=</HashCode>
+      <FileName>Base\Solvers\HSSChurSolver\blas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hsschur" Collapsed="true">
+    <Position X="18.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAABEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAACCAAAAA=</HashCode>
+      <FileName>Base\Solvers\HSSChurSolver\hsschur.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="reflections" Collapsed="true">
+    <Position X="18.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQIAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\HSSChurSolver\reflections.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="rotations" Collapsed="true">
+    <Position X="20.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\HSSChurSolver\rotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ldlt" Collapsed="true">
+    <Position X="22.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\LDLTSolver\ldlt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ssolve" Collapsed="true">
+    <Position X="24" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAACAQAAAAgA=</HashCode>
+      <FileName>Base\Solvers\LDLTSolver\ssolve.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="inv" Collapsed="true">
+    <Position X="20.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAgAAAAAAAAAIABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\LUSolver\inv.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="lu" Collapsed="true">
+    <Position X="24" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAIAAAAEACAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\LUSolver\lu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LUSolve" Collapsed="true">
+    <Position X="25.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIQEAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\LUSolver\rsolve.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="trinverse" Collapsed="true">
+    <Position X="20.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Base\Solvers\LUSolver\trinverse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Methods.Base.LinearTriangleFEM.TriangleExe" Collapsed="true">
+    <Position X="18.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEQAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Methods.LinearBEMEdge" Collapsed="true">
+    <Position X="0.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\LinearBEMEdge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SbB.Diploma.Methods.MakarBEMMethod" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABMIAJAABAEASAoAAwBICAICwIAAAFAQAQACEASAAI=</HashCode>
+      <FileName>Methods\MakarBEMMethod.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="QiHe.CodeLib.Pair&lt;TLeft, TRight&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAIAACACAAAAAAiA=</HashCode>
+      <FileName>Yaml\CodeLib\Pair.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="QiHe.CodeLib.StringHelper" Collapsed="true">
+    <Position X="25.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAgAQAAIIAEAAAAAAACCAAAQEBAgBAAAAQCA=</HashCode>
+      <FileName>Yaml\CodeLib\StringHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.BlockScalarModifier" Collapsed="true">
+    <Position X="20.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAEAAQAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Yaml\Custom\BlockScalarModifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.MappingEntry" Collapsed="true">
+    <Position X="17" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Yaml\Custom\MappingEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.Scalar" Collapsed="true">
+    <Position X="13.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Yaml\Custom\Scalar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.YamlDocument" Collapsed="true">
+    <Position X="25.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAiAAAAA=</HashCode>
+      <FileName>Yaml\Custom\YamlDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.YamlParser" Collapsed="true">
+    <Position X="18.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BtbV2BIqqFMB+dlihJshLykdHYDIUxahpOZPVuz9vDw=</HashCode>
+      <FileName>Yaml\ParserCommon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.DataItem" Collapsed="true">
+    <Position X="11" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\DataItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.Directive" Collapsed="true">
+    <Position X="3" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\Directive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.GlobalTagPrefix" Collapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\GlobalTagPrefix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.LocalTagPrefix" Collapsed="true">
+    <Position X="12.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\LocalTagPrefix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.Mapping" Collapsed="true">
+    <Position X="11" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\Mapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.NamedTagHandle" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\NamedTagHandle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.NodeProperty" Collapsed="true">
+    <Position X="24" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\NodeProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.NonSpecificTag" Collapsed="true">
+    <Position X="11" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\NonSpecificTag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.PrimaryTagHandle" Collapsed="true">
+    <Position X="0.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\PrimaryTagHandle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.ReservedDirective" Collapsed="true">
+    <Position X="3" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\ReservedDirective.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.SecondaryTagHandle" Collapsed="true">
+    <Position X="3" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\SecondaryTagHandle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.Sequence" Collapsed="true">
+    <Position X="8.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\Sequence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.ShorthandTag" Collapsed="true">
+    <Position X="8.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\ShorthandTag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.Tag" Collapsed="true">
+    <Position X="11" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\Tag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.TagDirective" Collapsed="true">
+    <Position X="5.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\TagDirective.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.TagHandle" Collapsed="true">
+    <Position X="3" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\TagHandle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.TagPrefix" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\TagPrefix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.VerbatimTag" Collapsed="true">
+    <Position X="13.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\VerbatimTag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.YamlDirective" Collapsed="true">
+    <Position X="0.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\YamlDirective.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.YamlStream" Collapsed="true">
+    <Position X="20.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Syntax\YamlStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.YamlVersion" Collapsed="true">
+    <Position X="22.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAACA=</HashCode>
+      <FileName>Yaml\Syntax\YamlVersion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QiHe.Yaml.Grammar.TextInput" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQACAAAAAAAAACAAAAgAABAAAAAAAAAAAAACAAAAgA=</HashCode>
+      <FileName>Yaml\TextInput.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="QiHe.Yaml.YamlUtility.UI.YamlEmittor" Collapsed="true">
+    <Position X="17" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAEAAAFAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Yaml\Custom\YamlEmittor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="AP.Complex" Collapsed="true">
+    <Position X="17" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAA4AUAAAAAAAAAAAAAAABgAAAAAiA=</HashCode>
+      <FileName>Base\AP.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SbB.Diploma.PairInt" Collapsed="true">
+    <Position X="20.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAEgAAAAAAAAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SbB.Diploma.Yaml.Custom.HashValue" Collapsed="true">
+    <Position X="18.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAYAAAAAAAAABAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Yaml\Custom\HashValue.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="SbB.Diploma.IDiscretization">
+    <Position X="17" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\IDiscretization.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SbB.Diploma.IProblem" Collapsed="true">
+    <Position X="20.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Methods\Base\IProblem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SbB.Diploma.Base.Solvers.FastSolver.IMatrix" Collapsed="true">
+    <Position X="18.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAACAAAAIAAAEAAAAAAAAAAAAAAgAAEAA=</HashCode>
+      <FileName>Base\Solvers\FastSolver\IMatrix.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SbB.Diploma.Base.Solvers.FastSolver.IRow" Collapsed="true">
+    <Position X="22.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAIAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Solvers\FastSolver\IRow.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="QiHe.Yaml.Grammar.ParserInput&lt;T&gt;" Collapsed="true">
+    <Position X="24" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAAAAAAAAAAAAgAABAAAAAAAAAAAAACAAAAgA=</HashCode>
+      <FileName>Yaml\ParserInput.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="SbB.Diploma.VertexPos" Collapsed="true">
+    <Position X="24" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAgAAAAAAAAAAAAAAAAAgCBAEBAAAAAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SbB.Diploma.BoundaryType" Collapsed="true">
+    <Position X="17" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SbB.Diploma.Norma" Collapsed="true">
+    <Position X="22.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ggAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SbB.Diploma.Functions" Collapsed="true">
+    <Position X="20.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAIAAAEAAABAAAAAAAAAAAAAAAAAAAAAAAAASAAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="QiHe.Yaml.Grammar.ChompingMethod" Collapsed="true">
+    <Position X="18.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAABAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Yaml\Custom\ChompingMethod.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="SbB.Diploma.Phi" Collapsed="true">
+    <Position X="22.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAEAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="SbB.Diploma.FunctionXY" Collapsed="true">
+    <Position X="20.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAQAAAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="SbB.Diploma.EmptyDelegate" Collapsed="true">
+    <Position X="17" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Constants.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="SbB.Diploma.FunctionX" Collapsed="true">
+    <Position X="18.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Base\Itegration\Integration.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Arial" Size="8.25" />
+</ClassDiagram>

@@ -1,0 +1,5 @@
+21000
+0.3
+$#
+E   // Yang modulo
+Nu // Poisson koef.

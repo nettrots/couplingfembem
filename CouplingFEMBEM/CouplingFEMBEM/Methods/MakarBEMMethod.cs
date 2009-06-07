@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using SbB.Diploma.Yaml.Custom;
 
 namespace SbB.Diploma.Methods
@@ -14,6 +15,7 @@ namespace SbB.Diploma.Methods
     {
         #region Fields
         private Matrix H, G;
+        private Vector t;
         #endregion
 
         #region Constructors
@@ -76,7 +78,15 @@ namespace SbB.Diploma.Methods
 
         public int ElementsPerSegment { get; set; }
         public List<Func<double, double, double>> FuncList { get; set; }
+        public void caltT()
+        {
+           // inv.rmatrixinverse(G);
+            t = G * H * Results;
+        }
+
+        public override Vector Results { get; set; }
         #endregion
+
 
         #region Methods
         #region Private
@@ -234,14 +244,14 @@ namespace SbB.Diploma.Methods
             writeFiles();
 
             Process newp = new Process();
-            newp.StartInfo.FileName = "NSGBEM.exe";
+            newp.StartInfo.FileName = "NSGBEMPP.exe";
             newp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             newp.Start();
             newp.WaitForExit();
 
             readFiles();
 
-            deleteFiles();
+           // deleteFiles();
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo(currentCulture);
         }
@@ -296,7 +306,135 @@ namespace SbB.Diploma.Methods
         }
         public override void Solve()
         {
-            throw new NotImplementedException();
+            LUSolve.Solve(K, F, out results);
+            Results = results;
+            caltT();
+        }
+
+        //Formate files for postproccessing
+        #region PostProccesing private zone
+
+        private double[] runPP(Vertex[] vertices,bool isU)
+        {
+            
+            string currentCulture = CultureInfo.CurrentCulture.Name;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            writeFiles();
+            writePP(vertices);
+            Process newp = new Process();
+            newp.StartInfo.FileName =Directory.GetCurrentDirectory()+"\\NSGBEMPP.exe";
+            newp.StartInfo.Arguments = "1";
+            newp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+//            newp.StartInfo.RedirectStandardError = true;
+
+            newp.Start();
+            newp.WaitForExit();
+            double[] rez= readPP(isU,vertices.Length);
+            //clearPP();
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(currentCulture);
+            return rez;
+        }
+        private void writePP(Vertex[] vertices)
+        {
+            innerPointsPP(vertices);
+            seiPP();
+        }
+        private void seiPP()
+        {
+            List<List<Vertex>> temp=new List<List<Vertex>>();
+            foreach (List<BoundEdge> list in Boundaries)
+            {
+                temp.Add(new List<Vertex>());
+                foreach (BoundEdge edge in list)
+                {
+                    if (!temp[temp.Count - 1].Contains(edge.A))
+                        temp[temp.Count - 1].Add(edge.A);
+                    if (!temp[temp.Count - 1].Contains(edge.B))
+                        temp[temp.Count - 1].Add(edge.B);
+                }
+            }
+            int counter=1;
+           
+            foreach (List<Vertex> list in temp)
+            {
+                StreamWriter sw = new StreamWriter(Directory.GetCurrentDirectory() + "\\se_"+(counter++)+".txt");
+                foreach (Vertex vertex in list)
+                {
+                    sw.WriteLine("{0} {1} {2} {3} {4} {5}", vertex.X, vertex.Y, Results[vertex.Dofu[0]], Results[vertex.Dofu[1]], t[vertex.Dofu[0]], t[vertex.Dofu[1]]);
+                }
+                sw.Close();
+            }
+        }
+        private void innerPointsPP(Vertex[] vertices)
+        {
+            StreamWriter sw = new StreamWriter(Directory.GetCurrentDirectory()+"\\inner_points.txt");
+            sw.WriteLine("{0}", vertices.Length);
+            foreach (Vertex vertex in vertices)
+            {
+                sw.WriteLine("{0} {1}", vertex.X,vertex.Y);
+            }
+            sw.Close();
+        }
+      
+        private double[] readPP(bool isU,int n)
+        {
+            List<double> rez=new List<double>();
+            
+            StreamReader sr = new StreamReader(Directory.GetCurrentDirectory()+ "\\inner_disp.txt");
+
+            for (int i = 0; i < n; i++)
+            {
+                string line = sr.ReadLine();
+                while (line.Contains("  ")) line = line.Replace("  ", " ");
+                if (line[0] == ' ') line = line.Substring(1);
+                string[] cells = line.Split(' ');
+
+                int dofn = (isU) ? 0 : 1;
+
+                Vertex v = new Vertex(double.Parse(cells[0]), double.Parse(cells[1]));
+                if (Polygon.isVertexOnPolygon(v))
+                {
+                    double r = 0;
+                    foreach (List<BoundEdge> list in Boundaries)
+                    {
+                        foreach (BoundEdge edge in list)
+                        {
+                            if (edge.hasVertex(v))
+                            {
+                                for (int k = 0; k < 2; k++)
+                                    r += Results[edge[k].Dofu[dofn]]*edge.phi(k, v.X,v.Y);
+                                break;
+                            }
+                        }
+                        if(r!=0)break;
+                    }
+                    rez.Add(r);
+                }
+                else  rez.Add(double.Parse(cells[dofn+2]));
+            }
+            sr.Close();
+            return rez.ToArray();
+        }
+        private void clearPP()
+        {
+            File.Delete("inner_stress.txt");
+            File.Delete("inner_points.txt");
+            File.Delete("inner_disp.txt");
+       
+        }
+        #endregion
+        public override double[] U(Vertex[] vertices)
+        {
+            return runPP(vertices, true);
+            return new double[vertices.Length];
+        }
+
+        public override double[] V(Vertex[] vertices)
+        {
+            return runPP(vertices, false);
+            //throw new NotImplementedException();
+            return new double[vertices.Length];
         }
 
         public override double U(double x, double y)
