@@ -356,6 +356,9 @@ namespace GUIforCoupling
             surfaceFunctionsCB.Items.Clear();
             surfaceFunctionsCB.Items.Add("U");
             surfaceFunctionsCB.Items.Add("V");
+            surfaceFunctionsCB.Items.Add("Sxx");
+            surfaceFunctionsCB.Items.Add("Syy");
+            surfaceFunctionsCB.Items.Add("Sxy");
             surfaceFunctionsCB.SelectedIndex = 0;
         }
 
@@ -371,6 +374,12 @@ namespace GUIforCoupling
                 currentStarage.SurfaceFunction = currentStarage.Problem.U;
             if (surfaceFunctionsCB.SelectedItem == "V")
                 currentStarage.SurfaceFunction = currentStarage.Problem.V;
+            if (surfaceFunctionsCB.SelectedItem == "Sxx")
+                currentStarage.SurfaceFunction = currentStarage.Problem.Sxx;
+            if (surfaceFunctionsCB.SelectedItem == "Syy")
+                currentStarage.SurfaceFunction = currentStarage.Problem.Syy;
+            if (surfaceFunctionsCB.SelectedItem == "Sxy")
+                currentStarage.SurfaceFunction = currentStarage.Problem.Sxy;
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)

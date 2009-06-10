@@ -255,6 +255,149 @@ namespace SbB.Diploma
             return rez.ToArray();
         }
 
+        public override double[] Sxx(Vertex[] vertices)
+        {
+            List<double> rez = new List<double>();
+            foreach (Vertex vertex in vertices)
+            {
+                rez.Add(Sxx(vertex.X, vertex.Y));
+            }
+            return rez.ToArray();
+        }
+
+        public override double[] Syy(Vertex[] vertices)
+        {
+            List<double> rez = new List<double>();
+            foreach (Vertex vertex in vertices)
+            {
+                rez.Add(Syy(vertex.X, vertex.Y));
+            }
+            return rez.ToArray();
+        }
+
+        public override double[] Sxy(Vertex[] vertices)
+        {
+            List<double> rez = new List<double>();
+            foreach (Vertex vertex in vertices)
+            {
+                rez.Add(Sxy(vertex.X, vertex.Y));
+            }
+            return rez.ToArray();
+        }
+
+
+        private Vector vu=new Vector();
+        private Vector vU
+        {
+            get
+            {
+                if (vu.Count == 0)
+                foreach (var vertex in Vertexes)
+                {
+                    vu.Add(Results[vertex.Dofu[0]]);
+                    
+                }
+                return vu;
+            }
+        }
+        private Vector vv = new Vector();
+        private Vector vV
+        {
+            get
+            {
+                if (vu.Count == 0)
+                    foreach (var vertex in Vertexes)
+                    {
+                        vu.Add(Results[vertex.Dofu[0]]);
+
+                    }
+                return vv;
+
+            }
+        }
+        public double Exx(double x, double y)
+        {
+            foreach (FEMElement femElement in Elements)
+            {
+                if (femElement.hasVertex(new Vertex(x, y)))
+                    return femElement.Exx(new Vertex(x,y),vU );
+            }
+            return 0;
+        }
+
+        public double Eyy(double x, double y)
+        {
+            foreach (FEMElement femElement in Elements)
+            {
+                if (femElement.hasVertex(new Vertex(x, y)))
+                    return femElement.Eyy(new Vertex(x, y), vV);
+            }
+            return 0;
+        }
+        public double Exy(double x, double y)
+        {
+            foreach (FEMElement femElement in Elements)
+            {
+                if (femElement.hasVertex(new Vertex(x, y)))
+                    return femElement.Exy(new Vertex(x, y),vU, vV);
+            }
+            return 0;
+        }
+        public override double Sxx(double x, double y)
+        {
+            foreach (FEMElement femElement in Elements)
+            {
+                if (femElement.hasVertex(new Vertex(x, y)))
+                {
+                    Vector u = new Vector(femElement.NodesCount),
+                              v = new Vector(femElement.NodesCount);
+                    for (int i = 0; i < femElement.NodesCount; i++)
+                    {
+                        u[i] = U(femElement[i].X, femElement[i].Y);
+                        v[i] = V(femElement[i].X, femElement[i].Y);
+                    }
+                    return femElement.Sxx(new Vertex(x, y), u, v, d);
+                }
+            }
+            return 0;
+        }
+
+        public override double Syy(double x, double y)
+        {
+            foreach (FEMElement femElement in Elements)
+            {
+                if (femElement.hasVertex(new Vertex(x, y)))
+                {
+                    Vector u = new Vector(femElement.NodesCount),
+                              v = new Vector(femElement.NodesCount);
+                    for (int i = 0; i < femElement.NodesCount; i++)
+                    {
+                        u[i] = U(femElement[i].X, femElement[i].Y);
+                        v[i] = V(femElement[i].X, femElement[i].Y);
+                    }
+                    return femElement.Syy(new Vertex(x, y), u, v, d);
+                }
+            }
+            return 0;
+        }
+        public override double Sxy(double x, double y)
+        {
+            foreach (FEMElement femElement in Elements)
+            {
+                if (femElement.hasVertex(new Vertex(x, y)))
+                {
+                    Vector u = new Vector(femElement.NodesCount),
+                              v = new Vector(femElement.NodesCount);
+                    for (int i = 0; i < femElement.NodesCount; i++)
+                    {
+                        u[i] = U(femElement[i].X, femElement[i].Y);
+                        v[i] = V(femElement[i].X, femElement[i].Y);
+                    }
+                    return femElement.Sxy(new Vertex(x, y), u, v, d);
+                }
+            }
+            return 0;
+        }
         #endregion
         #endregion
     }
