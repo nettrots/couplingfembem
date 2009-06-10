@@ -335,6 +335,27 @@ namespace SbB.Diploma.Methods
             Thread.CurrentThread.CurrentCulture = new CultureInfo(currentCulture);
             return rez;
         }
+        private double[] runPPS(Vertex[] vertices, int isU)
+        {
+
+            string currentCulture = CultureInfo.CurrentCulture.Name;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            writeFiles();
+            writePP(vertices);
+            Process newp = new Process();
+            newp.StartInfo.FileName = Directory.GetCurrentDirectory() + "\\NSGBEMPP.exe";
+            newp.StartInfo.Arguments = "1";
+            newp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            //            newp.StartInfo.RedirectStandardError = true;
+
+            newp.Start();
+            newp.WaitForExit();
+            double[] rez = readPPS(isU, vertices.Length);
+            //clearPP();
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(currentCulture);
+            return rez;
+        }
         private void writePP(Vertex[] vertices)
         {
             innerPointsPP(vertices);
@@ -377,6 +398,27 @@ namespace SbB.Diploma.Methods
             sw.Close();
         }
       
+        private double[] readPPS(int sn,int n)
+        {
+            List<double> rez = new List<double>();
+
+            StreamReader sr = new StreamReader(Directory.GetCurrentDirectory() + "\\inner_stress.txt");
+
+            for (int i = 0; i < n; i++)
+            {
+                string line = sr.ReadLine();
+                while (line.Contains("  ")) line = line.Replace("  ", " ");
+                if (line[0] == ' ') line = line.Substring(1);
+                string[] cells = line.Split(' ');
+
+//                Vertex v = new Vertex(double.Parse(cells[0]), double.Parse(cells[1]));
+
+                 rez.Add(double.Parse(cells[sn + 2]));
+            }
+            sr.Close();
+            return rez.ToArray();
+        }
+
         private double[] readPP(bool isU,int n)
         {
             List<double> rez=new List<double>();
@@ -445,17 +487,17 @@ namespace SbB.Diploma.Methods
 
         public override double[] Sxx(Vertex[] vertices)
         {
-            return new double[vertices.Length];
+            return runPPS(vertices, 0);
         }
 
         public override double[] Syy(Vertex[] vertices)
         {
-            return new double[vertices.Length];
+            return runPPS(vertices, 1);
         }
 
         public override double[] Sxy(Vertex[] vertices)
         {
-            return new double[vertices.Length];
+            return runPPS(vertices, 2);
         }
 
         public override double U(double x, double y)
