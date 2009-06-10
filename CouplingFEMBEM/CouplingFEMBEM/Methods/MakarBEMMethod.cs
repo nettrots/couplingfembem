@@ -424,6 +424,12 @@ namespace SbB.Diploma.Methods
        
         }
         #endregion
+
+        public override double Sxy(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
         public override double[] U(Vertex[] vertices)
         {
             return runPP(vertices, true);
@@ -437,12 +443,37 @@ namespace SbB.Diploma.Methods
             return new double[vertices.Length];
         }
 
+        public override double[] Sxx(Vertex[] vertices)
+        {
+            return new double[vertices.Length];
+        }
+
+        public override double[] Syy(Vertex[] vertices)
+        {
+            return new double[vertices.Length];
+        }
+
+        public override double[] Sxy(Vertex[] vertices)
+        {
+            return new double[vertices.Length];
+        }
+
         public override double U(double x, double y)
         {
             throw new NotImplementedException();
         }
 
         public override double V(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double Sxx(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double Syy(double x, double y)
         {
             throw new NotImplementedException();
         }

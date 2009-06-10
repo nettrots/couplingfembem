@@ -156,6 +156,21 @@ namespace SbB.Diploma
             return FEM.V(x, y);
         }
 
+        public override double Sxx(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double Syy(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double Sxy(double x, double y)
+        {
+            throw new NotImplementedException();
+        }
+
         public override double[] U(Vertex[] vertices)
         {
             List<Vertex> rezF = new List<Vertex>();
@@ -189,6 +204,59 @@ namespace SbB.Diploma
             List<double> rez = new List<double>();
             rez.AddRange(FEM.V(rezF.ToArray()));
             rez.AddRange(BEM.V(rezB.ToArray()));
+            return rez.ToArray();
+        }
+        public override double[] Sxx(Vertex[] vertices)
+        {
+            List<Vertex> rezF = new List<Vertex>();
+            List<Vertex> rezB = new List<Vertex>();
+            foreach (Vertex vertex in vertices)
+            {
+                if (FEM.Polygon.hasVertex(vertex))
+                    rezF.Add(vertex);
+                else
+                    rezB.Add(vertex);
+
+            }
+            List<double> rez = new List<double>();
+            rez.AddRange(FEM.Sxx(rezF.ToArray()));
+            rez.AddRange(BEM.Sxx(rezB.ToArray()));
+            return rez.ToArray();
+        }
+
+        public override double[] Syy(Vertex[] vertices)
+        {
+            List<Vertex> rezF = new List<Vertex>();
+            List<Vertex> rezB = new List<Vertex>();
+            foreach (Vertex vertex in vertices)
+            {
+                if (FEM.Polygon.hasVertex(vertex))
+                    rezF.Add(vertex);
+                else
+                    rezB.Add(vertex);
+
+            }
+            List<double> rez = new List<double>();
+            rez.AddRange(FEM.Syy(rezF.ToArray()));
+            rez.AddRange(BEM.Syy(rezB.ToArray()));
+            return rez.ToArray();
+        }
+
+        public override double[] Sxy(Vertex[] vertices)
+        {
+            List<Vertex> rezF = new List<Vertex>();
+            List<Vertex> rezB = new List<Vertex>();
+            foreach (Vertex vertex in vertices)
+            {
+                if (FEM.Polygon.hasVertex(vertex))
+                    rezF.Add(vertex);
+                else
+                    rezB.Add(vertex);
+
+            }
+            List<double> rez = new List<double>();
+            rez.AddRange(FEM.Sxy(rezF.ToArray()));
+            rez.AddRange(BEM.Sxy(rezB.ToArray()));
             return rez.ToArray();
         }
 

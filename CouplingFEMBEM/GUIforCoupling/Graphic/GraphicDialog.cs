@@ -172,10 +172,16 @@ namespace GUIforCoupling
             listStarage.Functions=new Dictionary<string, fxyArr>();
             listStarage.Functions.Add("U", currentStorage.Problem.U);
             listStarage.Functions.Add("V", currentStorage.Problem.V);
+            listStarage.Functions.Add("Sxx", currentStorage.Problem.Sxx);
+            listStarage.Functions.Add("Syy", currentStorage.Problem.Syy);
+            listStarage.Functions.Add("Sxy", currentStorage.Problem.Sxy);
 
             functionsLB.Items.Clear();
             functionsLB.Items.Add("U");
             functionsLB.Items.Add("V");
+            functionsLB.Items.Add("Sxx");
+            functionsLB.Items.Add("Syy");
+            functionsLB.Items.Add("Sxy");
             functionsLB.SelectedIndex = 0;
 
         }

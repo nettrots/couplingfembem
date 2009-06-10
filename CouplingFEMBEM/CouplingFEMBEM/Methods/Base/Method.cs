@@ -29,10 +29,17 @@ namespace SbB.Diploma
         public abstract void Solve();
         public abstract double U(double x, double y);
         public abstract double V(double x, double y);
+        public abstract double Sxx(double x, double y);
+        public abstract double Syy(double x, double y);
+        public abstract double Sxy(double x, double y);
         public abstract double[] U(Vertex[] vertices);
-
         public abstract double[] V(Vertex[] vertices);
+        public abstract double[] Sxx(Vertex[] vertices);
+        public abstract double[] Syy(Vertex[] vertices);
+        public abstract double[] Sxy(Vertex[] vertices);
+
         public override string ToString()
+
         {
             return Name;
         }
