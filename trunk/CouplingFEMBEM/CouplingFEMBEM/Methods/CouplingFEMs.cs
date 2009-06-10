@@ -147,16 +147,63 @@ namespace SbB.Diploma
 
         public override double U(double x, double y)
         {
-            for (int i = 0; i < FEMs.Length; i++)
-                if (FEMs[i].Polygon.hasVertex(new Vertex(x, y))) return FEMs[i].U(x, y);
-            return 0.0;
+            throw new NotImplementedException();
         }
 
         public override double V(double x, double y)
         {
+            throw new NotImplementedException();
+        }
+
+        public override double Sxx(double x, double y)
+        {
             for (int i = 0; i < FEMs.Length; i++)
-                if (FEMs[i].Polygon.hasVertex(new Vertex(x, y))) return FEMs[i].V(x, y);
+                if (FEMs[i].Polygon.hasVertex(new Vertex(x, y))) return FEMs[i].Sxx(x, y);
             return 0.0;
+        }
+
+        public override double Syy(double x, double y)
+        {
+            for (int i = 0; i < FEMs.Length; i++)
+                if (FEMs[i].Polygon.hasVertex(new Vertex(x, y))) return FEMs[i].Syy(x, y);
+            return 0.0;
+        }
+        public override double Sxy(double x, double y)
+        {
+            for (int i = 0; i < FEMs.Length; i++)
+                if (FEMs[i].Polygon.hasVertex(new Vertex(x, y))) return FEMs[i].Sxy(x, y);
+            return 0.0;
+        }
+
+        
+        public override double[] Sxx(Vertex[] vertices)
+        {
+            List<double> rez = new List<double>();
+            foreach (Vertex vertex in vertices)
+            {
+                rez.Add(Sxx(vertex.X, vertex.Y));
+            }
+            return rez.ToArray();
+        }
+
+        public override double[] Syy(Vertex[] vertices)
+        {
+            List<double> rez = new List<double>();
+            foreach (Vertex vertex in vertices)
+            {
+                rez.Add(Sxx(vertex.X, vertex.Y));
+            }
+            return rez.ToArray();
+        }
+
+        public override double[] Sxy(Vertex[] vertices)
+        {
+            List<double> rez = new List<double>();
+            foreach (Vertex vertex in vertices)
+            {
+                rez.Add(Sxx(vertex.X, vertex.Y));
+            }
+            return rez.ToArray();
         }
 
         public override double[] U(Vertex[] vertices)
